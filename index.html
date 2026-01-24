@@ -569,22 +569,40 @@ function offBoostPerDay(){
   return (countBoostSelected() >= 2) ? 15 : 20;
 }
 
-/* ========= Boost Tradicional ========= */
-function tradRateByMMR(mmr){
-  if(mmr <= 4000) return 0.40;
-  if(mmr <= 4500) return 0.65;
-  if(mmr <= 5000) return 0.75;
-  if(mmr <= 5500) return 1.10;
-  if(mmr <= 6000) return 2.10;
-  if(mmr <= 6500) return 3.20;
-  if(mmr <= 7000) return 3.80;
-  if(mmr <= 7500) return 4.75;
-  if(mmr <= 8000) return 7.60;
-  if(mmr <= 8500) return 8.50;
-  return null;
+/* ========= Boost Tradicional (CORRIGIDO) ========= */
+
+// cálculo progressivo por faixa
+function calcTradBaseProgressivo(mmrAtual, mmrDesejado){
+  const faixas = [
+    { ate: 4000, valor: 0.40 },
+    { ate: 4500, valor: 0.65 },
+    { ate: 5000, valor: 0.75 },
+    { ate: 5500, valor: 1.10 },
+    { ate: 6000, valor: 2.10 },
+    { ate: 6500, valor: 3.20 },
+    { ate: 7000, valor: 3.80 },
+    { ate: 7500, valor: 4.75 },
+    { ate: 8000, valor: 7.60 },
+    { ate: 8500, valor: 8.50 },
+  ];
+
+  let total = 0;
+  let atual = mmrAtual;
+
+  for(const faixa of faixas){
+    if(atual >= mmrDesejado) break;
+
+    const limite = Math.min(faixa.ate, mmrDesejado);
+    const qtd = Math.max(0, limite - atual);
+
+    total += qtd * faixa.valor;
+    atual = limite;
+  }
+
+  return total;
 }
-function tradDiscountPct(delta, mmrAtual){
-  if(mmrAtual < 4000) return 0;
+
+function tradDiscountPct(delta){
   if(delta >= 1500) return 0.12;
   if(delta >= 1250) return 0.10;
   if(delta >= 1000) return 0.08;
@@ -592,97 +610,88 @@ function tradDiscountPct(delta, mmrAtual){
   if(delta >= 500)  return 0.04;
   return 0;
 }
+
+
 function calcTrad(perDayOff){
   if(!$("useTrad").checked){
     $("tradRes").innerHTML = "Preencha os dados para ver o valor.";
     $("tradAlert").textContent = "";
-    return {selected:false, ok:true, total:0, totalNoPromo:0, text:"", tradSpend:0};
+    return { selected:false, ok:true, total:0, totalNoPromo:0, tradSpend:0, text:"" };
   }
 
   const atual = clampInt(Number($("tradAtual").value), 0, 8500);
-  const des = clampInt(Number($("tradDesejado").value), 0, 8500);
-  const off = $("tradOff").checked;
+  const des   = clampInt(Number($("tradDesejado").value), 0, 8500);
+  const off   = $("tradOff").checked;
 
   $("tradAlert").textContent = "";
 
   if(atual === null || des === null){
     $("tradRes").innerHTML = "Preencha MMR atual e desejado.";
-    return {selected:true, ok:false, total:0, totalNoPromo:0, text:"Boost Tradicional: dados incompletos", tradSpend:0};
+    return { selected:true, ok:false, total:0, totalNoPromo:0, tradSpend:0, text:"Boost Tradicional inválido" };
   }
+
   if(des <= atual){
     $("tradRes").innerHTML = "<strong>Preço: INVÁLIDO</strong>";
-    $("tradAlert").textContent = "🔴 O MMR desejado deve ser maior que o MMR atual.";
-    return {selected:true, ok:false, total:0, totalNoPromo:0, text:"Boost Tradicional: inválido", tradSpend:0};
+    $("tradAlert").textContent = "🔴 O MMR desejado deve ser maior que o atual.";
+    return { selected:true, ok:false, total:0, totalNoPromo:0, tradSpend:0, text:"Boost Tradicional inválido" };
   }
 
   let delta = des - atual;
   if(delta < 500){
     delta = 500;
-    $("tradAlert").textContent = "⚠️ Mínimo do serviço: 500 MMR (cálculo ajustado).";
+    $("tradAlert").textContent = "⚠️ Pedido mínimo: 500 MMR (ajustado automaticamente).";
   }
 
-  const rate = tradRateByMMR(atual);
-  if(rate === null){
-    $("tradRes").innerHTML = "<strong>Preço: INVÁLIDO</strong>";
-    $("tradAlert").textContent = "🔴 MMR atual fora do limite.";
-    return {selected:true, ok:false, total:0, totalNoPromo:0, text:"Boost Tradicional: inválido", tradSpend:0};
-  }
+  // ✅ BASE CORRETA (progressiva)
+  const base = calcTradBaseProgressivo(atual, des);
 
-  const base = delta * rate;
-  const pct = tradDiscountPct(delta, atual);
+  // desconto
+  const pct = tradDiscountPct(delta);
   const baseAfter = base - (base * pct);
 
-  // Off-stream (interno): 1 dia ~ 150 MMR, arredonda pra baixo. Não exibe dias.
-  let offFeePromo = 0;
-  let offFeeNoPromo = 0;
+  // off-stream
+  let offFee = 0;
   if(off){
-    const daysInternal = Math.max(1, Math.floor(delta / 150));
-    offFeePromo = daysInternal * perDayOff;
-    offFeeNoPromo = daysInternal * 20;
+    const dias = Math.max(1, Math.floor(delta / 150));
+    offFee = dias * perDayOff;
   }
 
-  const total = baseAfter + offFeePromo;
-  const totalNoPromo = baseAfter + offFeeNoPromo;
+  const totalFinal = baseAfter + offFee;
+  const totalSemDesconto = base + offFee;
 
   $("tradRes").innerHTML =
     `<strong>Delta considerado:</strong> ${delta} MMR<br>
-     <strong>Preço/MMR (faixa):</strong> ${money(rate)}<br>
-     <strong>Base:</strong> ${money(base)}${pct>0 ? ` <span class="ok">(desconto ${Math.round(pct*100)}%)</span>` : ""}<br>
-     <strong>Off-stream:</strong> ${off ? money(offFeePromo) : money(0)}<br>
-     <strong>Total:</strong> ${money(total)}`;
+     <strong>Cálculo:</strong> Progressivo por faixa<br>
+     <strong>Base:</strong> ${money(base)}
+       ${pct > 0 ? `<span class="ok"> (${Math.round(pct*100)}% OFF)</span>` : ""}<br>
+     <strong>Off-stream:</strong> ${off ? money(offFee) : money(0)}<br>
+     <strong>Total:</strong> ${money(totalFinal)}`;
 
   return {
-  selected: true,
-  ok: true,
+    selected: true,
+    ok: true,
 
-  // total com desconto
-  total: baseAfter + offFeePromo,
+    total: totalFinal,
+    totalNoPromo: totalSemDesconto,
+    tradSpend: totalFinal,
 
-  // total sem desconto (para o resumo comparar)
-  totalNoPromo: base + offFeePromo,
+    text:
+      pct > 0
+        ? `Boost Tradicional: +${delta} MMR | ${money(totalSemDesconto)} → ${money(totalFinal)} (${Math.round(pct*100)}% OFF)`
+        : `Boost Tradicional: +${delta} MMR | Total: ${money(totalFinal)}`,
 
-  tradSpend: baseAfter + offFeePromo,
-
-  // TEXTO QUE APARECE NO RESUMO
-  text:
-    pct > 0
-      ? `Boost Tradicional: +${delta} MMR | ${money(base)} → ${money(baseAfter + offFeePromo)} (${Math.round(pct * 100)}% OFF)`
-      : `Boost Tradicional: +${delta} MMR | Total: ${money(baseAfter + offFeePromo)}`,
-
-  // TEXTO QUE VAI PARA O WHATSAPP
-  details:
+    details:
 `🆙 BOOST TRADICIONAL
 • MMR atual: ${atual}
 • MMR desejado: ${des}
-• Quantidade de MMR: ${delta}
+• Quantidade: ${delta} MMR
 • Valor base: ${money(base)}
-• Desconto: ${pct > 0 ? Math.round(pct * 100) + "% OFF" : "Nenhum"}
-• Off-stream: ${off ? money(offFeePromo) : "Não"}
-• Total: ${money(baseAfter + offFeePromo)}`
-};
-
-
+• Desconto: ${pct > 0 ? Math.round(pct*100) + "% OFF" : "Nenhum"}
+• Off-stream: ${off ? money(offFee) : "Não"}
+• Total: ${money(totalFinal)}`
+  };
 }
+
 
 /* ========= Double MMR ========= */
 function doubleBaseByMMR(mmr){
