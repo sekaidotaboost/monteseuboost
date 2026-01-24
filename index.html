@@ -463,10 +463,6 @@ button:disabled{opacity:.55;cursor:not-allowed;}
           <input type="checkbox" id="coachP2" disabled>
           <span>Coach Parte 2 — R$ 200,00</span>
         </div>
-        <div class="check">
-          <input type="checkbox" id="coachOff" disabled>
-          <span>Coach Off stream (+ R$20,00) na Twitch sekai_oficial</span>
-        </div>
 
         <!-- SAIBA MAIS -->
     <details>
@@ -967,53 +963,50 @@ function calcCoach(tradEligible){
 
   const p1 = $("coachP1").checked;
   const p2 = $("coachP2").checked;
-  const off = $("coachOff").checked;
-  
+
   $("coachAlert").textContent = "";
 
-if(p2 && !p1){
-  $("coachAlert").textContent =
-    "⚠️ Para obter desconto na Parte 2, é necessário contratar a Parte 1.";
-}
-
+  if(p2 && !p1){
+    $("coachAlert").textContent =
+      "⚠️ Para obter desconto na Parte 2, é necessário contratar a Parte 1.";
+  }
 
   let base = 0;
   if(p1) base += 200;
   if(p2) base += 200;
-  if(off) base += 20;
 
-  // desconto: 50% na parte 2 (R$100) se Boost Tradicional no mínimo R$200 estiver selecionado
+  // desconto: 50% na parte 2 se Boost Tradicional >= R$200
   let disc = 0;
   if(p1 && p2 && tradEligible){
-  disc = 100;
-}
-
+    disc = 100;
+  }
 
   const total = base - disc;
   const totalNoPromo = base;
 
-  $("coachAlert").textContent = disc > 0 ? "✅ Promoção: 50% OFF aplicado na Parte 2 do Coach." : "";
+  $("coachAlert").textContent =
+    disc > 0 ? "✅ Promoção: 50% OFF aplicado na Parte 2 do Coach." : "";
+
   $("coachRes").innerHTML =
     `<strong>Base:</strong> ${money(base)}<br>
      <strong>Desconto:</strong> ${disc>0 ? ("- " + money(disc)) : money(0)}<br>
      <strong>Total:</strong> ${money(total)}`;
 
   return {
-  selected:true,
-  ok:true,
-  total,
-  totalNoPromo,
-  text:`Coach | Total: ${money(total)}`,
-  details:
+    selected:true,
+    ok:true,
+    total,
+    totalNoPromo,
+    text:`Coach | Total: ${money(total)}`,
+    details:
 `🎓 COACH
 • Parte 1: ${p1 ? "Sim" : "Não"}
 • Parte 2: ${p2 ? "Sim" : "Não"}
-• Off-stream: ${off ? "Sim" : "Não"}
 • Desconto aplicado: ${disc > 0 ? money(disc) : "Nenhum"}
 • Total: ${money(total)}`
-};
-
+  };
 }
+
 
 /* ========= Combo controlado ========= */
 function comboCasualReplay(cas, rep){
@@ -1036,7 +1029,7 @@ function updateAll(){
   enableGroup("useCasual", ["casualDays","casualOff"]);
   enableGroup("useRecal",  ["recalNome","recalMMR","recalOff"]);
   enableGroup("useReplay", ["repQtd","repDias","repOff"]);
-  enableGroup("useCoach",  ["coachP1","coachP2","coachOff"]);
+  enableGroup("useCoach",  ["coachP1","coachP2"]);
 
   const perDayOff = offBoostPerDay();
 
