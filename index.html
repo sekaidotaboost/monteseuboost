@@ -602,7 +602,8 @@ function calcTradBaseProgressivo(mmrAtual, mmrDesejado){
   return total;
 }
 
-function tradDiscountPct(delta){
+function tradDiscountPct(delta, mmrAtual){
+  if(mmrAtual < 4000) return 0;
   if(delta >= 1500) return 0.12;
   if(delta >= 1250) return 0.10;
   if(delta >= 1000) return 0.08;
@@ -610,6 +611,7 @@ function tradDiscountPct(delta){
   if(delta >= 500)  return 0.04;
   return 0;
 }
+
 
 
 function calcTrad(perDayOff){
@@ -637,16 +639,20 @@ function calcTrad(perDayOff){
   }
 
   let delta = des - atual;
-  if(delta < 500){
-    delta = 500;
-    $("tradAlert").textContent = "⚠️ Pedido mínimo: 500 MMR (ajustado automaticamente).";
-  }
+
+// mínimo de 500 MMR apenas se atual < 4000
+if(atual < 4000 && delta < 500){
+  delta = 500;
+  $("tradAlert").textContent =
+    "⚠️ Pedido mínimo para contas abaixo de 4.000 MMR é 500 MMR (ajustado automaticamente).";
+}
+
 
   // ✅ BASE CORRETA (progressiva)
   const base = calcTradBaseProgressivo(atual, des);
 
   // desconto
-  const pct = tradDiscountPct(delta);
+  const pct = tradDiscountPct(delta, atual);
   const baseAfter = base - (base * pct);
 
   // off-stream
