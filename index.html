@@ -573,37 +573,45 @@ function offBoostPerDay(){
 
 // cálculo progressivo por faixa
 function calcTradBaseProgressivo(mmrAtual, mmrDesejado){
-  const faixas = [
-    { ate: 4000, valor: 0.40 },
-    { ate: 4500, valor: 0.65 },
-    { ate: 5000, valor: 0.75 },
-    { ate: 5500, valor: 1.10 },
-    { ate: 6000, valor: 2.10 },
-    { ate: 6500, valor: 3.20 },
-    { ate: 7000, valor: 3.80 },
-    { ate: 7500, valor: 4.75 },
-    { ate: 8000, valor: 7.60 },
-    { ate: 8500, valor: 8.50 },
+  const TABELA_PRECOS = [
+    { min: 0,    max: 4000, preco: 0.40 },
+    { min: 4001, max: 4500, preco: 0.65 },
+    { min: 4501, max: 5000, preco: 0.75 },
+    { min: 5001, max: 5500, preco: 1.10 },
+    { min: 5501, max: 6000, preco: 2.10 },
+    { min: 6001, max: 6500, preco: 3.20 },
+    { min: 6501, max: 7000, preco: 3.80 },
+    { min: 7001, max: 7500, preco: 4.75 },
+    { min: 7501, max: 8000, preco: 7.60 },
+    { min: 8001, max: 8500, preco: 8.50 }
   ];
 
-  let total = 0;
-  let atual = mmrAtual;
+  let precoTotal = 0;
+  let mmrAtualTemp = mmrAtual;
 
-  for(const faixa of faixas){
-    if(atual >= mmrDesejado) break;
+  for (const faixa of TABELA_PRECOS) {
+    if (mmrAtualTemp < mmrDesejado && mmrAtualTemp <= faixa.max) {
+      const inicioEfetivo = Math.max(mmrAtualTemp, faixa.min);
+      const fimEfetivo = Math.min(mmrDesejado, faixa.max);
+      const mmrNaFaixa = fimEfetivo - inicioEfetivo;
 
-    const limite = Math.min(faixa.ate, mmrDesejado);
-    const qtd = Math.max(0, limite - atual);
+      if (mmrNaFaixa > 0) {
+        precoTotal += mmrNaFaixa * faixa.preco;
+        mmrAtualTemp = fimEfetivo;
+      }
 
-    total += qtd * faixa.valor;
-    atual = limite;
+      if (mmrAtualTemp >= mmrDesejado) break;
+    }
   }
 
-  return total;
+  return precoTotal;
 }
 
-function tradDiscountPct(delta, mmrAtual){
+
+function tradDiscountPct(mmrAtual, delta){
+  // Descontos só para MMR inicial ≥ 4000
   if(mmrAtual < 4000) return 0;
+
   if(delta >= 1500) return 0.12;
   if(delta >= 1250) return 0.10;
   if(delta >= 1000) return 0.08;
@@ -611,7 +619,6 @@ function tradDiscountPct(delta, mmrAtual){
   if(delta >= 500)  return 0.04;
   return 0;
 }
-
 
 
 function calcTrad(perDayOff){
@@ -652,7 +659,7 @@ if(atual < 4000 && delta < 500){
   const base = calcTradBaseProgressivo(atual, des);
 
   // desconto
-  const pct = tradDiscountPct(delta, atual);
+  const pct = tradDiscountPct(atual, delta);
   const baseAfter = base - (base * pct);
 
   // off-stream
