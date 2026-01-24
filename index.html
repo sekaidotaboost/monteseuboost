@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SEKAI DOTA BOOST - Monte seu Boost</title>
+<style>
+:root{
+  --bg-top:#7dd3fc;
+  --bg-bottom:#6d28d9;
+  --card:#0f1117;
+  --card-soft:#141824;
+  --primary:#8b5cf6;
+  --text:#f3f4f6;
+  --muted:#c4aeca;
+  --danger:#ef4444;
+  --success:#22c55e;
+}
+*{box-sizing:border-box;font-family:Arial, Helvetica, sans-serif}
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(180deg,var(--bg-top),var(--bg-bottom));
+  color:var(--text);
+}
+.wrap{width:100%; max-width:1020px; padding:18px;}
+.header{text-align:center;margin-bottom:14px;}
+h1{
+  margin:0;
+  color:#000000; /* cor nova */
+  letter-spacing:.5px;
+}
+
+.sub{
+  margin-top:6px;
+  color:#2c1938; /* cor nova */
+  font-size:14px;
+}
+
+.grid{display:grid;grid-template-columns:1fr;gap:14px;}
+@media(min-width:980px){.grid{grid-template-columns:1fr 1fr;}}
+.card{
+  background:var(--card);
+  border-radius:18px;
+  padding:18px;
+  box-shadow:0 20px 45px rgba(0,0,0,.42);
+}
+.card h2{
+  margin:0;
+  font-size:16px;
+  color:var(--muted);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.pill{
+  font-size:12px;
+  padding:6px 10px;
+  border-radius:999px;
+  background:rgba(139,92,246,.18);
+  color:var(--muted);
+  border:1px solid rgba(196,181,253,.25);
+}
+label{display:block;margin-top:10px;margin-bottom:6px;font-size:13px}
+input[type=number], input[type=text]{
+  width:100%;
+  padding:11px 12px;
+  border-radius:12px;
+  border:1px solid #2a2f45;
+  background:var(--card-soft);
+  color:var(--text);
+}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.check{display:flex;gap:8px;align-items:center;margin-top:10px;font-size:13px}
+small.muted{color:var(--muted)}
+.result{
+  margin-top:12px;
+  padding:12px;
+  border-radius:12px;
+  background:var(--card-soft);
+  min-height:62px;
+  font-size:13px;
+}
+.alert{margin-top:8px;color:var(--danger);font-size:13px}
+.ok{color:var(--success)}
+details{margin-top:10px;color:var(--muted);font-size:13px}
+summary{cursor:pointer}
+.big{grid-column:1 / -1;}
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:14px;
+  background:var(--primary);
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+}
+button:disabled{opacity:.55;cursor:not-allowed;}
+.footer{text-align:center;margin-top:12px;color:var(--muted);font-size:12px}
+.badge{display:none;margin-top:8px;font-size:12px;color:var(--success)}
+/* collapsible sections */
+.serviceBody{display:none;margin-top:10px}
+.serviceBody.active{display:block}
+/* promo price formatting */
+.oldPrice{color:var(--danger);text-decoration:line-through;font-weight:700}
+.newPrice{color:var(--success);font-weight:800}
+.promoTag{display:inline-block;margin-left:8px;color:var(--success);font-weight:700;font-size:12px}
+.hr{height:1px;background:rgba(196,181,253,.18);margin:12px 0;border-radius:999px}
+
+.floating-total{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  background:#0f1117;
+  border:1px solid rgba(139,92,246,.4);
+  box-shadow:0 15px 35px rgba(0,0,0,.5);
+  border-radius:16px;
+  padding:14px 16px;
+  min-width:200px;
+  z-index:9999;
+  transition:all .25s ease;
+}
+
+.floating-total.hidden{
+  opacity:0;
+  pointer-events:none;
+  transform:translateY(10px);
+}
+
+.ft-title{
+  font-size:12px;
+  color:var(--muted);
+  margin-bottom:6px;
+}
+
+.ft-price{
+  font-size:18px;
+  font-weight:800;
+  color:var(--success);
+}
+
+.ft-discount{
+  font-size:12px;
+  margin-top:4px;
+  color:#facc15;
+}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <h1>SEKAI DOTA BOOST</h1>
+    <div class="sub"><strong>Monte seu Boost</strong> • Calcule cada serviço e veja o total do pacote</div>
+  </div>
+
+  <div class="grid">
+    <!-- Boost Tradicional -->
+    <div class="card">
+      <h2>
+        <span>Boost Tradicional</span>
+        <span class="pill">⭐ Mais contratado</span>
+        <span class="pill">
+          <label class="check" style="margin:0">
+            <input type="checkbox" id="useTrad"> Incluir
+          </label>
+        </span>
+      </h2>
+
+      <div class="serviceBody" id="bodyTrad">
+        <div class="two">
+          <div>
+            <label>MMR Atual</label>
+            <input type="number" id="tradAtual" min="0" max="8500" placeholder="Ex: 4000" disabled>
+          </div>
+          <div>
+            <label>MMR Desejado (0 - 8500)</label>
+            <input type="number" id="tradDesejado" min="0" max="8500" placeholder="Ex: 4500" disabled>
+          </div>
+        </div>
+
+        <div class="check">
+          <input type="checkbox" id="tradOff" disabled>
+          <span>Serviço off-stream? (transmissão na Twitch sekai_oficial)</span>
+        </div>
+        <small class="muted">Obs.: o cálculo de off-stream é interno e não exibe dias.</small>
+
+        <!-- SAIBA MAIS -->
+        <details>
+  <summary>Saiba mais sobre o Boost Tradicional</summary>
+
+  <p><strong>🔽 Abaixo de 4.000 MMR (valor fixo)</strong></p>
+  <ul>
+    <li>Serviço para contas abaixo de 4.000 MMR</li>
+    <li>Pedido mínimo: 500 MMR</li>
+    <li>💰 Valor: R$ 200,00 a cada 500 MMR</li>
+  </ul>
+
+  <p><strong>🔼 Acima de 4.000 MMR</strong></p>
+  <ul>
+    <li>O valor passa a ser calculado de forma personalizada</li>
+    <li>Basta informar o MMR atual para cálculo exato</li>
+  </ul>
+
+  <p><strong>🔄 Margem de erro</strong></p>
+  <ul>
+    <li>Ajuste gratuito de até ±100 MMR</li>
+    <li>Acima disso, o valor será recalculado</li>
+  </ul>
+
+  <p><strong>📌 Como contratar:</strong><br>
+  Utilize nossa calculadora para gerar seu orçamento.</p>
+</details>
+
+
+        <div class="result" id="tradRes">Preencha os dados para ver o valor.</div>
+        <div class="alert" id="tradAlert"></div>
+      </div>
+    </div>
+
+    <!-- Double MMR -->
+    <div class="card">
+      <h2>
+        <span>Double MMR</span>
+        <span class="pill">⚡ Mais prático</span>
+        <span class="pill">
+          <label class="check" style="margin:0">
+            <input type="checkbox" id="useDouble"> Incluir
+          </label>
+        </span>
+      </h2>
+
+      <div class="serviceBody" id="bodyDouble">
+        <label>MMR Atual</label>
+        <input type="number" id="doubleMMR" min="0" placeholder="Ex: 3200" disabled>
+
+        <label>Dias contratados (1 a 7)</label>
+        <input type="number" id="doubleDays" min="1" max="7" value="1" disabled>
+
+        <div class="check">
+          <input type="checkbox" id="doubleOff" disabled>
+          <span>Double MMR Off stream (+ R$20,00) na Twitch sekai_oficial</span>
+        </div>
+
+        <!-- SAIBA MAIS -->
+        <details>
+  <summary>Saiba mais sobre o Double MMR</summary>
+
+  <p><strong>🎴 Parte 1 — Diária de Fichas</strong></p>
+  <ul>
+    <li>Pacotes de 7 partidas (Double Down) por dia</li>
+    <li>💰 Preço base: R$ 70,00 por diária (varia conforme MMR)</li>
+  </ul>
+
+  <p><strong>⚠️ Regra importante</strong></p>
+  <p>
+    Se durante o serviço o MMR ultrapassar 4.000,
+    as novas diárias passam a custar R$ 122,50.
+    As diárias já pagas mantêm o valor antigo.
+  </p>
+
+  <p><strong>💡 Exemplo:</strong><br>
+    MMR 2100 → 6 diárias = R$ 70 × 6 = R$ 420<br>
+    Ao subir para 4.000+, novas diárias = R$ 122,50
+  </p>
+
+  <p><strong>🎴 Parte 2 — Faixa 4.000 a 5.000</strong></p>
+  <ul>
+    <li>Preço: R$ 122,50 por diária</li>
+    <li>Pode haver limitação de diárias por compra</li>
+  </ul>
+</details>
+
+<div class="result" id="doubleRes">Selecione as opções para ver o valor.</div>
+<div class="alert" id="doubleAlert"></div>
+      </div>
+    </div>
+
+    
+    <!-- Boost Casual -->
+    <div class="card">
+      <h2>
+        <span>Boost Casual</span>
+        <span class="pill">💰 Melhor custo-benefício</span>
+        <span class="pill">
+          <label class="check" style="margin:0">
+            <input type="checkbox" id="useCasual"> Incluir
+          </label>
+        </span>
+      </h2>
+
+      <div class="serviceBody" id="bodyCasual">
+        <label>Quantos dias de serviço? (1 a 30)</label>
+        <input type="number" id="casualDays" min="1" max="30" value="1" disabled>
+
+        <div class="check">
+          <input type="checkbox" id="casualOff" disabled>
+          <span>Jogar Off Stream (<span style="color:var(--danger);text-decoration:line-through;">R$ 20,00</span> → <span style="color:var(--success);">R$ 15,00</span> por dia) na Twitch sekai_oficial</span>
+        </div>
+
+        <!-- SAIBA MAIS -->
+        <details>
+  <summary>Saiba mais sobre o Boost Casual</summary>
+
+  <ul>
+    <li>🎮 7 partidas por dia</li>
+    <li>❌ Não garantimos vitórias</li>
+    <li>🎯 Heróis escolhidos conforme necessidade</li>
+    <li>💰 R$ 85,00 por dia</li>
+  </ul>
+
+  <p><strong>📦 Entrega da conta</strong></p>
+  <ul>
+    <li>Conta entregue 1 dia antes</li>
+    <li>Nenhuma partida é jogada nesse período</li>
+  </ul>
+
+  <p><strong>📌 Regras</strong></p>
+  <ul>
+    <li>✔ Até 6.500 MMR</li>
+    <li>❌ Acima disso não aceitamos</li>
+    <li>✔ 8.000+ de Behavior Score</li>
+  </ul>
+</details>
+
+
+        <div class="result" id="casualRes">Preencha os dados para ver o valor.</div>
+        <div class="alert" id="casualAlert"></div>
+        <div class="badge" id="comboBadge">✅ Combo ativo: Boost Casual (1 dia) + 2 Replays (1 dia) → total do combo = R$ 155,00</div>
+      </div>
+    </div>
+
+    <!-- Recalibração -->
+    <div class="card">
+      <h2>
+        <span>Recalibração</span>
+        <span class="pill">🔄 recomendado</span>
+
+        <span class="pill">
+          <label class="check" style="margin:0">
+            <input type="checkbox" id="useRecal"> Incluir
+          </label>
+        </span>
+      </h2>
+
+      <div class="serviceBody" id="bodyRecal">
+        <label>Nome</label>
+        <input type="text" id="recalNome" placeholder="Seu nome" disabled>
+
+        <label>MMR Atual</label>
+        <input type="number" id="recalMMR" min="0" placeholder="Ex: 3500" disabled>
+
+        <div class="check">
+          <input type="checkbox" id="recalOff" disabled>
+          <span>Off stream (+ R$40 fixo) na Twitch sekai_oficial</span>
+        </div>
+
+        <!-- SAIBA MAIS -->
+        <details>
+  <summary>Saiba mais sobre a Recalibração</summary>
+
+  <p><strong>🔄 Recalibração Simples</strong></p>
+  <ul>
+    <li>15 a 16 partidas</li>
+    <li>Possível ganho médio entre 700 e 1100 MMR</li>
+    <li>Indicada para contas entre 0 e 4.000 MMR</li>
+  </ul>
+
+  <p><strong>🔄 Recalibração Avançada</strong></p>
+  <ul>
+    <li>Mesma quantidade de partidas</li>
+    <li>Indicada para contas entre 4.000 e 6.000 MMR</li>
+    <li>Resultado pode variar conforme a conta</li>
+  </ul>
+
+  <p><strong>⚠️ Não há garantia de MMR final.</strong></p>
+</details>
+
+
+        <div class="result" id="recalRes">Preencha os dados para ver o valor.</div>
+        <div class="alert" id="recalAlert"></div>
+      </div>
+    </div>
+
+    <!-- Replay -->
+    <div class="card">
+      <h2>
+        <span>Análise de Replay</span>
+        <span class="pill">📊 Educativo</span>
+        <span class="pill">
+          <label class="check" style="margin:0">
+            <input type="checkbox" id="useReplay"> Incluir
+          </label>
+        </span>
+      </h2>
+
+      <div class="serviceBody" id="bodyReplay">
+        <label>Quantidade de análises</label>
+        <input type="number" id="repQtd" min="1" value="1" disabled>
+
+        <label>Em quantos dias deseja dividir?</label>
+        <input type="number" id="repDias" min="1" value="1" disabled>
+
+        <div class="check">
+          <input type="checkbox" id="repOff" disabled>
+          <span>Análise Off Stream</span>
+        </div>
+
+        <!-- SAIBA MAIS -->
+        <details>
+  <summary>Saiba mais sobre a Análise de Replay</summary>
+
+  <ul>
+    <li>Análise técnica focada em evolução</li>
+    <li>Realizada via Discord ou Live</li>
+    <li>Duração máxima: 1 hora por análise</li>
+  </ul>
+
+  <p><strong>💰 Taxa Off Stream</strong></p>
+  <ul>
+    <li>R$ 10,00 por dia → até 3 análises</li>
+    <li>R$ 20,00 por dia → acima disso</li>
+  </ul>
+
+  <p><strong>📌 Regras</strong></p>
+  <ul>
+    <li>✔ Pagamento antecipado</li>
+    <li>✔ Datas combinadas via WhatsApp</li>
+    <li>✔ Desconto apenas em dias com 2 a 3 análises</li>
+    <li>✔ Máximo de 6 análises por dia</li>
+  </ul>
+</details>
+
+
+        <div class="result" id="repRes">Preencha os dados para ver o valor.</div>
+        <div class="alert" id="repAlert"></div>
+      </div>
+    </div>
+
+    <!-- Coach -->
+    <div class="card">
+      <h2>
+        <span>Coach</span>
+        <span class="pill">🎓 Evolução real</span>
+        <span class="pill">
+          <label class="check" style="margin:0">
+            <input type="checkbox" id="useCoach"> Incluir
+          </label>
+        </span>
+      </h2>
+
+      <div class="serviceBody" id="bodyCoach">
+        <div class="check">
+          <input type="checkbox" id="coachP1" disabled>
+          <span>Coach Parte 1 — R$ 200,00</span>
+        </div>
+        <div class="check">
+          <input type="checkbox" id="coachP2" disabled>
+          <span>Coach Parte 2 — R$ 200,00</span>
+        </div>
+        <div class="check">
+          <input type="checkbox" id="coachOff" disabled>
+          <span>Coach Off stream (+ R$20,00) na Twitch sekai_oficial</span>
+        </div>
+
+        <!-- SAIBA MAIS -->
+    <details>
+      <summary>🎓 Saber mais sobre o Coach</summary>
+
+      <p>
+        Você pode marcar dia e horário de sua preferência, com no mínimo
+        <strong>1 dia de antecedência</strong>, sujeito à disponibilidade
+        de ambas as partes.
+      </p>
+
+      <p><strong>📚 Parte 1 — Aula Demonstrativa</strong></p>
+      <ul>
+        <li>Eu jogo 4 partidas na sua conta</li>
+        <li>Você escolhe 4 heróis</li>
+        <li>Explicação passo a passo das decisões</li>
+        <li>Comunicação via Discord em tempo real</li>
+        <li>Foco em mapa, leitura de jogo e tomadas de decisão</li>
+      </ul>
+
+      <p><strong>📚 Parte 2 — Você joga, eu guio</strong></p>
+      <ul>
+        <li>Você joga com os mesmos heróis escolhidos</li>
+        <li>Eu acompanho e guio suas decisões</li>
+        <li>Objetivo: te tornar independente para vencer sozinho depois</li>
+      </ul>
+    </details>
+
+        <div class="result" id="coachRes">Selecione as opções para ver o valor.</div>
+        <div class="alert" id="coachAlert"></div>
+      </div>
+    </div>
+
+    <!-- Informações de desconto -->
+    <div class="card big">
+      <h2><span>Informações de desconto</span><span class="pill">Combos</span></h2>
+      <div style="color:var(--muted);font-size:13px;line-height:1.45">
+        • <strong>Combo:</strong> Boost Casual (1 dia) + 2 Análises de Replay (1 dia) → <strong>R$ 155,00</strong><br>
+        • <strong>Combo:</strong> Ao contratar Boost Tradicional (mínimo de R$ 200) + coach parte 1 você recebe <strong>50% OFF na Parte 2 do Coach</strong>.<br>
+        • <strong>Promoção:</strong> Ao contratar <strong>2 ou mais serviços de boost</strong> no mesmo pacote, a taxa off stream dos boosts fica <strong>R$ 15,00 por dia</strong> (em vez de R$ 20,00).<br>
+        <div class="hr"></div>
+        <small class="muted">Obs.: Cada serviço tem cálculo próprio. O total final soma tudo e aplica as promoções acima automaticamente.</small>
+      </div>
+    </div>
+
+    <!-- Total -->
+    <div class="card big">
+      <h2><span>Resumo do pacote</span><span class="pill">Total final</span></h2>
+
+      <div class="result" id="totalRes">Selecione serviços para ver o total.</div>
+      <div class="alert" id="totalAlert"></div>
+
+      <div class="check">
+        <input type="checkbox" id="globalBS">
+        <span>Possuo mais de 8k de Behavior Score</span>
+      </div>
+
+      <div class="check">
+        <input type="checkbox" id="packTerms">
+        <span>Li e concordo que o pagamento é necessário para garantir minha vaga e que datas exatas devem ser combinadas via WhatsApp.</span>
+      </div>
+
+      <button id="zapBtn" disabled>Contratar pacote via WhatsApp</button>
+      <div class="footer">Twitch: sekai_oficial • WhatsApp: +55 21 99184-4917</div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ========= helpers ========= */
+const $ = (id) => document.getElementById(id);
+const money = (n) => "R$ " + n.toFixed(2).replace(".", ",");
+const clampInt = (v, min, max) => (isNaN(v) ? null : Math.min(Math.max(v, min), max));
+
+/* collapse/expand service bodies */
+function syncBodies(){
+  const pairs = [
+    ["useTrad","bodyTrad"],
+    ["useDouble","bodyDouble"],
+    ["useCasual","bodyCasual"],
+    ["useRecal","bodyRecal"],
+    ["useReplay","bodyReplay"],
+    ["useCoach","bodyCoach"],
+  ];
+  pairs.forEach(([chk, body]) => {
+    $(body).classList.toggle("active", $(chk).checked);
+  });
+}
+
+function enableGroup(useId, fields){
+  const on = $(useId).checked;
+  fields.forEach(f => $(f).disabled = !on);
+}
+
+function countBoostSelected(){
+  return ["useTrad","useDouble","useCasual"].filter(id => $(id).checked).length;
+}
+function offBoostPerDay(){
+  // Promo: se 2+ boosts selecionados, off-stream nos boosts fica 15 (ao invés de 20)
+  return (countBoostSelected() >= 2) ? 15 : 20;
+}
+
+/* ========= Boost Tradicional ========= */
+function tradRateByMMR(mmr){
+  if(mmr <= 4000) return 0.40;
+  if(mmr <= 4500) return 0.65;
+  if(mmr <= 5000) return 0.75;
+  if(mmr <= 5500) return 1.10;
+  if(mmr <= 6000) return 2.10;
+  if(mmr <= 6500) return 3.20;
+  if(mmr <= 7000) return 3.80;
+  if(mmr <= 7500) return 4.75;
+  if(mmr <= 8000) return 7.60;
+  if(mmr <= 8500) return 8.50;
+  return null;
+}
+function tradDiscountPct(delta, mmrAtual){
+  if(mmrAtual < 4000) return 0;
+  if(delta >= 1500) return 0.12;
+  if(delta >= 1250) return 0.10;
+  if(delta >= 1000) return 0.08;
+  if(delta >= 750)  return 0.06;
+  if(delta >= 500)  return 0.04;
+  return 0;
+}
+function calcTrad(perDayOff){
+  if(!$("useTrad").checked){
+    $("tradRes").innerHTML = "Preencha os dados para ver o valor.";
+    $("tradAlert").textContent = "";
+    return {selected:false, ok:true, total:0, totalNoPromo:0, text:"", tradSpend:0};
+  }
+
+  const atual = clampInt(Number($("tradAtual").value), 0, 8500);
+  const des = clampInt(Number($("tradDesejado").value), 0, 8500);
+  const off = $("tradOff").checked;
+
+  $("tradAlert").textContent = "";
+
+  if(atual === null || des === null){
+    $("tradRes").innerHTML = "Preencha MMR atual e desejado.";
+    return {selected:true, ok:false, total:0, totalNoPromo:0, text:"Boost Tradicional: dados incompletos", tradSpend:0};
+  }
+  if(des <= atual){
+    $("tradRes").innerHTML = "<strong>Preço: INVÁLIDO</strong>";
+    $("tradAlert").textContent = "🔴 O MMR desejado deve ser maior que o MMR atual.";
+    return {selected:true, ok:false, total:0, totalNoPromo:0, text:"Boost Tradicional: inválido", tradSpend:0};
+  }
+
+  let delta = des - atual;
+  if(delta < 500){
+    delta = 500;
+    $("tradAlert").textContent = "⚠️ Mínimo do serviço: 500 MMR (cálculo ajustado).";
+  }
+
+  const rate = tradRateByMMR(atual);
+  if(rate === null){
+    $("tradRes").innerHTML = "<strong>Preço: INVÁLIDO</strong>";
+    $("tradAlert").textContent = "🔴 MMR atual fora do limite.";
+    return {selected:true, ok:false, total:0, totalNoPromo:0, text:"Boost Tradicional: inválido", tradSpend:0};
+  }
+
+  const base = delta * rate;
+  const pct = tradDiscountPct(delta, atual);
+  const baseAfter = base - (base * pct);
+
+  // Off-stream (interno): 1 dia ~ 150 MMR, arredonda pra baixo. Não exibe dias.
+  let offFeePromo = 0;
+  let offFeeNoPromo = 0;
+  if(off){
+    const daysInternal = Math.max(1, Math.floor(delta / 150));
+    offFeePromo = daysInternal * perDayOff;
+    offFeeNoPromo = daysInternal * 20;
+  }
+
+  const total = baseAfter + offFeePromo;
+  const totalNoPromo = baseAfter + offFeeNoPromo;
+
+  $("tradRes").innerHTML =
+    `<strong>Delta considerado:</strong> ${delta} MMR<br>
+     <strong>Preço/MMR (faixa):</strong> ${money(rate)}<br>
+     <strong>Base:</strong> ${money(base)}${pct>0 ? ` <span class="ok">(desconto ${Math.round(pct*100)}%)</span>` : ""}<br>
+     <strong>Off-stream:</strong> ${off ? money(offFeePromo) : money(0)}<br>
+     <strong>Total:</strong> ${money(total)}`;
+
+  return {
+  selected: true,
+  ok: true,
+
+  // total com desconto
+  total: baseAfter + offFeePromo,
+
+  // total sem desconto (para o resumo comparar)
+  totalNoPromo: base + offFeePromo,
+
+  tradSpend: baseAfter + offFeePromo,
+
+  // TEXTO QUE APARECE NO RESUMO
+  text:
+    pct > 0
+      ? `Boost Tradicional: +${delta} MMR | ${money(base)} → ${money(baseAfter + offFeePromo)} (${Math.round(pct * 100)}% OFF)`
+      : `Boost Tradicional: +${delta} MMR | Total: ${money(baseAfter + offFeePromo)}`,
+
+  // TEXTO QUE VAI PARA O WHATSAPP
+  details:
+`🆙 BOOST TRADICIONAL
+• MMR atual: ${atual}
+• MMR desejado: ${des}
+• Quantidade de MMR: ${delta}
+• Valor base: ${money(base)}
+• Desconto: ${pct > 0 ? Math.round(pct * 100) + "% OFF" : "Nenhum"}
+• Off-stream: ${off ? money(offFeePromo) : "Não"}
+• Total: ${money(baseAfter + offFeePromo)}`
+};
+
+
+}
+
+/* ========= Double MMR ========= */
+function doubleBaseByMMR(mmr){
+  if(mmr <= 3999) return 70;
+  if(mmr <= 4999) return 122.5;
+  if(mmr <= 6000) return 245;
+  return null;
+}
+function calcDouble(perDayOff){
+  if(!$("useDouble").checked){
+    $("doubleRes").innerHTML = "Preencha os dados para ver o valor.";
+    $("doubleAlert").textContent = "";
+    return {selected:false, ok:true, total:0, totalNoPromo:0, text:""};
+  }
+
+  const mmr = clampInt(Number($("doubleMMR").value), 0, 999999);
+  const days = clampInt(Number($("doubleDays").value), 1, 7);
+  const off = $("doubleOff").checked;
+
+  $("doubleAlert").innerHTML = "";
+
+  if(mmr === null || days === null){
+    $("doubleRes").innerHTML = "Preencha o MMR e os dias.";
+    return {selected:true, ok:false, total:0, totalNoPromo:0, text:"Double MMR: dados incompletos"};
+  }
+  if(mmr >= 6001){
+    $("doubleRes").innerHTML = "<strong>Preço: INVÁLIDO</strong>";
+    $("doubleAlert").textContent = "🔴 Esse MMR não é compatível com este serviço.";
+    return {selected:true, ok:false, total:0, totalNoPromo:0, text:"Double MMR: inválido"};
+  }
+
+  let totalBase = 0;
+  let cur = mmr;
+  for(let i=0;i<days;i++){
+    const b = doubleBaseByMMR(cur);
+    if(b === null){
+      $("doubleRes").innerHTML = "<strong>Preço: INVÁLIDO</strong>";
+      $("doubleAlert").textContent = "🔴 Esse MMR não é compatível com este serviço.";
+      return {selected:true, ok:false, total:0, totalNoPromo:0, text:"Double MMR: inválido"};
+    }
+    totalBase += b;
+    cur += 150;
+  }
+
+  const offFee = off ? (days * 20) : 0;
+
+
+  const total = totalBase + offFee;
+const totalNoPromo = total;
+
+  $("doubleRes").innerHTML =
+    `<strong>Dias:</strong> ${days}<br>
+     <strong>Off-stream:</strong> ${off ? money(offFee) + " (R$ 20,00 por dia)" : money(0)}<br>
+     <strong>Total:</strong> ${money(total)}`;
+
+  return {
+  selected:true,
+  ok:true,
+  total,
+  totalNoPromo,
+  text:`Double MMR: ${days} dia(s) | Total: ${money(total)}`,
+  details:
+`⚡ DOUBLE MMR
+• MMR atual: ${mmr}
+• Dias contratados: ${days}
+• Valor base: ${money(totalBase)}
+• Off-stream: ${off ? money(offFee) + " (R$ 20,00 por dia)" : "Não"}
+• Total: ${money(total)}`
+};
+
+}
+
+/* ========= Boost Casual ========= */
+function calcCasual(){
+  if(!$("useCasual").checked){
+    $("casualRes").innerHTML = "Preencha os dados para ver o valor.";
+    $("casualAlert").textContent = "";
+    $("comboBadge").style.display = "none";
+    return {selected:false, ok:true, total:0, totalNoPromo:0, text:"", days:null};
+  }
+
+  const days = clampInt(Number($("casualDays").value), 1, 30);
+  const off = $("casualOff").checked;
+
+  $("casualAlert").textContent = "";
+
+  if(days === null){
+    $("casualRes").innerHTML = "Selecione os dias (1 a 30).";
+    return {selected:true, ok:false, total:0, totalNoPromo:0, text:"Boost Casual: dados incompletos", days:null};
+  }
+
+  const base = days * 85;
+  const offFeePromo = off ? (days * 15) : 0; // casual mantém 15 (promo fixa do serviço)
+  const offFeeNoPromo = off ? (days * 15) : 0;
+
+  const total = base + offFeePromo;
+  const totalNoPromo = base + offFeeNoPromo;
+
+  const jogos = days * 7;
+
+  $("casualRes").innerHTML =
+    `<strong>Jogos totais:</strong> ${jogos}<br>
+     <strong>Base:</strong> ${money(base)}<br>
+     <strong>Off-stream:</strong> ${off ? money(offFeePromo) : money(0)}<br>
+     <strong>Total:</strong> ${money(total)}`;
+
+  return {
+  selected:true,
+  ok:true,
+  total,
+  totalNoPromo,
+  days,
+  text:`Boost Casual: ${days} dia(s) | Total: ${money(total)}`,
+  details:
+`💰 BOOST CASUAL
+• Dias contratados: ${days}
+• Total de partidas: ${jogos}
+• Valor base: ${money(base)}
+• Off-stream: ${off ? money(offFeePromo) : "Não"}
+• Total: ${money(total)}`
+};
+
+}
+
+/* ========= Recalibração ========= */
+function calcRecal(){
+  if(!$("useRecal").checked){
+    $("recalRes").innerHTML = "Preencha os dados para ver o valor.";
+    $("recalAlert").textContent = "";
+    return {selected:false, ok:true, total:0, totalNoPromo:0, text:""};
+  }
+
+  const nome = ($("recalNome").value || "Não informado").trim();
+  const mmr = clampInt(Number($("recalMMR").value), 0, 999999);
+  const off = $("recalOff").checked;
+
+  $("recalAlert").innerHTML = "";
+
+  if(mmr === null){
+    $("recalRes").innerHTML = "Digite o MMR para calcular.";
+    return {selected:true, ok:false, total:0, totalNoPromo:0, text:"Recalibração: dados incompletos"};
+  }
+
+  let base = null;
+  if(mmr <= 4000) base = 200;
+  else if(mmr <= 6000) base = 250;
+
+  if(base === null){
+    $("recalRes").innerHTML = "<strong>Preço: INVÁLIDO</strong>";
+    $("recalAlert").textContent = "🚫 Esse MMR não é compatível com este serviço.";
+    return {selected:true, ok:false, total:0, totalNoPromo:0, text:"Recalibração: inválido"};
+  }
+
+  const total = base + (off ? 40 : 0);
+  const totalNoPromo = total;
+
+  $("recalRes").innerHTML =
+    `<strong>Base:</strong> ${money(base)}<br>
+     <strong>Off-stream:</strong> ${off ? money(40) : money(0)}<br>
+     <strong>Total:</strong> ${money(total)}`;
+
+  return {
+  selected:true,
+  ok:true,
+  total,
+  totalNoPromo,
+  text:`Recalibração: ${nome} | Total: ${money(total)}`,
+  details:
+`🔄 RECALIBRAÇÃO
+• Nome: ${nome}
+• MMR atual: ${mmr}
+• Off-stream: ${off ? "Sim (+R$40)" : "Não"}
+• Total: ${money(total)}`
+};
+
+}
+
+/* ========= Replay ========= */
+function calcReplay(){
+  if(!$("useReplay").checked){
+    $("repRes").innerHTML = "Preencha os dados para ver o valor.";
+    $("repAlert").textContent = "";
+    return {selected:false, ok:true, total:0, totalNoPromo:0, text:"", qtd:null, dias:null};
+  }
+
+  const qtd = clampInt(Number($("repQtd").value), 1, 999999);
+  const dias = clampInt(Number($("repDias").value), 1, 999999);
+  const off = $("repOff").checked;
+
+  $("repAlert").textContent = "";
+
+  if(qtd === null || dias === null){
+    $("repRes").innerHTML = "Preencha quantidade e dias.";
+    return {selected:true, ok:false, total:0, totalNoPromo:0, text:"Replay: dados incompletos", qtd:null, dias:null};
+  }
+
+  let base = Math.floor(qtd / dias);
+  let sobra = qtd % dias;
+
+  let totalAnalises = 0;
+  let taxaOff = 0;
+  let lines = [];
+
+  for(let d=1; d<=dias; d++){
+    let hoje = base + (sobra > 0 ? 1 : 0);
+    if(sobra > 0) sobra--;
+
+    if(hoje > 6){
+      $("repRes").innerHTML = "<strong>Preço: INVÁLIDO</strong>";
+      $("repAlert").textContent = "🔴 Esse serviço ultrapassou o limite de análises em um único dia.";
+      return {selected:true, ok:false, total:0, totalNoPromo:0, text:"Replay: inválido", qtd, dias};
+    }
+
+    let precoUnit = 50;
+    let desconto = false;
+    if(hoje >= 2 && hoje <= 3){ precoUnit = 40; desconto = true; }
+    totalAnalises += hoje * precoUnit;
+
+    if(off){
+      taxaOff += (hoje <= 3 ? 10 : 20);
+    }
+
+    lines.push(desconto ? `Dia ${d} = ${hoje} análise(s) <span class="ok">(desconto aplicado)</span>` : `Dia ${d} = ${hoje} análise(s)`);
+  }
+
+  const total = totalAnalises + taxaOff;
+  const totalNoPromo = total;
+
+  $("repRes").innerHTML =
+    `<strong>📊 Distribuição:</strong><br>${lines.join("<br>")}<br><br>
+     <strong>Valor das análises:</strong> ${money(totalAnalises)}<br>
+     <strong>Taxa off stream:</strong> ${money(taxaOff)}<br>
+     <strong>Total:</strong> ${money(total)}`;
+
+  return {
+  selected:true,
+  ok:true,
+  total,
+  totalNoPromo,
+  qtd,
+  dias,
+  text:`Replay: ${qtd} análise(s) | Total: ${money(total)}`,
+  details:
+`📊 ANÁLISE DE REPLAY
+• Quantidade de análises: ${qtd}
+• Dias: ${dias}
+• Valor análises: ${money(totalAnalises)}
+• Off-stream: ${money(taxaOff)}
+• Total: ${money(total)}`
+};
+
+}
+
+/* ========= Coach ========= */
+function calcCoach(tradEligible){
+  if(!$("useCoach").checked){
+    $("coachRes").innerHTML = "Selecione as opções para ver o valor.";
+    $("coachAlert").textContent = "";
+    return {selected:false, ok:true, total:0, totalNoPromo:0, text:"", coachDiscount:0};
+  }
+
+  const p1 = $("coachP1").checked;
+  const p2 = $("coachP2").checked;
+  const off = $("coachOff").checked;
+  
+  $("coachAlert").textContent = "";
+
+if(p2 && !p1){
+  $("coachAlert").textContent =
+    "⚠️ Para obter desconto na Parte 2, é necessário contratar a Parte 1.";
+}
+
+
+  let base = 0;
+  if(p1) base += 200;
+  if(p2) base += 200;
+  if(off) base += 20;
+
+  // desconto: 50% na parte 2 (R$100) se Boost Tradicional no mínimo R$200 estiver selecionado
+  let disc = 0;
+  if(p1 && p2 && tradEligible){
+  disc = 100;
+}
+
+
+  const total = base - disc;
+  const totalNoPromo = base;
+
+  $("coachAlert").textContent = disc > 0 ? "✅ Promoção: 50% OFF aplicado na Parte 2 do Coach." : "";
+  $("coachRes").innerHTML =
+    `<strong>Base:</strong> ${money(base)}<br>
+     <strong>Desconto:</strong> ${disc>0 ? ("- " + money(disc)) : money(0)}<br>
+     <strong>Total:</strong> ${money(total)}`;
+
+  return {
+  selected:true,
+  ok:true,
+  total,
+  totalNoPromo,
+  text:`Coach | Total: ${money(total)}`,
+  details:
+`🎓 COACH
+• Parte 1: ${p1 ? "Sim" : "Não"}
+• Parte 2: ${p2 ? "Sim" : "Não"}
+• Off-stream: ${off ? "Sim" : "Não"}
+• Desconto aplicado: ${disc > 0 ? money(disc) : "Nenhum"}
+• Total: ${money(total)}`
+};
+
+}
+
+/* ========= Combo controlado ========= */
+function comboCasualReplay(cas, rep){
+  // Regra: 1 dia casual + 2 replays em 1 dia => total fixo do combo = 155
+  if(cas.selected && cas.ok && rep.selected && rep.ok){
+    if(cas.days === 1 && rep.qtd === 2 && rep.dias === 1){
+      const normal = cas.total + rep.total;
+      return {active:true, delta:(155 - normal)};
+    }
+  }
+  return {active:false, delta:0};
+}
+
+/* ========= update all ========= */
+function updateAll(){
+  syncBodies();
+
+  enableGroup("useTrad",   ["tradAtual","tradDesejado","tradOff"]);
+  enableGroup("useDouble", ["doubleMMR","doubleDays","doubleOff"]);
+  enableGroup("useCasual", ["casualDays","casualOff"]);
+  enableGroup("useRecal",  ["recalNome","recalMMR","recalOff"]);
+  enableGroup("useReplay", ["repQtd","repDias","repOff"]);
+  enableGroup("useCoach",  ["coachP1","coachP2","coachOff"]);
+
+  const perDayOff = offBoostPerDay();
+
+  const trad = calcTrad(perDayOff);
+  const dbl  = calcDouble(perDayOff);
+  const cas  = calcCasual();
+  const rec  = calcRecal();
+  const rep  = calcReplay();
+
+  // trad eligibility for coach discount: trad selected, ok, and spend >= 200
+  const tradEligible = trad.selected && trad.ok && trad.tradSpend >= 200;
+
+  const coach = calcCoach(tradEligible);
+
+  const selectedAny = [trad,dbl,cas,rec,rep,coach].some(x => x.selected);
+  const packTerms = $("packTerms").checked;
+  const bs = $("globalBS").checked;
+
+  let total = 0;
+  let totalNoPromo = 0;
+  let items = [];
+  let invalid = [];
+
+  [trad,dbl,cas,rec,rep,coach].forEach(obj => {
+    if(obj.selected){
+      if(!obj.ok){
+        invalid.push("⚠️ Corrija os dados de um dos serviços selecionados.");
+      }else{
+        total += obj.total;
+        totalNoPromo += obj.totalNoPromo;
+        items.push("• " + obj.text);
+      }
+    }
+  });
+  // ===== calcula porcentagem de desconto total =====
+
+
+  // apply combo casual+replay
+  const combo = comboCasualReplay(cas, rep);
+  if(combo.active){
+    $("comboBadge").style.display = "block";
+    total += combo.delta;
+    // totalNoPromo não muda aqui (mantém sem combo)
+    items.push("• Promoção combo: Boost Casual (1 dia) + 2 Replays (1 dia) → R$ 155,00");
+  } else {
+    $("comboBadge").style.display = "none";
+  }
+  
+// ===== calcula porcentagem de desconto FINAL =====
+let discountPct = 0;
+if(totalNoPromo > total){
+  discountPct = Math.round(
+    ((totalNoPromo - total) / totalNoPromo) * 100
+  );
+}
+
+
+  // total UI
+  if(!selectedAny){
+    $("totalRes").innerHTML = "Selecione serviços para ver o total.";
+    $("totalAlert").textContent = "";
+    $("zapBtn").disabled = true;
+    return;
+  }
+
+  // price highlight if promo differs
+const hasPromo = Math.abs(totalNoPromo - total) > 0.009;
+
+const priceLine = hasPromo
+  ? `<div style="margin-top:6px">
+       <span class="oldPrice">${money(totalNoPromo)}</span>
+       <span style="margin:0 8px;color:var(--muted)">→</span>
+       <span class="newPrice">${money(total)}</span>
+       <span class="promoTag">🔥 ${discountPct}% OFF</span>
+     </div>`
+  : `<div style="margin-top:6px">
+       <span class="newPrice">${money(total)}</span>
+     </div>`;
+
+  $("totalRes").innerHTML =
+    `<strong>Itens selecionados:</strong><br>${items.join("<br>")}<br><br>
+     <strong>💵 Total final:</strong>${priceLine}`;
+
+  let alerts = [];
+  if(invalid.length) alerts.push(invalid[0]);
+  if(!bs) alerts.push("⚠️ É necessário possuir mais de 8k de Behavior Score.");
+  if(!packTerms) alerts.push("⚠️ É necessário aceitar os termos do pacote para continuar.");
+  $("totalAlert").innerHTML = alerts.join("<br>");
+
+  const canZap = (invalid.length === 0) && packTerms && bs;
+
+// ESSA LINHA É O QUE FALTAVA 👇
+$("zapBtn").disabled = !canZap;
+
+$("zapBtn").onclick = () => {
+  let detalhes = [];
+
+  [trad,dbl,cas,rec,rep,coach].forEach(obj => {
+    if(obj.selected && obj.ok && obj.details){
+      detalhes.push(obj.details);
+    }
+  });
+
+  const msg = encodeURIComponent(
+    "Olá! Quero contratar um pacote na *SEKAI DOTA BOOST*.\n\n" +
+    detalhes.join("\n\n") +
+    "\n\n💵 TOTAL FINAL: " + money(total) +
+    "\n\nObs.: Datas serão combinadas via WhatsApp."
+  );
+
+  window.open("https://wa.me/5521991844917?text=" + msg);
+};
+/* ===== AQUI COMEÇA O BALÃO FLUTUANTE ===== */
+
+const floatBox = $("floatingTotal");
+const ftPrice  = $("ftPrice");
+const ftDisc   = $("ftDiscount");
+
+if(selectedAny){
+  floatBox.classList.remove("hidden");
+
+  if(hasPromo){
+    ftPrice.innerHTML = `
+      <span class="oldPrice" style="font-size:13px">${money(totalNoPromo)}</span><br>
+      <span class="newPrice">${money(total)}</span>
+    `;
+    ftDisc.textContent = `🔥 ${discountPct}% OFF aplicado`;
+  }else{
+    ftPrice.textContent = money(total);
+    ftDisc.textContent = "";
+  }
+}else{
+  floatBox.classList.add("hidden");
+}
+}
+
+
+[
+  "useTrad","useDouble","useCasual","useRecal","useReplay","useCoach",
+  "tradAtual","tradDesejado","tradOff",
+  "doubleMMR","doubleDays","doubleOff",
+  "casualDays","casualOff",
+  "recalNome","recalMMR","recalOff",
+  "repQtd","repDias","repOff",
+  "coachP1","coachP2","coachOff",
+  "packTerms","globalBS"
+].forEach(id => {
+  const el = $(id);
+  if(!el) return;
+  el.addEventListener(el.type === "checkbox" ? "change" : "input", updateAll);
+});
+
+updateAll();
+
+/* ===== CONTROLE DE SCROLL DO BALÃO ===== */
+let lastScrollY = window.scrollY;
+
+window.addEventListener("scroll", () => {
+  const floatBox = $("floatingTotal");
+  if(!floatBox) return;
+
+  const currentY = window.scrollY;
+
+  // Rolando para baixo → esconde
+  if(currentY > lastScrollY + 10){
+    floatBox.classList.add("hidden");
+  }
+
+  // Rolando para cima → mostra
+  if(currentY < lastScrollY - 10){
+    floatBox.classList.remove("hidden");
+  }
+
+  lastScrollY = currentY;
+});
+</script>
+<!-- Mini carrinho flutuante -->
+<div id="floatingTotal" class="floating-total hidden">
+  <div class="ft-title">💼 Seu pacote</div>
+  <div id="ftPrice" class="ft-price">R$ 0,00</div>
+  <div id="ftDiscount" class="ft-discount"></div>
+</div>
+
+</body>
+</html>
