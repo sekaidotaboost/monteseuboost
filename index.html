@@ -190,6 +190,25 @@ button:disabled{opacity:.55;cursor:not-allowed;}
         </div>
         <small class="muted">Obs.: o cálculo de off-stream é interno e não exibe dias.</small>
 
+<!-- SUGERIR PREÇO -->
+
+        <div class="hr"></div>
+
+<div class="check">
+  <input type="checkbox" id="tradSuggest">
+  <span>💡 Tenho um valor em mente, até onde chego de MMR?</span>
+</div>
+
+<div id="tradSuggestBox" style="display:none">
+  <label>Quanto você quer investir? (R$)</label>
+  <input type="number" id="tradBudget" min="50" placeholder="Ex: 300">
+
+  <div class="result" id="tradSuggestRes">
+    Preencha o valor para receber uma sugestão.
+  </div>
+</div>
+
+
         <!-- SAIBA MAIS -->
         <details>
   <summary>Saiba mais sobre o Boost Tradicional</summary>
@@ -496,21 +515,84 @@ button:disabled{opacity:.55;cursor:not-allowed;}
       </div>
     </div>
 
-    <!-- Informações de desconto -->
-    <div class="card big">
-      <h2><span>Informações de desconto</span><span class="pill">Combos</span></h2>
-      <div style="color:var(--muted);font-size:13px;line-height:1.45">
-        • <strong>Combo:</strong> Boost Casual (1 dia) + 2 Análises de Replay (1 dia) → <strong>R$ 155,00</strong><br>
-        • <strong>Combo:</strong> Ao contratar Boost Tradicional (mínimo de R$ 200) + coach parte 1 você recebe <strong>50% OFF na Parte 2 do Coach</strong>.<br>
-        • <strong>Promoção:</strong> Ao contratar <strong>2 ou mais serviços de boost</strong> no mesmo pacote, a taxa off stream dos boosts fica <strong>R$ 15,00 por dia</strong> (em vez de R$ 20,00).<br>
-        <div class="hr"></div>
-        <small class="muted">Obs.: Cada serviço tem cálculo próprio. O total final soma tudo e aplica as promoções acima automaticamente.</small>
-      </div>
+    
+<!-- Informações de desconto -->
+<div class="card big">
+  <h2>
+    <span>Informações de desconto</span>
+    <span class="pill">Promoções</span>
+  </h2>
+
+  <!-- BOTÃO / TOGGLE -->
+  <details>
+    <summary style="cursor:pointer;font-weight:700">
+      🎁 Mostrar promoções disponíveis
+    </summary>
+
+    <div style="margin-top:12px;color:var(--muted);font-size:13px;line-height:1.5">
+
+      <div class="hr"></div>
+
+      <details>
+        <summary>🎓 <strong>Coach + Replay</strong> 👉 Saiba mais sobre essa promoção</summary>
+        <p>• Coach (Parte 1) + 1 Análise de Replay</p>
+        <p>🔥 A análise recebe <strong>20% de desconto</strong></p>
+      </details>
+
+      <div class="hr"></div>
+
+      <details>
+        <summary>⚡ <strong>Double MMR + Coach</strong> 👉 Saiba mais sobre essa promoção</summary>
+        <p>• Double MMR + 1 Coach (Parte 1 ou Parte 2)</p>
+        <p>🔥 Taxa off-stream do Double MMR recebe <strong>25% de desconto</strong></p>
+      </details>
+
+      <div class="hr"></div>
+
+      <details>
+        <summary>📊 <strong>Replay — Desconto por volume</strong> 👉 Saiba mais</summary>
+        <p>• De 2 a 3 análises por dia</p>
+        <p>🔥 Taxa off-stream recebe <strong>50% de desconto</strong></p>
+      </details>
+
+      <div class="hr"></div>
+
+      <details>
+        <summary>💰 <strong>Boost Casual + Replay</strong> 👉 Saiba mais</summary>
+        <p>• Boost Casual (1 dia) + 2 Análises de Replay</p>
+        <p>🔥 As análises recebem <strong>25% de desconto</strong></p>
+      </details>
+
+      <div class="hr"></div>
+
+      <details>
+        <summary>🔄 <strong>Recalibração + Boost Casual</strong> 👉 Saiba mais</summary>
+        <p>• Recalibração + Boost Casual (1 dia)</p>
+        <p>🔥 Boost Casual recebe <strong>aprox. 6% de desconto</strong></p>
+      </details>
+
+      <div class="hr"></div>
+
+      <small class="muted">
+        Obs.: Cada serviço possui cálculo próprio.  
+        As promoções são aplicadas automaticamente quando os critérios são atendidos.
+      </small>
+
     </div>
+  </details>
+</div>
+
+
+
 
     <!-- Total -->
-    <div class="card big">
-      <h2><span>Resumo do pacote</span><span class="pill">Total final</span></h2>
+<div class="card big">
+  <h2><span>Resumo do pacote</span><span class="pill">Total final</span></h2>
+
+  <!-- 🔥 MENSAGEM DE PROMOÇÃO ATIVA -->
+  <div class="result ok" id="promoMessageBox" style="display:none">
+    <!-- texto da promoção aparece aqui -->
+  </div>
 
       <div class="result" id="totalRes">Selecione serviços para ver o total.</div>
       <div class="alert" id="totalAlert"></div>
@@ -526,16 +608,47 @@ button:disabled{opacity:.55;cursor:not-allowed;}
       </div>
 
       <button id="zapBtn" disabled>Contratar pacote via WhatsApp</button>
-      <div class="footer">Twitch: sekai_oficial • WhatsApp: +55 21 99184-4917</div>
-    </div>
-  </div>
+      <div class="footer">
+  Twitch: sekai_oficial • WhatsApp: +55 21 99184-4917<br>
+  <small style="opacity:0.7">
+    Calculadora desenvolvida por <strong>@Kerolynchan</strong>
+  </small>
 </div>
 
+
 <script>
+
+  /* ========= CONTROLE GLOBAL DE PROMOÇÕES ========= */
+let activePromo = null;
+let promoMessage = "";
+
+
+
 /* ========= helpers ========= */
 const $ = (id) => document.getElementById(id);
 const money = (n) => "R$ " + n.toFixed(2).replace(".", ",");
 const clampInt = (v, min, max) => (isNaN(v) ? null : Math.min(Math.max(v, min), max));
+
+
+function calcTradByBudget(mmrAtual, budget){
+  let mmrTemp = mmrAtual;
+  let gasto = 0;
+
+  while(mmrTemp < 8500){
+    // custo para subir +1 MMR
+    const custo1 = calcTradBaseProgressivo(mmrTemp, mmrTemp + 1);
+
+    if(gasto + custo1 > budget) break;
+
+    gasto += custo1;
+    mmrTemp += 1;
+  }
+
+  return {
+    mmrFinal: mmrTemp,
+    gasto: gasto
+  };
+}
 
 /* collapse/expand service bodies */
 function syncBodies(){
@@ -552,6 +665,7 @@ function syncBodies(){
   });
 }
 
+
 function enableGroup(useId, fields){
   const on = $(useId).checked;
   fields.forEach(f => $(f).disabled = !on);
@@ -560,10 +674,7 @@ function enableGroup(useId, fields){
 function countBoostSelected(){
   return ["useTrad","useDouble","useCasual"].filter(id => $(id).checked).length;
 }
-function offBoostPerDay(){
-  // Promo: se 2+ boosts selecionados, off-stream nos boosts fica 15 (ao invés de 20)
-  return (countBoostSelected() >= 2) ? 15 : 20;
-}
+
 
 /* ========= Boost Tradicional (CORRIGIDO) ========= */
 
@@ -621,7 +732,7 @@ function calcTrad(perDayOff){
   if(!$("useTrad").checked){
     $("tradRes").innerHTML = "Preencha os dados para ver o valor.";
     $("tradAlert").textContent = "";
-    return { selected:false, ok:true, total:0, totalNoPromo:0, tradSpend:0, text:"" };
+    return { selected:false, ok:true, total:0, totalNoPromo:0 };
   }
 
   const atual = clampInt(Number($("tradAtual").value), 0, 8500);
@@ -630,76 +741,89 @@ function calcTrad(perDayOff){
 
   $("tradAlert").textContent = "";
 
-  if(atual === null || des === null){
-    $("tradRes").innerHTML = "Preencha MMR atual e desejado.";
-    return { selected:true, ok:false, total:0, totalNoPromo:0, tradSpend:0, text:"Boost Tradicional inválido" };
-  }
-
-  if(des <= atual){
+  if(atual === null || des === null || des <= atual){
     $("tradRes").innerHTML = "<strong>Preço: INVÁLIDO</strong>";
-    $("tradAlert").textContent = "🔴 O MMR desejado deve ser maior que o atual.";
-    return { selected:true, ok:false, total:0, totalNoPromo:0, tradSpend:0, text:"Boost Tradicional inválido" };
+    $("tradAlert").textContent = "🔴 Verifique o MMR informado.";
+    return { selected:true, ok:false, total:0, totalNoPromo:0 };
   }
 
   let delta = des - atual;
 
-// mínimo de 500 MMR apenas se atual < 4000
-if(atual < 4000 && delta < 500){
-  delta = 500;
-  $("tradAlert").textContent =
-    "⚠️ Pedido mínimo para contas abaixo de 4.000 MMR é 500 MMR (ajustado automaticamente).";
-}
-
-
-  // ✅ BASE CORRETA (progressiva)
-  const base = calcTradBaseProgressivo(atual, des);
-
-  // desconto
-  const pct = tradDiscountPct(atual, delta);
-  const baseAfter = base - (base * pct);
-
-  // off-stream
-  let offFee = 0;
-  if(off){
-    const dias = Math.max(1, Math.floor(delta / 150));
-    offFee = dias * perDayOff;
+  if(atual < 4000 && delta < 500){
+    delta = 500;
+    $("tradAlert").textContent =
+      "⚠️ Pedido mínimo para contas abaixo de 4.000 MMR é 500 MMR.";
   }
 
-  const totalFinal = baseAfter + offFee;
-  const totalSemDesconto = base + offFee;
+  // 🔹 BASE DO SERVIÇO
+  const base = calcTradBaseProgressivo(atual, des);
 
+  // 🔹 DESCONTO DO SERVIÇO
+  const pct = tradDiscountPct(atual, delta);
+  const baseValue = base - (base * pct);
+
+  // 🔹 OFF-STREAM (SEPARADO)
+  let offValue = 0;
+  if(off){
+    const dias = Math.max(1, Math.floor(delta / 150));
+    offValue = dias * perDayOff;
+  }
+
+  // 🔹 TOTAL (somado apenas para controle interno)
+  const total = baseValue + offValue;
+  const totalNoPromo = base + offValue;
+
+  // 🔹 UI DO CARD
   $("tradRes").innerHTML =
     `<strong>Delta considerado:</strong> ${delta} MMR<br>
-     <strong>Cálculo:</strong> Progressivo por faixa<br>
-     <strong>Base:</strong> ${money(base)}
-       ${pct > 0 ? `<span class="ok"> (${Math.round(pct*100)}% OFF)</span>` : ""}<br>
-     <strong>Off-stream:</strong> ${off ? money(offFee) : money(0)}<br>
-     <strong>Total:</strong> ${money(totalFinal)}`;
+     <strong>Valor do serviço:</strong> ${money(baseValue)}<br>
+     <strong>Off-stream:</strong> ${off ? money(offValue) : money(0)}<br>
+     <strong>Total:</strong> ${money(total)}`;
+
+// 🔮 sugestão por valor
+if($("tradSuggest")?.checked){
+  const budget = Number($("tradBudget").value);
+
+  if(budget > 0){
+    const sug = calcTradByBudget(atual, budget);
+    const ganho = sug.mmrFinal - atual;
+
+    $("tradSuggestRes").innerHTML =
+      `<strong>Com ${money(budget)} você pode chegar aproximadamente até:</strong><br>
+       <strong>${sug.mmrFinal} MMR</strong><br>
+       <span class="ok">👉 Isso representa um ganho de +${ganho} MMR</span><br>
+       <small class="muted">Estimativa baseada no cálculo atual.</small>`;
+  }
+}
+
 
   return {
     selected: true,
     ok: true,
 
-    total: totalFinal,
-    totalNoPromo: totalSemDesconto,
-    tradSpend: totalFinal,
+    // 🔹 valores separados
+    baseValue,
+    offValue,
+    offLabel: "Boost Tradicional",
 
-    text:
-      pct > 0
-        ? `Boost Tradicional: +${delta} MMR | ${money(totalSemDesconto)} → ${money(totalFinal)} (${Math.round(pct*100)}% OFF)`
-        : `Boost Tradicional: +${delta} MMR | Total: ${money(totalFinal)}`,
+    // 🔹 compatibilidade com o resto do sistema
+    total,
+    totalNoPromo,
+    tradSpend: baseValue,
+
+    text: `Boost Tradicional: +${delta} MMR | Total: ${money(baseValue)}`,
 
     details:
 `🆙 BOOST TRADICIONAL
 • MMR atual: ${atual}
 • MMR desejado: ${des}
 • Quantidade: ${delta} MMR
-• Valor base: ${money(base)}
-• Desconto: ${pct > 0 ? Math.round(pct*100) + "% OFF" : "Nenhum"}
-• Off-stream: ${off ? money(offFee) : "Não"}
-• Total: ${money(totalFinal)}`
+• Valor do serviço: ${money(baseValue)}
+• Off-stream: ${off ? money(offValue) : "Não"}
+• Total: ${money(total)}`
   };
 }
+
 
 /* ========= Double MMR ========= */
 function doubleBaseByMMR(mmr){
@@ -708,250 +832,302 @@ function doubleBaseByMMR(mmr){
   if(mmr <= 6000) return 245;
   return null;
 }
-function calcDouble(perDayOff){
+function calcDouble(){
   if(!$("useDouble").checked){
     $("doubleRes").innerHTML = "Preencha os dados para ver o valor.";
-    $("doubleAlert").textContent = "";
-    return {selected:false, ok:true, total:0, totalNoPromo:0, text:""};
+    return { selected:false, ok:true, total:0, totalNoPromo:0 };
   }
 
-  const mmr = clampInt(Number($("doubleMMR").value), 0, 999999);
+  const mmr  = clampInt(Number($("doubleMMR").value), 0, 99999);
   const days = clampInt(Number($("doubleDays").value), 1, 7);
-  const off = $("doubleOff").checked;
-
-  $("doubleAlert").innerHTML = "";
+  const off  = $("doubleOff").checked;
 
   if(mmr === null || days === null){
-    $("doubleRes").innerHTML = "Preencha o MMR e os dias.";
-    return {selected:true, ok:false, total:0, totalNoPromo:0, text:"Double MMR: dados incompletos"};
-  }
-  if(mmr >= 6001){
-    $("doubleRes").innerHTML = "<strong>Preço: INVÁLIDO</strong>";
-    $("doubleAlert").textContent = "🔴 Esse MMR não é compatível com este serviço.";
-    return {selected:true, ok:false, total:0, totalNoPromo:0, text:"Double MMR: inválido"};
+    $("doubleRes").innerHTML = "Dados inválidos.";
+    return { selected:true, ok:false, total:0, totalNoPromo:0 };
   }
 
-  let totalBase = 0;
+  let baseValue = 0;
   let cur = mmr;
+
   for(let i=0;i<days;i++){
-    const b = doubleBaseByMMR(cur);
-    if(b === null){
-      $("doubleRes").innerHTML = "<strong>Preço: INVÁLIDO</strong>";
-      $("doubleAlert").textContent = "🔴 Esse MMR não é compatível com este serviço.";
-      return {selected:true, ok:false, total:0, totalNoPromo:0, text:"Double MMR: inválido"};
-    }
-    totalBase += b;
+    baseValue += doubleBaseByMMR(cur);
     cur += 150;
   }
 
-  const offFee = off ? (days * 20) : 0;
+  let offOriginal = 0;
+  let offValue = 0;
+  let promoApplied = false;
 
+  if(off){
+    offOriginal = days * 20;
 
-  const total = totalBase + offFee;
-const totalNoPromo = total;
+    if(
+      activePromo === null &&
+      $("useCoach").checked &&
+      ($("coachP1").checked || $("coachP2").checked)
+    ){
+      offValue = days * 15;
+      promoApplied = true;
+      activePromo = "Double MMR + Coach";
+      promoMessage = "🔥 Desconto da promoção Double MMR + Coach ativada.";
+    }else{
+      offValue = offOriginal;
+    }
+  }
+
+  const total = baseValue + offValue;
+  const totalNoPromo = baseValue + offOriginal;
 
   $("doubleRes").innerHTML =
     `<strong>Dias:</strong> ${days}<br>
-     <strong>Off-stream:</strong> ${off ? money(offFee) + " (R$ 20,00 por dia)" : money(0)}<br>
+     <strong>Valor do serviço:</strong> ${money(baseValue)}<br>
+     <strong>Off-stream:</strong> ${off ? money(offValue) : money(0)}<br>
      <strong>Total:</strong> ${money(total)}`;
 
   return {
-  selected:true,
-  ok:true,
-  total,
-  totalNoPromo,
-  text:`Double MMR: ${days} dia(s) | Total: ${money(total)}`,
-  details:
-`⚡ DOUBLE MMR
-• MMR atual: ${mmr}
-• Dias contratados: ${days}
-• Valor base: ${money(totalBase)}
-• Off-stream: ${off ? money(offFee) + " (R$ 20,00 por dia)" : "Não"}
-• Total: ${money(total)}`
-};
+    selected:true,
+    ok:true,
 
+    baseValue,
+    offOriginal,
+    offValue,
+    offLabel:"Double MMR",
+
+    total,
+    totalNoPromo,
+
+    text:`Double MMR: ${days} dia(s) | Total: ${money(baseValue)}`,
+    details:`⚡ DOUBLE MMR`
+  };
 }
+
+
+
 
 /* ========= Boost Casual ========= */
 function calcCasual(){
   if(!$("useCasual").checked){
     $("casualRes").innerHTML = "Preencha os dados para ver o valor.";
-    $("casualAlert").textContent = "";
-    $("comboBadge").style.display = "none";
-    return {selected:false, ok:true, total:0, totalNoPromo:0, text:"", days:null};
+    return { selected:false, ok:true, total:0, totalNoPromo:0 };
   }
 
   const days = clampInt(Number($("casualDays").value), 1, 30);
-  const off = $("casualOff").checked;
+  const off  = $("casualOff").checked;
 
-  $("casualAlert").textContent = "";
+  const baseValue = days * 85;
 
-  if(days === null){
-    $("casualRes").innerHTML = "Selecione os dias (1 a 30).";
-    return {selected:true, ok:false, total:0, totalNoPromo:0, text:"Boost Casual: dados incompletos", days:null};
+// 🔹 OFF-STREAM
+let offOriginal = 0;
+let offValue = 0;
+let promoApplied = false;
+let offPromoText = "";
+
+if(off){
+  offOriginal = days * 20;
+
+  if(activePromo === null){
+    offValue = days * 15;
+    promoApplied = true;
+    offPromoText = "Promoção fixa do Boost Casual";
+  }else{
+    offValue = offOriginal;
   }
+}
 
-  const base = days * 85;
-  const offFeePromo = off ? (days * 15) : 0; // casual mantém 15 (promo fixa do serviço)
-  const offFeeNoPromo = off ? (days * 15) : 0;
 
-  const total = base + offFeePromo;
-  const totalNoPromo = base + offFeeNoPromo;
-
-  const jogos = days * 7;
+  const total = baseValue + offValue;
 
   $("casualRes").innerHTML =
-    `<strong>Jogos totais:</strong> ${jogos}<br>
-     <strong>Base:</strong> ${money(base)}<br>
-     <strong>Off-stream:</strong> ${off ? money(offFeePromo) : money(0)}<br>
+    `<strong>Dias:</strong> ${days}<br>
+     <strong>Valor do serviço:</strong> ${money(baseValue)}<br>
+     <strong>Off-stream:</strong> ${off ? money(offValue) : money(0)}<br>
      <strong>Total:</strong> ${money(total)}`;
 
   return {
   selected:true,
   ok:true,
+
+  days, // ✅ ESSA LINHA É A CHAVE
+
+  baseValue,
+  offOriginal,
+  offValue,
+  promoApplied,
+  offPromoText,
+  offLabel: "Boost Casual",
+
   total,
   totalNoPromo,
-  days,
-  text:`Boost Casual: ${days} dia(s) | Total: ${money(total)}`,
-  details:
-`💰 BOOST CASUAL
-• Dias contratados: ${days}
-• Total de partidas: ${jogos}
-• Valor base: ${money(base)}
-• Off-stream: ${off ? money(offFeePromo) : "Não"}
-• Total: ${money(total)}`
+
+  text:`Boost Casual: ${days} dia(s) | Total: ${money(baseValue)}`,
+  details:`...`
 };
 
 }
+
+
 
 /* ========= Recalibração ========= */
 function calcRecal(){
   if(!$("useRecal").checked){
     $("recalRes").innerHTML = "Preencha os dados para ver o valor.";
-    $("recalAlert").textContent = "";
-    return {selected:false, ok:true, total:0, totalNoPromo:0, text:""};
+    return { selected:false, ok:true, total:0, totalNoPromo:0 };
   }
 
-  const nome = ($("recalNome").value || "Não informado").trim();
-  const mmr = clampInt(Number($("recalMMR").value), 0, 999999);
-  const off = $("recalOff").checked;
-
-  $("recalAlert").innerHTML = "";
+  const nome = $("recalNome").value || "Não informado";
+  const mmr  = clampInt(Number($("recalMMR").value), 0, 99999);
+  const off  = $("recalOff").checked;
 
   if(mmr === null){
     $("recalRes").innerHTML = "Digite o MMR para calcular.";
-    return {selected:true, ok:false, total:0, totalNoPromo:0, text:"Recalibração: dados incompletos"};
+    return { selected:true, ok:false, total:0, totalNoPromo:0 };
   }
 
-  let base = null;
-  if(mmr <= 4000) base = 200;
-  else if(mmr <= 6000) base = 250;
+  let baseValue = 0;
 
-  if(base === null){
+  if(mmr <= 4000){
+    baseValue = 200;
+  }else if(mmr <= 6000){
+    baseValue = 250;
+  }else{
     $("recalRes").innerHTML = "<strong>Preço: INVÁLIDO</strong>";
-    $("recalAlert").textContent = "🚫 Esse MMR não é compatível com este serviço.";
-    return {selected:true, ok:false, total:0, totalNoPromo:0, text:"Recalibração: inválido"};
+    $("recalAlert").textContent = "🚫 Esse MMR não é compatível com a Recalibração.";
+    return { selected:true, ok:false, total:0, totalNoPromo:0 };
   }
 
-  const total = base + (off ? 40 : 0);
-  const totalNoPromo = total;
+  // 🔹 OFF-STREAM (sem promoção)
+  const offOriginal = off ? 40 : 0;
+  const offValue    = offOriginal;
+
+  const total = baseValue + offValue;
 
   $("recalRes").innerHTML =
-    `<strong>Base:</strong> ${money(base)}<br>
-     <strong>Off-stream:</strong> ${off ? money(40) : money(0)}<br>
+    `<strong>Valor do serviço:</strong> ${money(baseValue)}<br>
+     <strong>Off-stream:</strong> ${off ? money(offValue) : money(0)}<br>
      <strong>Total:</strong> ${money(total)}`;
 
   return {
-  selected:true,
-  ok:true,
-  total,
-  totalNoPromo,
-  text:`Recalibração: ${nome} | Total: ${money(total)}`,
-  details:
+    selected:true,
+    ok:true,
+
+    baseValue,
+
+    offOriginal,
+    offValue,
+    promoApplied:false,
+    offPromoText:"",
+    offLabel:"Recalibração",
+
+    total,
+    totalNoPromo: baseValue + offOriginal,
+
+    text:`Recalibração: ${nome} | Total: ${money(baseValue)}`,
+
+    details:
 `🔄 RECALIBRAÇÃO
 • Nome: ${nome}
 • MMR atual: ${mmr}
-• Off-stream: ${off ? "Sim (+R$40)" : "Não"}
+• Valor do serviço: ${money(baseValue)}
+• Off-stream: ${off ? money(offValue) : "Não"}
 • Total: ${money(total)}`
-};
-
+  };
 }
 
-/* ========= Replay ========= */
+
+/* ========= Replay (CORRIGIDO) ========= */
 function calcReplay(){
   if(!$("useReplay").checked){
     $("repRes").innerHTML = "Preencha os dados para ver o valor.";
-    $("repAlert").textContent = "";
-    return {selected:false, ok:true, total:0, totalNoPromo:0, text:"", qtd:null, dias:null};
+    return { selected:false, ok:true, total:0, totalNoPromo:0 };
   }
 
-  const qtd = clampInt(Number($("repQtd").value), 1, 999999);
-  const dias = clampInt(Number($("repDias").value), 1, 999999);
-  const off = $("repOff").checked;
-
-  $("repAlert").textContent = "";
+  const qtd  = clampInt(Number($("repQtd").value), 1, 999);
+  const dias = clampInt(Number($("repDias").value), 1, 999);
+  const off  = $("repOff").checked;
 
   if(qtd === null || dias === null){
-    $("repRes").innerHTML = "Preencha quantidade e dias.";
-    return {selected:true, ok:false, total:0, totalNoPromo:0, text:"Replay: dados incompletos", qtd:null, dias:null};
+    $("repRes").innerHTML = "Dados inválidos.";
+    return { selected:true, ok:false, total:0, totalNoPromo:0 };
   }
 
-  let base = Math.floor(qtd / dias);
-  let sobra = qtd % dias;
+  const porDia = Math.ceil(qtd / dias);
 
-  let totalAnalises = 0;
-  let taxaOff = 0;
-  let lines = [];
-
-  for(let d=1; d<=dias; d++){
-    let hoje = base + (sobra > 0 ? 1 : 0);
-    if(sobra > 0) sobra--;
-
-    if(hoje > 6){
-      $("repRes").innerHTML = "<strong>Preço: INVÁLIDO</strong>";
-      $("repAlert").textContent = "🔴 Esse serviço ultrapassou o limite de análises em um único dia.";
-      return {selected:true, ok:false, total:0, totalNoPromo:0, text:"Replay: inválido", qtd, dias};
-    }
-
-    let precoUnit = 50;
-    let desconto = false;
-    if(hoje >= 2 && hoje <= 3){ precoUnit = 40; desconto = true; }
-    totalAnalises += hoje * precoUnit;
-
-    if(off){
-      taxaOff += (hoje <= 3 ? 10 : 20);
-    }
-
-    lines.push(desconto ? `Dia ${d} = ${hoje} análise(s) <span class="ok">(desconto aplicado)</span>` : `Dia ${d} = ${hoje} análise(s)`);
+  if(porDia > 6){
+    $("repRes").innerHTML = "<strong>Preço: INVÁLIDO</strong>";
+    $("repAlert").textContent = "🔴 Máximo de 6 análises por dia.";
+    return { selected:true, ok:false, total:0, totalNoPromo:0 };
   }
 
-  const total = totalAnalises + taxaOff;
-  const totalNoPromo = total;
+  /* 🔹 SERVIÇO */
+  let baseNoPromo = qtd * 50;
+  let baseValue = baseNoPromo;
+  let promoApplied = false;
+
+  if(
+  activePromo === null &&
+  $("useCoach").checked &&
+  $("coachP1").checked &&
+  qtd === 1
+){
+  baseValue = qtd * 40; // 20% OFF
+  promoApplied = true;
+  activePromo = "Coach + Replay";
+  promoMessage = "🔥 Desconto da promoção Coach + Replay ativada.";
+}
+
+
+  /* 🔹 OFF-STREAM */
+  let offOriginal = 0;
+  let offValue = 0;
+  let offPromoText = "";
+
+  if(off){
+    offOriginal = dias * (porDia > 3 ? 20 : 10);
+
+    if(porDia <= 3){
+      offValue = dias * 10;
+      offPromoText = "Promoção: até 3 análises por dia";
+    }else{
+      offValue = dias * 20;
+    }
+  }
+
+  const total = baseValue + offValue;
+  const totalNoPromo = baseNoPromo + offOriginal;
 
   $("repRes").innerHTML =
-    `<strong>📊 Distribuição:</strong><br>${lines.join("<br>")}<br><br>
-     <strong>Valor das análises:</strong> ${money(totalAnalises)}<br>
-     <strong>Taxa off stream:</strong> ${money(taxaOff)}<br>
+    `<strong>Análises:</strong> ${qtd}<br>
+     <strong>Dias:</strong> ${dias}<br>
+     <strong>Valor do serviço:</strong> ${money(baseValue)}
+     ${promoApplied ? ' <span class="ok">(promo)</span>' : ''}<br>
+     <strong>Off-stream:</strong> ${off ? money(offValue) : money(0)}<br>
      <strong>Total:</strong> ${money(total)}`;
 
   return {
   selected:true,
   ok:true,
+
+  qtd,   // ✅ ESSA LINHA
+  dias,  // ✅ E ESSA
+
+  baseValue,
+
+  offOriginal,
+  offValue,
+  promoApplied,
+  offPromoText,
+  offLabel: "Replay",
+
   total,
   totalNoPromo,
-  qtd,
-  dias,
-  text:`Replay: ${qtd} análise(s) | Total: ${money(total)}`,
-  details:
-`📊 ANÁLISE DE REPLAY
-• Quantidade de análises: ${qtd}
-• Dias: ${dias}
-• Valor análises: ${money(totalAnalises)}
-• Off-stream: ${money(taxaOff)}
-• Total: ${money(total)}`
+
+  text:`Replay: ${qtd} análise(s) | Total: ${money(baseValue)}`,
+  details:`...`
 };
 
 }
+
 
 /* ========= Coach ========= */
 function calcCoach(tradEligible){
@@ -1010,19 +1186,56 @@ function calcCoach(tradEligible){
 
 /* ========= Combo controlado ========= */
 function comboCasualReplay(cas, rep){
-  // Regra: 1 dia casual + 2 replays em 1 dia => total fixo do combo = 155
-  if(cas.selected && cas.ok && rep.selected && rep.ok){
-    if(cas.days === 1 && rep.qtd === 2 && rep.dias === 1){
-      const normal = cas.total + rep.total;
-      return {active:true, delta:(155 - normal)};
-    }
+  // 🔥 Combo: Boost Casual + Replay
+  if(
+    activePromo === null &&
+    cas.selected && cas.ok &&
+    rep.selected && rep.ok &&
+    cas.days === 1 &&
+    rep.qtd === 2 &&
+    rep.dias === 1
+  ){
+    activePromo = "Boost Casual + Replay";
+    promoMessage = "🔥 Desconto da promoção Boost Casual + Replay ativada.";
+
+    const normal = cas.total + rep.total;
+    return { active:true, delta:(155 - normal) };
   }
-  return {active:false, delta:0};
+
+  return { active:false, delta:0 };
 }
+
+function offBoostPerDay(){
+  return 20; // valor padrão
+}
+
 
 /* ========= update all ========= */
 function updateAll(){
+
+  // 🔥 RESET GLOBAL DE PROMOÇÕES (OBRIGATÓRIO)
+  activePromo = null;
+  promoMessage = "";
+
+  // 🔥 isso garante que promoções antigas morram
   syncBodies();
+
+
+
+   // 🔮 CONTROLE DA SUGESTÃO POR VALOR
+  const sug = $("tradSuggest");
+  const box = $("tradSuggestBox");
+
+  if(sug && box){
+    box.style.display = sug.checked ? "block" : "none";
+  }
+  // 🔒 trava MMR desejado quando sugestão estiver ativa
+if(sug && sug.checked){
+  $("tradDesejado").disabled = true;
+}else{
+  $("tradDesejado").disabled = false;
+}
+
 
   enableGroup("useTrad",   ["tradAtual","tradDesejado","tradOff"]);
   enableGroup("useDouble", ["doubleMMR","doubleDays","doubleOff"]);
@@ -1052,18 +1265,29 @@ function updateAll(){
   let totalNoPromo = 0;
   let items = [];
   let invalid = [];
+  let offLines = [];
+let offTotal = 0;
+
 
   [trad,dbl,cas,rec,rep,coach].forEach(obj => {
-    if(obj.selected){
-      if(!obj.ok){
-        invalid.push("⚠️ Corrija os dados de um dos serviços selecionados.");
-      }else{
-        total += obj.total;
-        totalNoPromo += obj.totalNoPromo;
-        items.push("• " + obj.text);
+  if(obj.selected){
+    if(!obj.ok){
+      invalid.push("⚠️ Corrija os dados de um dos serviços selecionados.");
+    }else{
+      total += obj.total;
+      totalNoPromo += obj.totalNoPromo;
+      items.push("• " + obj.text);
+
+      // 🔹 captura OFF-STREAM
+      if(obj.offValue && obj.offValue > 0){
+        offLines.push(`• ${obj.offLabel}: ${money(obj.offValue)}`);
+        offTotal += obj.offValue;
       }
     }
-  });
+  }
+});
+
+
   // ===== calcula porcentagem de desconto total =====
 
 
@@ -1110,8 +1334,29 @@ const priceLine = hasPromo
      </div>`;
 
   $("totalRes").innerHTML =
-    `<strong>Itens selecionados:</strong><br>${items.join("<br>")}<br><br>
-     <strong>💵 Total final:</strong>${priceLine}`;
+  `<strong>Itens selecionados:</strong><br>
+   ${items.join("<br>")}
+   
+   ${
+     offLines.length
+       ? `<br><br><strong>📡 Taxas Off-stream:</strong><br>
+          ${offLines.join("<br>")}
+          <br><strong>Total Off-stream:</strong> ${money(offTotal)}`
+       : ""
+   }
+
+   <br><br><strong>💵 Total final:</strong>${priceLine}`;
+
+   // 🔔 MENSAGEM DE PROMOÇÃO ATIVA
+const promoBox = $("promoMessageBox");
+
+if(promoMessage){
+  promoBox.style.display = "block";
+  promoBox.textContent = promoMessage;
+}else{
+  promoBox.style.display = "none";
+}
+
 
   let alerts = [];
   if(invalid.length) alerts.push(invalid[0]);
@@ -1132,13 +1377,32 @@ $("zapBtn").onclick = () => {
       detalhes.push(obj.details);
     }
   });
+  let offLines = [];
+let offTotal = 0;
+
+[trad,dbl,cas,rec,rep,coach].forEach(obj => {
+  if(obj.selected && obj.ok && obj.offValue > 0){
+    offLines.push(`• ${obj.offLabel}: ${money(obj.offValue)}`);
+    offTotal += obj.offValue;
+  }
+});
+
 
   const msg = encodeURIComponent(
-    "Olá! Quero contratar um pacote na *SEKAI DOTA BOOST*.\n\n" +
-    detalhes.join("\n\n") +
-    "\n\n💵 TOTAL FINAL: " + money(total) +
-    "\n\nObs.: Datas serão combinadas via WhatsApp."
-  );
+  "Olá! Quero contratar um pacote na *SEKAI DOTA BOOST*.\n\n" +
+  detalhes.join("\n\n") +
+
+  (offLines.length
+    ? "\n\n📡 *TAXAS OFF-STREAM*\n" +
+      offLines.join("\n") +
+      "\n• Total Off-stream: " + money(offTotal)
+    : ""
+  ) +
+
+  "\n\n💵 *TOTAL FINAL:* " + money(total) +
+  "\n\nObs.: Datas serão combinadas via WhatsApp."
+);
+
 
   window.open("https://wa.me/5521991844917?text=" + msg);
 };
@@ -1175,7 +1439,8 @@ if(selectedAny){
   "recalNome","recalMMR","recalOff",
   "repQtd","repDias","repOff",
   "coachP1","coachP2","coachOff",
-  "packTerms","globalBS"
+  "packTerms","globalBS",
+  "tradSuggest","tradBudget"
 ].forEach(id => {
   const el = $(id);
   if(!el) return;
@@ -1215,4 +1480,3 @@ window.addEventListener("scroll", () => {
 
 </body>
 </html>
-<!-- teste git manual -->
