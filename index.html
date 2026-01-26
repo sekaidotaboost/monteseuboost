@@ -372,9 +372,7 @@ button:disabled{opacity:.55;cursor:not-allowed;}
       </h2>
 
       <div class="serviceBody" id="bodyRecal">
-        <label>Nome</label>
-        <input type="text" id="recalNome" placeholder="Seu nome" disabled>
-
+    
         <label>MMR Atual</label>
         <input type="number" id="recalMMR" min="0" placeholder="Ex: 3500" disabled>
 
@@ -1020,7 +1018,8 @@ function calcRecal(){
     return { selected:false, ok:true, total:0, totalNoPromo:0 };
   }
 
-  const nome = $("recalNome").value || "Não informado";
+  // nome removido — não será mais utilizado
+
   const mmr  = clampInt(Number($("recalMMR").value), 0, 99999);
   const off  = $("recalOff").checked;
 
@@ -1067,11 +1066,11 @@ function calcRecal(){
     total,
     totalNoPromo: baseValue + offOriginal,
 
-    text:`Recalibração: ${nome} | Total: ${money(baseValue)}`,
+    text:`Recalibração | Total: ${money(baseValue)}`,
+
 
     details:
 `🔄 RECALIBRAÇÃO
-• Nome: ${nome}
 • MMR atual: ${mmr}
 • Valor do serviço: ${money(baseValue)}
 • Off-stream: ${off ? money(offValue) : "Não"}
@@ -1106,7 +1105,15 @@ function calcReplay(){
 
   /* 🔹 SERVIÇO */
   let baseNoPromo = qtd * 50;
-  let baseValue = baseNoPromo;
+let baseValue = baseNoPromo;
+let descontoReplay = 0;
+
+// 🔥 DESCONTO POR VOLUME (2 ou 3 análises no mesmo dia)
+if(porDia >= 2 && porDia <= 3){
+  baseValue = qtd * 40; // preço com desconto
+  descontoReplay = baseNoPromo - baseValue;
+}
+
   let promoApplied = false;
 
   if(
@@ -1141,35 +1148,67 @@ function calcReplay(){
   const total = baseValue + offValue;
   const totalNoPromo = baseNoPromo + offOriginal;
 
-  $("repRes").innerHTML =
-    `<strong>Análises:</strong> ${qtd}<br>
-     <strong>Dias:</strong> ${dias}<br>
-     <strong>Valor do serviço:</strong> ${money(baseValue)}
-     ${promoApplied ? ' <span class="ok">(promo)</span>' : ''}<br>
-     <strong>Off-stream:</strong> ${off ? money(offValue) : money(0)}<br>
-     <strong>Total:</strong> ${money(total)}`;
+  let replayHTML = `
+  <strong>Análises:</strong> ${qtd}<br>
+  <strong>Dias:</strong> ${dias}<br>
+`;
+
+if(descontoReplay > 0){
+  const pct = Math.round((descontoReplay / baseNoPromo) * 100);
+
+  replayHTML += `
+    <strong>Valor base:</strong> ${money(baseNoPromo)}<br>
+    <strong>Desconto aplicado:</strong> 🔥 ${pct}% OFF<br>
+    <strong>Valor com desconto:</strong> <span class="newPrice">${money(baseValue)}</span><br>
+  `;
+}else{
+  replayHTML += `
+    <strong>Valor do serviço:</strong> ${money(baseValue)}<br>
+  `;
+}
+
+replayHTML += `
+  <strong>Off-stream:</strong> ${off ? money(offValue) : money(0)}<br>
+  <strong>Total:</strong> <span class="newPrice">${money(total)}</span>
+`;
+
+$("repRes").innerHTML = replayHTML;
+
 
   return {
   selected:true,
   ok:true,
 
-  qtd,   // ✅ ESSA LINHA
-  dias,  // ✅ E ESSA
+  qtd,
+  dias,
 
   baseValue,
-
   offOriginal,
   offValue,
-  promoApplied,
-  offPromoText,
   offLabel: "Replay",
 
   total,
   totalNoPromo,
 
-  text:`Replay: ${qtd} análise(s) | Total: ${money(baseValue)}`,
-  details:`...`
+  descontoReplay, // 🔥 NOVO
+
+  text:`Replay: ${qtd} análise(s) divididos em ${dias} dia(s) | Total: ${money(baseValue)}`,
+
+ details:
+`📊 ANÁLISE DE REPLAY
+• Análises: ${qtd}
+• Dias: ${dias}
+• Valor base: ${money(baseNoPromo)}
+${descontoReplay > 0 
+  ? `• Desconto aplicado: 🔥 ${Math.round((descontoReplay / baseNoPromo) * 100)}% OFF`
+  : `• Desconto aplicado: Nenhum`}
+• Valor com desconto: ${money(baseValue)}
+• Off-stream: ${off ? money(offValue) : "R$ 0,00"}
+• Total: ${money(total)}`
+
 };
+
+
 
 }
 
@@ -1285,7 +1324,7 @@ if(sug && sug.checked){
   enableGroup("useTrad",   ["tradAtual","tradDesejado","tradOff"]);
   enableGroup("useDouble", ["doubleMMR","doubleDays","doubleOff"]);
   enableGroup("useCasual", ["casualDays","casualOff"]);
-  enableGroup("useRecal",  ["recalNome","recalMMR","recalOff"]);
+  enableGroup("useRecal",  ["recalMMR","recalOff"]);
   enableGroup("useReplay", ["repQtd","repDias","repOff"]);
   enableGroup("useCoach",  ["coachP1","coachP2"]);
 
@@ -1321,7 +1360,14 @@ let offTotal = 0;
     }else{
       total += obj.total;
       totalNoPromo += obj.totalNoPromo;
+
+      // item principal
       items.push("• " + obj.text);
+
+      // ✅ DESCONTO DE VOLUME DO REPLAY (AQUI 👇)
+      if(obj.descontoReplay && obj.descontoReplay > 0){
+        items.push(`• Replay — desconto por volume: -${money(obj.descontoReplay)}`);
+      }
 
       // 🔹 captura OFF-STREAM
       if(obj.offValue && obj.offValue > 0){
@@ -1481,7 +1527,7 @@ if(selectedAny){
   "tradAtual","tradDesejado","tradOff",
   "doubleMMR","doubleDays","doubleOff",
   "casualDays","casualOff",
-  "recalNome","recalMMR","recalOff",
+  "recalMMR","recalOff",
   "repQtd","repDias","repOff",
   "coachP1","coachP2","coachOff",
   "packTerms","globalBS",
