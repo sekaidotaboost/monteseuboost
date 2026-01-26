@@ -1555,7 +1555,7 @@ let offTotal = 0;
   ) +
 
   (activeCoupon
-    ? "\n🎟️ *CUPOM APLICADO:* " + activeCoupon +
+    ? "\n\n🎟️ *CUPOM APLICADO:* " + activeCoupon +
       " (" + Math.round(couponDiscount * 100) + "% OFF)"
     : ""
   ) +
@@ -1564,10 +1564,8 @@ let offTotal = 0;
   "\n\nObs.: Datas serão combinadas via WhatsApp."
 );
 
+window.open("https://wa.me/5521991844917?text=" + msg);
 
-
-  window.open("https://wa.me/5521991844917?text=" + msg);
-};
 /* ===== AQUI COMEÇA O BALÃO FLUTUANTE ===== */
 
 const floatBox = $("floatingTotal");
