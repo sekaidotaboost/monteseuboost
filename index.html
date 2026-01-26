@@ -6,9 +6,9 @@
 <title>SEKAI DOTA BOOST - Monte seu Boost</title>
 <style>
 :root{
-  --bg-top:#7dd3fc;
-  --bg-bottom:#6d28d9;
-  --card:#0f1117;
+  --bg-top:#9f7dfc;
+  --bg-bottom:#443064;
+  --card:#221425bb;
   --card-soft:#141824;
   --primary:#8b5cf6;
   --text:#f3f4f6;
@@ -23,20 +23,24 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  background:linear-gradient(180deg,var(--bg-top),var(--bg-bottom));
+
+  background:
+    linear-gradient(
+      rgba(15, 17, 23, 0.349),
+      rgba(15, 17, 23, 0.349)
+    ),
+    url("sua-imagem-cosmica.png");
+
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+
   color:var(--text);
 }
-.wrap{width:100%; max-width:1020px; padding:18px;}
-.header{text-align:center;margin-bottom:14px;}
-h1{
-  margin:0;
-  color:#000000; /* cor nova */
-  letter-spacing:.5px;
-}
-
 .sub{
-  margin-top:6px;
-  color:#2c1938; /* cor nova */
+  margin-top:2px;   /* bem próximo */
+  line-height:1.2;
+  color:#ffffff;
   font-size:14px;
 }
 
@@ -46,7 +50,7 @@ h1{
   background:var(--card);
   border-radius:18px;
   padding:18px;
-  box-shadow:0 20px 45px rgba(0,0,0,.42);
+  box-shadow:0 20px 45px rgba(162, 0, 255, 0.171);
 }
 .card h2{
   margin:0;
@@ -61,9 +65,9 @@ h1{
   font-size:12px;
   padding:6px 10px;
   border-radius:999px;
-  background:rgba(139,92,246,.18);
+  background:rgba(128, 74, 255, 0.247);
   color:var(--muted);
-  border:1px solid rgba(196,181,253,.25);
+  border:1px solid rgba(128, 74, 255, 0.247);
 }
 label{display:block;margin-top:10px;margin-bottom:6px;font-size:13px}
 input[type=number], input[type=text]{
@@ -774,11 +778,48 @@ function calcTrad(perDayOff){
   const totalNoPromo = base + offValue;
 
   // 🔹 UI DO CARD
-  $("tradRes").innerHTML =
-    `<strong>Delta considerado:</strong> ${delta} MMR<br>
-     <strong>Valor do serviço:</strong> ${money(baseValue)}<br>
-     <strong>Off-stream:</strong> ${off ? money(offValue) : money(0)}<br>
-     <strong>Total:</strong> ${money(total)}`;
+  
+  let descontoHTML = "";
+
+if(pct > 0){
+  descontoHTML = `
+    <strong>Valor base:</strong>
+    <span class="oldPrice">${money(base)}</span><br>
+    <strong>Desconto aplicado:</strong>
+    <span class="promoTag">🔥 ${Math.round(pct * 100)}% OFF</span><br>
+    <strong>Valor com desconto:</strong>
+    <span class="newPrice">${money(baseValue)}</span><br>
+  `;
+}else{
+  descontoHTML = `
+    <strong>Valor do serviço:</strong>
+    <span class="newPrice">${money(baseValue)}</span><br>
+  `;
+}
+
+if(pct > 0){
+  descontoHTML = `
+    <strong>Valor base:</strong>
+    <span class="oldPrice">${money(base)}</span><br>
+    <strong>Desconto aplicado:</strong>
+    <span class="promoTag">🔥 ${Math.round(pct * 100)}% OFF</span><br>
+    <strong>Valor com desconto:</strong>
+    <span class="newPrice">${money(baseValue)}</span><br>
+  `;
+}else{
+  descontoHTML = `
+    <strong>Valor do serviço:</strong>
+    <span class="newPrice">${money(baseValue)}</span><br>
+  `;
+}
+
+$("tradRes").innerHTML = `
+  <strong>Delta considerado:</strong> ${delta} MMR<br>
+  ${descontoHTML}
+  <strong>Off-stream:</strong> ${off ? money(offValue) : money(0)}<br>
+  <strong>Total:</strong> <span class="newPrice">${money(total)}</span>
+`;
+
 
 // 🔮 sugestão por valor
 if($("tradSuggest")?.checked){
@@ -936,19 +977,22 @@ if(off){
 }
 
 
-  const total = baseValue + offValue;
+ const total = baseValue + offValue;
 
-  $("casualRes").innerHTML =
-    `<strong>Dias:</strong> ${days}<br>
-     <strong>Valor do serviço:</strong> ${money(baseValue)}<br>
-     <strong>Off-stream:</strong> ${off ? money(offValue) : money(0)}<br>
-     <strong>Total:</strong> ${money(total)}`;
+// ✅ ESSA LINHA É A CORREÇÃO
+const totalNoPromo = baseValue + offOriginal;
 
-  return {
+$("casualRes").innerHTML =
+  `<strong>Dias:</strong> ${days}<br>
+   <strong>Valor do serviço:</strong> ${money(baseValue)}<br>
+   <strong>Off-stream:</strong> ${off ? money(offValue) : money(0)}<br>
+   <strong>Total:</strong> ${money(total)}`;
+
+return {
   selected:true,
   ok:true,
 
-  days, // ✅ ESSA LINHA É A CHAVE
+  days,
 
   baseValue,
   offOriginal,
@@ -958,11 +1002,12 @@ if(off){
   offLabel: "Boost Casual",
 
   total,
-  totalNoPromo,
+  totalNoPromo, // ✅ AGORA EXISTE
 
   text:`Boost Casual: ${days} dia(s) | Total: ${money(baseValue)}`,
   details:`...`
 };
+
 
 }
 
