@@ -599,6 +599,17 @@ button:disabled{opacity:.55;cursor:not-allowed;}
       <div class="result" id="totalRes">Selecione serviços para ver o total.</div>
       <div class="alert" id="totalAlert"></div>
 
+      <div class="hr"></div>
+
+<label>Cupom de desconto </label>
+<input type="text" id="couponInput" placeholder="Digite seu cupom aqui">
+<div class="badge" id="couponMsg"></div>
+
+<small class="muted">
+Cupons liberados somente em datas comemorativas.
+Não acumulativo com descontos base do site.
+</small>
+
       <div class="check">
         <input type="checkbox" id="globalBS">
         <span>Possuo mais de 8k de Behavior Score</span>
@@ -618,12 +629,26 @@ button:disabled{opacity:.55;cursor:not-allowed;}
 </div>
 
 
+
 <script>
 
-  /* ========= CONTROLE GLOBAL DE PROMOÇÕES ========= */
+/* ========= CUPONS ========= */
+const COUPONS = {
+  "25%OFF6ANOS": 0.25,
+  "20%OFF92067906": 0.20,
+  "15%OFF92067906": 0.15,
+  "10%OFF92067906": 0.10,
+  "5%OFF92067906":  0.05
+};
+let activeCoupon = null;
+let couponDiscount = 0;
+
 let activePromo = null;
 let promoMessage = "";
+let discountPct = 0;
 
+
+  /* ========= CONTROLE GLOBAL DE PROMOÇÕES ========= */
 
 
 /* ========= helpers ========= */
@@ -675,6 +700,37 @@ function enableGroup(useId, fields){
 
 function countBoostSelected(){
   return ["useTrad","useDouble","useCasual"].filter(id => $(id).checked).length;
+}
+
+function checkCoupon() {
+  const input = $("couponInput").value.trim().toUpperCase();
+  const msg = $("couponMsg");
+
+  if (!input) {
+    activeCoupon = null;
+    couponDiscount = 0;
+    msg.style.display = "none";
+    updateAll();
+    return;
+  }
+
+  if (COUPONS[input]) {
+    activeCoupon = input;
+    couponDiscount = COUPONS[input];
+
+    msg.style.display = "block";
+    msg.textContent = `✅ Cupom aplicado: ${input} (${Math.round(couponDiscount*100)}% OFF)`;
+
+  } else {
+    activeCoupon = null;
+    couponDiscount = 0;
+
+    msg.style.display = "block";
+    msg.style.color = "var(--danger)";
+    msg.textContent = "❌ Cupom inválido";
+  }
+
+  updateAll();
 }
 
 
@@ -1394,12 +1450,19 @@ let offTotal = 0;
   }
   
 // ===== calcula porcentagem de desconto FINAL =====
-let discountPct = 0;
-if(totalNoPromo > total){
-  discountPct = Math.round(
-    ((totalNoPromo - total) / totalNoPromo) * 100
-  );
+
+// 🔥 CUPOM TEM PRIORIDADE TOTAL
+if (activeCoupon && couponDiscount > 0) {
+  total = totalNoPromo * (1 - couponDiscount);
+  discountPct = Math.round(couponDiscount * 100);
+} else {
+  // ❌ sem cupom → desconto vem das promoções normais
+  discountPct = totalNoPromo > 0
+    ? Math.round((1 - total / totalNoPromo) * 100)
+    : 0;
 }
+
+
 
 
   // total UI
@@ -1418,11 +1481,12 @@ const priceLine = hasPromo
        <span class="oldPrice">${money(totalNoPromo)}</span>
        <span style="margin:0 8px;color:var(--muted)">→</span>
        <span class="newPrice">${money(total)}</span>
-       <span class="promoTag">🔥 ${discountPct}% OFF</span>
+       ${discountPct > 0 ? `<span class="promoTag">🔥 ${discountPct}% OFF</span>` : ""}
      </div>`
   : `<div style="margin-top:6px">
        <span class="newPrice">${money(total)}</span>
      </div>`;
+
 
   $("totalRes").innerHTML =
   `<strong>Itens selecionados:</strong><br>
@@ -1490,9 +1554,16 @@ let offTotal = 0;
     : ""
   ) +
 
+  (activeCoupon
+    ? "\n🎟️ *CUPOM APLICADO:* " + activeCoupon +
+      " (" + Math.round(couponDiscount * 100) + "% OFF)"
+    : ""
+  ) +
+
   "\n\n💵 *TOTAL FINAL:* " + money(total) +
   "\n\nObs.: Datas serão combinadas via WhatsApp."
 );
+
 
 
   window.open("https://wa.me/5521991844917?text=" + msg);
@@ -1502,6 +1573,7 @@ let offTotal = 0;
 const floatBox = $("floatingTotal");
 const ftPrice  = $("ftPrice");
 const ftDisc   = $("ftDiscount");
+
 
 if(selectedAny){
   floatBox.classList.remove("hidden");
@@ -1522,6 +1594,7 @@ if(selectedAny){
 }
 
 
+
 [
   "useTrad","useDouble","useCasual","useRecal","useReplay","useCoach",
   "tradAtual","tradDesejado","tradOff",
@@ -1538,7 +1611,11 @@ if(selectedAny){
   el.addEventListener(el.type === "checkbox" ? "change" : "input", updateAll);
 });
 
+// 👇 COLE EXATAMENTE AQUI
+$("couponInput").addEventListener("input", checkCoupon);
+
 updateAll();
+
 
 /* ===== CONTROLE DE SCROLL DO BALÃO ===== */
 let lastScrollY = window.scrollY;
