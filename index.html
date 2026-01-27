@@ -664,6 +664,52 @@ const $ = (id) => document.getElementById(id);
 const money = (n) => "R$ " + n.toFixed(2).replace(".", ",");
 const clampInt = (v, min, max) => (isNaN(v) ? null : Math.min(Math.max(v, min), max));
 
+/* ========= LIMITADORES DE INPUT (ANTI-EXCESSO) ========= */
+
+function limitInput(id, min, max, fallback = max){
+  const el = $(id);
+  if(!el) return;
+
+  el.addEventListener("input", () => {
+    if(el.value === "") return;
+
+    let val = Number(el.value);
+
+    if(isNaN(val)){
+      el.value = "";
+      return;
+    }
+
+    if(val > max){
+      el.value = fallback;
+    }
+
+    if(val < min){
+      el.value = min;
+    }
+  });
+}
+
+/* ========= APLICAÇÃO DOS LIMITES ========= */
+
+// BOOST TRADICIONAL
+limitInput("tradAtual", 0, 8500, 8500);
+limitInput("tradDesejado", 0, 8500, 8500);
+
+// DOUBLE MMR
+limitInput("doubleMMR", 0, 6000, 6000);
+limitInput("doubleDays", 1, 7, 7);
+
+// BOOST CASUAL
+limitInput("casualDays", 1, 30, 30);
+
+// RECALIBRAÇÃO
+limitInput("recalMMR", 0, 6000, 6000);
+
+// ANÁLISE DE REPLAY
+limitInput("repQtd", 1, 6, 6);
+limitInput("repDias", 1, 6, 6);
+
 
 function calcTradByBudget(mmrAtual, budget){
   let mmrTemp = mmrAtual;
@@ -933,34 +979,45 @@ function doubleBaseByMMR(mmr){
   if(mmr <= 3999) return 70;
   if(mmr <= 4999) return 122.5;
   if(mmr <= 6000) return 245;
-  return null;
+  return null; // acima de 6000 não permitido
 }
+
 function calcDouble(){
   if(!$("useDouble").checked){
     $("doubleRes").innerHTML = "Preencha os dados para ver o valor.";
     return { selected:false, ok:true, total:0, totalNoPromo:0 };
   }
 
-  const mmr  = clampInt(Number($("doubleMMR").value), 0, 99999);
-  const days = clampInt(Number($("doubleDays").value), 1, 7);
+  const mmr  = clampInt(Number($("doubleMMR").value), 0, 6000);
+  let days   = clampInt(Number($("doubleDays").value), 1, 7);
   const off  = $("doubleOff").checked;
 
+  // 🔒 trava absoluta
   if(mmr === null || days === null){
     $("doubleRes").innerHTML = "Dados inválidos.";
     return { selected:true, ok:false, total:0, totalNoPromo:0 };
   }
 
-  let baseValue = 0;
-  let cur = mmr;
-
-  for(let i=0;i<days;i++){
-    baseValue += doubleBaseByMMR(cur);
-    cur += 150;
+  if(days > 7){
+    days = 7;
+    $("doubleDays").value = 7;
   }
 
+  // ✅ preço FIXO baseado no MMR inicial
+  const basePerDay = doubleBaseByMMR(mmr);
+
+  if(basePerDay === null){
+    $("doubleRes").innerHTML = "<strong>Preço: INVÁLIDO</strong>";
+    $("doubleAlert").textContent = "🚫 Double MMR permitido apenas até 6.000 MMR.";
+    return { selected:true, ok:false, total:0, totalNoPromo:0 };
+  }
+
+  // 🔢 agora multiplica corretamente até 7 dias
+  const baseValue = basePerDay * days;
+
+  // OFF-STREAM
   let offOriginal = 0;
   let offValue = 0;
-  let promoApplied = false;
 
   if(off){
     offOriginal = days * 20;
@@ -971,7 +1028,6 @@ function calcDouble(){
       ($("coachP1").checked || $("coachP2").checked)
     ){
       offValue = days * 15;
-      promoApplied = true;
       activePromo = "Double MMR + Coach";
       promoMessage = "🔥 Desconto da promoção Double MMR + Coach ativada.";
     }else{
@@ -984,6 +1040,7 @@ function calcDouble(){
 
   $("doubleRes").innerHTML =
     `<strong>Dias:</strong> ${days}<br>
+     <strong>Valor por dia:</strong> ${money(basePerDay)}<br>
      <strong>Valor do serviço:</strong> ${money(baseValue)}<br>
      <strong>Off-stream:</strong> ${off ? money(offValue) : money(0)}<br>
      <strong>Total:</strong> ${money(total)}`;
@@ -1001,9 +1058,10 @@ function calcDouble(){
     totalNoPromo,
 
     text:`Double MMR: ${days} dia(s) | Total: ${money(baseValue)}`,
-    details:`⚡ DOUBLE MMR`
+    details:`⚡ DOUBLE MMR\n• MMR inicial: ${mmr}\n• Dias: ${days}\n• Total: ${money(total)}`
   };
 }
+
 
 
 
@@ -1352,6 +1410,7 @@ function comboCasualReplay(cas, rep){
 
   return { active:false, delta:0 };
 }
+
 
 function offBoostPerDay(){
   return 20; // valor padrão
