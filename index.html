@@ -281,29 +281,35 @@ button:disabled{opacity:.55;cursor:not-allowed;}
         <details>
   <summary>Saiba mais sobre o Double MMR</summary>
 
-  <p><strong>🎴 Parte 1 — Diária de Fichas</strong></p>
+  <p><strong>🎴 Como funciona</strong></p>
   <ul>
-    <li>Pacotes de 7 partidas (Double Down) por dia</li>
-    <li>💰 Preço base: R$ 70,00 por diária (varia conforme MMR)</li>
+    <li>O Double MMR utiliza fichas de Double Down</li>
+    <li>Cada dia contém <strong>7 partidas</strong></li>
+    <li>O cálculo é feito <strong>dia por dia</strong>, conforme o MMR atual</li>
   </ul>
 
-  <p><strong>⚠️ Regra importante</strong></p>
+  <p><strong>💰 Preço por faixa de MMR</strong></p>
+  <ul>
+    <li>🟢 <strong>0 a 4.000 MMR</strong> → R$ 70,00 por dia</li>
+    <li>🟡 <strong>4.001 a 5.000 MMR</strong> → R$ 122,50 por dia</li>
+    <li>🔴 <strong>5.001 a 6.000 MMR</strong> → R$ 245,00 por dia</li>
+  </ul>
+
+  <p><strong>⚠️ Importante</strong></p>
+  <ul>
+    <li>O valor pode mudar durante o serviço conforme o MMR sobe</li>
+    <li>Cada nova diária é cobrada pelo MMR atual do dia</li>
+    <li>Máximo permitido: <strong>6.000 MMR</strong></li>
+    <li>Máximo de contratação: <strong>7 dias</strong></li>
+  </ul>
+
+  <p><strong>📌 Exemplo prático</strong></p>
   <p>
-    Se durante o serviço o MMR ultrapassar 4.000,
-    as novas diárias passam a custar R$ 122,50.
-    As diárias já pagas mantêm o valor antigo.
+    MMR inicial: 4.900<br>
+    Dia 1 → R$ 122,50<br>
+    Dia 2 → R$ 245,00<br>
+    <strong>Total:</strong> R$ 367,50
   </p>
-
-  <p><strong>💡 Exemplo:</strong><br>
-    MMR 2100 → 6 diárias = R$ 70 × 6 = R$ 420<br>
-    Ao subir para 4.000+, novas diárias = R$ 122,50
-  </p>
-
-  <p><strong>🎴 Parte 2 — Faixa 4.000 a 5.000</strong></p>
-  <ul>
-    <li>Preço: R$ 122,50 por diária</li>
-    <li>Pode haver limitação de diárias por compra</li>
-  </ul>
 </details>
 
 <div class="result" id="doubleRes">Selecione as opções para ver o valor.</div>
@@ -976,10 +982,10 @@ if($("tradSuggest")?.checked){
 
 /* ========= Double MMR ========= */
 function doubleBaseByMMR(mmr){
-  if(mmr <= 3999) return 70;
-  if(mmr <= 4999) return 122.5;
+  if(mmr <= 4000) return 70;
+  if(mmr <= 5000) return 122.5;
   if(mmr <= 6000) return 245;
-  return null; // acima de 6000 não permitido
+  return null;
 }
 
 function calcDouble(){
@@ -988,34 +994,33 @@ function calcDouble(){
     return { selected:false, ok:true, total:0, totalNoPromo:0 };
   }
 
-  const mmr  = clampInt(Number($("doubleMMR").value), 0, 6000);
-  let days   = clampInt(Number($("doubleDays").value), 1, 7);
-  const off  = $("doubleOff").checked;
+  let mmrAtual = clampInt(Number($("doubleMMR").value), 0, 6000);
+  let days     = clampInt(Number($("doubleDays").value), 1, 7);
+  const off    = $("doubleOff").checked;
 
-  // 🔒 trava absoluta
-  if(mmr === null || days === null){
+  if(mmrAtual === null || days === null){
     $("doubleRes").innerHTML = "Dados inválidos.";
     return { selected:true, ok:false, total:0, totalNoPromo:0 };
   }
 
-  if(days > 7){
-    days = 7;
-    $("doubleDays").value = 7;
+  let baseValue = 0;
+  let mmrTemp = mmrAtual;
+
+  // 🔁 cálculo DIA A DIA (CORRETO)
+  for(let i = 1; i <= days; i++){
+    const pricePerDay = doubleBaseByMMR(mmrTemp);
+
+    if(pricePerDay === null){
+      $("doubleRes").innerHTML = "<strong>Preço: INVÁLIDO</strong>";
+      $("doubleAlert").textContent = "🚫 Double MMR permitido apenas até 6.000 MMR.";
+      return { selected:true, ok:false, total:0, totalNoPromo:0 };
+    }
+
+    baseValue += pricePerDay;
+    mmrTemp += 150; // ganho médio por dia
   }
 
-  // ✅ preço FIXO baseado no MMR inicial
-  const basePerDay = doubleBaseByMMR(mmr);
-
-  if(basePerDay === null){
-    $("doubleRes").innerHTML = "<strong>Preço: INVÁLIDO</strong>";
-    $("doubleAlert").textContent = "🚫 Double MMR permitido apenas até 6.000 MMR.";
-    return { selected:true, ok:false, total:0, totalNoPromo:0 };
-  }
-
-  // 🔢 agora multiplica corretamente até 7 dias
-  const baseValue = basePerDay * days;
-
-  // OFF-STREAM
+  // 🔹 OFF-STREAM
   let offOriginal = 0;
   let offValue = 0;
 
@@ -1039,11 +1044,10 @@ function calcDouble(){
   const totalNoPromo = baseValue + offOriginal;
 
   $("doubleRes").innerHTML =
-    `<strong>Dias:</strong> ${days}<br>
-     <strong>Valor por dia:</strong> ${money(basePerDay)}<br>
+    `<strong>Dias contratados:</strong> ${days}<br>
      <strong>Valor do serviço:</strong> ${money(baseValue)}<br>
      <strong>Off-stream:</strong> ${off ? money(offValue) : money(0)}<br>
-     <strong>Total:</strong> ${money(total)}`;
+     <strong>Total:</strong> <span class="newPrice">${money(total)}</span>`;
 
   return {
     selected:true,
@@ -1058,7 +1062,13 @@ function calcDouble(){
     totalNoPromo,
 
     text:`Double MMR: ${days} dia(s) | Total: ${money(baseValue)}`,
-    details:`⚡ DOUBLE MMR\n• MMR inicial: ${mmr}\n• Dias: ${days}\n• Total: ${money(total)}`
+    details:
+`⚡ DOUBLE MMR
+• MMR inicial: ${mmrAtual}
+• Dias contratados: ${days}
+• Valor do serviço: ${money(baseValue)}
+• Off-stream: ${off ? money(offValue) : "Não"}
+• Total: ${money(total)}`
   };
 }
 
