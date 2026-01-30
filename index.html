@@ -1615,6 +1615,7 @@ let offTotal = 0;
 
   const msg = encodeURIComponent(
   "Olá! Quero contratar um pacote na *SEKAI DOTA BOOST*.\n\n" +
+
   detalhes.join("\n\n") +
 
   (offLines.length
@@ -1624,15 +1625,23 @@ let offTotal = 0;
     : ""
   ) +
 
+  "\n\n📊 *RESUMO GERAL*" +
+  "\n• Total sem descontos: " + money(totalNoPromo) +
+  (Math.abs(totalNoPromo - total) > 0.01
+    ? "\n• Descontos aplicados: - " + money(totalNoPromo - total)
+    : ""
+  ) +
+
   (activeCoupon
-    ? "\n\n🎟️ *CUPOM APLICADO:* " + activeCoupon +
+    ? "\n• Cupom aplicado: " + activeCoupon +
       " (" + Math.round(couponDiscount * 100) + "% OFF)"
     : ""
   ) +
-  
+
   "\n\n💵 *TOTAL FINAL:* " + money(total) +
-  "\n\nObs.: Datas serão combinadas via WhatsApp."
+  "\n\nObs.: Datas e horários serão combinados via WhatsApp após a confirmação do pagamento."
 );
+
 
 window.open("https://wa.me/5521991844917?text=" + msg);
 }; 
