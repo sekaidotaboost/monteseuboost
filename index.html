@@ -1128,7 +1128,13 @@ return {
   totalNoPromo, // ✅ AGORA EXISTE
 
   text:`Boost Casual: ${days} dia(s) | Total: ${money(baseValue)}`,
-  details:`...`
+  details:
+`💰 BOOST CASUAL
+• Dias contratados: ${days}
+• Valor do serviço: ${money(baseValue)}
+• Off-stream: ${off ? money(offValue) : "Não"}
+• Total: ${money(total)}`
+
 };
 
 
