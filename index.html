@@ -1460,6 +1460,26 @@ if(sug && sug.checked){
   enableGroup("useReplay", ["repQtd","repDias","repOff"]);
   enableGroup("useCoach",  ["coachP1","coachP2"]);
 
+  // 🔒 REGRA REPLAY: dias não podem ultrapassar análises
+if($("useReplay").checked){
+  let qtd  = Number($("repQtd").value);
+  let dias = Number($("repDias").value);
+
+  // segurança
+  if(isNaN(qtd)  || qtd  < 1) qtd  = 1;
+  if(isNaN(dias) || dias < 1) dias = 1;
+
+  // limites absolutos
+  qtd  = Math.min(qtd, 6);
+  dias = Math.min(dias, 6);
+
+  // regra FINAL
+  if(dias > qtd){
+    $("repDias").value = qtd;
+  }
+}
+
+
   const perDayOff = offBoostPerDay();
 
   const trad = calcTrad(perDayOff);
