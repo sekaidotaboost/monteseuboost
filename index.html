@@ -200,6 +200,16 @@ button:disabled{opacity:.55;cursor:not-allowed;}
           <span>Serviço off-stream? (transmissão na Twitch sekai_oficial)</span>
         </div>
         <small class="muted">Obs.: o cálculo de off-stream é interno e não exibe dias.</small>
+        <div class="check" id="tradSuperPromoWrap" style="display:none">
+  <input type="checkbox" id="tradSuperPromo" disabled>
+  <span>🔥 OFF SUPER PROMO</span>
+</div>
+<small class="muted" id="tradSuperPromoInfo" style="display:none">
+  Promoção exclusiva do Boost Tradicional. Não acumulativa com cupom.<br>
+  • 0 a 3999 MMR → 10% OFF<br>
+  • 4000 a 4999 MMR → 15% OFF<br>
+  • 5000 a 8500 MMR → 25% OFF
+</small>
 
 <!-- SUGERIR PREÇO -->
 
@@ -644,7 +654,7 @@ const COUPONS = {
   "25%OFF92067906": 0.25,
   "20%OFF92067906": 0.20,
   "15%OFF92067906": 0.15,
-  "10%OFF92067906": 0.10,
+  "10%OFFMARÇO": 0.10,
   "5%OFF92067906":  0.05
 };
 let activeCoupon = null;
@@ -657,6 +667,19 @@ let discountPct = 0;
 
   /* ========= CONTROLE GLOBAL DE PROMOÇÕES ========= */
 
+
+/* ========= aqui e a promoçao 10% 15% e 25% SUPER PROMO BOOST TRADICIONAL para desativar subistitua true por false ========= */
+const SUPER_PROMO_ENABLED = false; 
+
+
+// troque para false quando não quiser mostrar a promoção
+
+function getTradSuperPromoPct(mmrAtual){
+  if(mmrAtual >= 0 && mmrAtual < 4000) return 0.10;
+  if(mmrAtual >= 4000 && mmrAtual < 5000) return 0.15;
+  if(mmrAtual >= 5000 && mmrAtual <= 8500) return 0.25;
+  return 0;
+}
 
 /* ========= helpers ========= */
 const $ = (id) => document.getElementById(id);
@@ -843,19 +866,36 @@ function calcTrad(perDayOff){
   if(!$("useTrad").checked){
     $("tradRes").innerHTML = "Preencha os dados para ver o valor.";
     $("tradAlert").textContent = "";
-    return { selected:false, ok:true, total:0, totalNoPromo:0 };
+    return {
+      selected:false,
+      ok:true,
+      total:0,
+      totalNoPromo:0,
+      superPromoApplied:false,
+      superPromoDiscount:0,
+      superPromoPct:0
+    };
   }
 
   const atual = clampInt(Number($("tradAtual").value), 0, 8500);
   const des   = clampInt(Number($("tradDesejado").value), 0, 8500);
   const off   = $("tradOff").checked;
+  const superPromoChecked = SUPER_PROMO_ENABLED && $("tradSuperPromo") && $("tradSuperPromo").checked;
 
   $("tradAlert").textContent = "";
 
   if(atual === null || des === null || des <= atual){
     $("tradRes").innerHTML = "<strong>Preço: INVÁLIDO</strong>";
     $("tradAlert").textContent = "🔴 Verifique o MMR informado.";
-    return { selected:true, ok:false, total:0, totalNoPromo:0 };
+    return {
+      selected:true,
+      ok:false,
+      total:0,
+      totalNoPromo:0,
+      superPromoApplied:false,
+      superPromoDiscount:0,
+      superPromoPct:0
+    };
   }
 
   let delta = des - atual;
@@ -866,98 +906,103 @@ function calcTrad(perDayOff){
       "⚠️ Pedido mínimo para contas abaixo de 4.000 MMR é 500 MMR.";
   }
 
-  // 🔹 BASE DO SERVIÇO
+  // valor base original do serviço
   const base = calcTradBaseProgressivo(atual, des);
 
-  // 🔹 DESCONTO DO SERVIÇO
-  const pct = tradDiscountPct(atual, delta);
-  const baseValue = base - (base * pct);
+    // desconto normal do serviço
+  let pct = 0;
+  let baseAfterSiteDiscount = base;
 
-  // 🔹 OFF-STREAM (SEPARADO)
+  // SUPER PROMO
+  let superPromoPct = 0;
+  let superPromoDiscount = 0;
+  let baseValue = base;
+  let superPromoApplied = false;
+
+  if(superPromoChecked){
+    // se a super promo estiver ativa, o desconto padrão do site é desligado
+    superPromoPct = getTradSuperPromoPct(atual);
+
+    if(superPromoPct > 0){
+      superPromoDiscount = base * superPromoPct;
+      baseValue = base - superPromoDiscount;
+      superPromoApplied = true;
+    }
+  }else{
+    // só aplica desconto padrão se a super promo NÃO estiver ativa
+    pct = tradDiscountPct(atual, delta);
+    baseAfterSiteDiscount = base - (base * pct);
+    baseValue = baseAfterSiteDiscount;
+  }
+
+  // OFF-STREAM
   let offValue = 0;
   if(off){
     const dias = Math.max(1, Math.floor(delta / 150));
     offValue = dias * perDayOff;
   }
 
-  // 🔹 TOTAL (somado apenas para controle interno)
   const total = baseValue + offValue;
   const totalNoPromo = base + offValue;
 
-  // 🔹 UI DO CARD
-  
-  let descontoHTML = "";
+  let html = `<strong>Delta considerado:</strong> ${delta} MMR<br>`;
 
-if(pct > 0){
-  descontoHTML = `
-    <strong>Valor base:</strong>
-    <span class="oldPrice">${money(base)}</span><br>
-    <strong>Desconto aplicado:</strong>
-    <span class="promoTag">🔥 ${Math.round(pct * 100)}% OFF</span><br>
-    <strong>Valor com desconto:</strong>
-    <span class="newPrice">${money(baseValue)}</span><br>
-  `;
-}else{
-  descontoHTML = `
-    <strong>Valor do serviço:</strong>
-    <span class="newPrice">${money(baseValue)}</span><br>
-  `;
-}
-
-if(pct > 0){
-  descontoHTML = `
-    <strong>Valor base:</strong>
-    <span class="oldPrice">${money(base)}</span><br>
-    <strong>Desconto aplicado:</strong>
-    <span class="promoTag">🔥 ${Math.round(pct * 100)}% OFF</span><br>
-    <strong>Valor com desconto:</strong>
-    <span class="newPrice">${money(baseValue)}</span><br>
-  `;
-}else{
-  descontoHTML = `
-    <strong>Valor do serviço:</strong>
-    <span class="newPrice">${money(baseValue)}</span><br>
-  `;
-}
-
-$("tradRes").innerHTML = `
-  <strong>Delta considerado:</strong> ${delta} MMR<br>
-  ${descontoHTML}
-  <strong>Off-stream:</strong> ${off ? money(offValue) : money(0)}<br>
-  <strong>Total:</strong> <span class="newPrice">${money(total)}</span>
-`;
-
-
-// 🔮 sugestão por valor
-if($("tradSuggest")?.checked){
-  const budget = Number($("tradBudget").value);
-
-  if(budget > 0){
-    const sug = calcTradByBudget(atual, budget);
-    const ganho = sug.mmrFinal - atual;
-
-    $("tradSuggestRes").innerHTML =
-      `<strong>Com ${money(budget)} você pode chegar aproximadamente até:</strong><br>
-       <strong>${sug.mmrFinal} MMR</strong><br>
-       <span class="ok">👉 Isso representa um ganho de +${ganho} MMR</span><br>
-       <small class="muted">Estimativa baseada no cálculo atual.</small>`;
+    if(superPromoApplied){
+    html += `
+      <strong>Valor base:</strong> <span class="oldPrice">${money(base)}</span><br>
+      <strong>OFF SUPER PROMO:</strong> <span class="promoTag">🔥 ${Math.round(superPromoPct * 100)}% OFF</span><br>
+      <strong>Valor com OFF SUPER PROMO:</strong> <span class="newPrice">${money(baseValue)}</span><br>
+    `;
+  }else if(pct > 0){
+    html += `
+      <strong>Valor base:</strong> <span class="oldPrice">${money(base)}</span><br>
+      <strong>Desconto padrão do site:</strong> <span class="promoTag">🔥 ${Math.round(pct * 100)}% OFF</span><br>
+      <strong>Após desconto padrão:</strong> <span class="newPrice">${money(baseAfterSiteDiscount)}</span><br>
+    `;
+  }else{
+    html += `
+      <strong>Valor do serviço:</strong> <span class="newPrice">${money(baseValue)}</span><br>
+    `;
   }
-}
 
+  html += `
+    <strong>Off-stream:</strong> ${off ? money(offValue) : money(0)}<br>
+    <strong>Total:</strong> <span class="newPrice">${money(total)}</span>
+  `;
+
+  $("tradRes").innerHTML = html;
+
+  // sugestão por valor
+  if($("tradSuggest")?.checked){
+    const budget = Number($("tradBudget").value);
+
+    if(budget > 0){
+      const sug = calcTradByBudget(atual, budget);
+      const ganho = sug.mmrFinal - atual;
+
+      $("tradSuggestRes").innerHTML =
+        `<strong>Com ${money(budget)} você pode chegar aproximadamente até:</strong><br>
+         <strong>${sug.mmrFinal} MMR</strong><br>
+         <span class="ok">👉 Isso representa um ganho de +${ganho} MMR</span><br>
+         <small class="muted">Estimativa baseada no cálculo atual.</small>`;
+    }
+  }
 
   return {
     selected: true,
     ok: true,
 
-    // 🔹 valores separados
     baseValue,
     offValue,
     offLabel: "Boost Tradicional",
 
-    // 🔹 compatibilidade com o resto do sistema
     total,
     totalNoPromo,
     tradSpend: baseValue,
+
+    superPromoApplied,
+    superPromoDiscount,
+    superPromoPct,
 
     text: `Boost Tradicional: +${delta} MMR | Total: ${money(baseValue)}`,
 
@@ -966,6 +1011,9 @@ if($("tradSuggest")?.checked){
 • MMR atual: ${atual}
 • MMR desejado: ${des}
 • Quantidade: ${delta} MMR
+• Valor base: ${money(base)}
+• Desconto padrão do site: ${pct > 0 ? Math.round(pct * 100) + "% OFF" : "Nenhum"}
+• OFF SUPER PROMO: ${superPromoApplied ? Math.round(superPromoPct * 100) + "% OFF" : "Não"}
 • Valor do serviço: ${money(baseValue)}
 • Off-stream: ${off ? money(offValue) : "Não"}
 • Total: ${money(total)}`
@@ -1445,6 +1493,21 @@ function updateAll(){
   if(sug && box){
     box.style.display = sug.checked ? "block" : "none";
   }
+    // 🔥 CONTROLE VISUAL DA SUPER PROMO DO TRADICIONAL
+  const tradSuperPromoWrap = $("tradSuperPromoWrap");
+  const tradSuperPromoInfo = $("tradSuperPromoInfo");
+  const tradSuperPromo = $("tradSuperPromo");
+
+  if(tradSuperPromoWrap && tradSuperPromoInfo && tradSuperPromo){
+    if(SUPER_PROMO_ENABLED){
+      tradSuperPromoWrap.style.display = $("useTrad").checked ? "flex" : "none";
+      tradSuperPromoInfo.style.display = $("useTrad").checked ? "block" : "none";
+    }else{
+      tradSuperPromoWrap.style.display = "none";
+      tradSuperPromoInfo.style.display = "none";
+      tradSuperPromo.checked = false;
+    }
+  }
   // 🔒 trava MMR desejado quando sugestão estiver ativa
 if(sug && sug.checked){
   $("tradDesejado").disabled = true;
@@ -1453,7 +1516,7 @@ if(sug && sug.checked){
 }
 
 
-  enableGroup("useTrad",   ["tradAtual","tradDesejado","tradOff"]);
+  enableGroup("useTrad",   ["tradAtual","tradDesejado","tradOff","tradSuperPromo"]);
   enableGroup("useDouble", ["doubleMMR","doubleDays","doubleOff"]);
   enableGroup("useCasual", ["casualDays","casualOff"]);
   enableGroup("useRecal",  ["recalMMR","recalOff"]);
@@ -1488,6 +1551,29 @@ if($("useReplay").checked){
   const rec  = calcRecal();
   const rep  = calcReplay();
 
+  // 🔒 BLOQUEIO DE CUPOM SE A SUPER PROMO DO TRADICIONAL ESTIVER ATIVA
+  const couponInput = $("couponInput");
+  const couponMsg = $("couponMsg");
+  const tradSuperPromoIsActive = trad.superPromoApplied === true;
+
+  if(tradSuperPromoIsActive){
+    activeCoupon = null;
+    couponDiscount = 0;
+    couponInput.value = "";
+    couponInput.disabled = true;
+    couponMsg.style.display = "block";
+    couponMsg.style.color = "var(--danger)";
+    couponMsg.textContent = "❌ Cupom desativado: OFF SUPER PROMO não é acumulativa.";
+  }else{
+    couponInput.disabled = false;
+
+    if(!couponInput.value.trim()){
+      couponMsg.style.display = "none";
+      couponMsg.textContent = "";
+      couponMsg.style.color = "var(--success)";
+    }
+  }
+
   // trad eligibility for coach discount: trad selected, ok, and spend >= 200
   const tradEligible = trad.selected && trad.ok && trad.tradSpend >= 200;
 
@@ -1519,6 +1605,11 @@ let offTotal = 0;
       // ✅ DESCONTO DE VOLUME DO REPLAY (AQUI 👇)
       if(obj.descontoReplay && obj.descontoReplay > 0){
         items.push(`• Replay — desconto por volume: -${money(obj.descontoReplay)}`);
+      }
+
+      // ✅ DESCONTO DA OFF SUPER PROMO DO BOOST TRADICIONAL
+      if(obj.superPromoApplied && obj.superPromoDiscount > 0){
+        items.push(`• Boost Tradicional — OFF SUPER PROMO: -${money(obj.superPromoDiscount)}`);
       }
 
       // 🔹 captura OFF-STREAM
@@ -1601,7 +1692,10 @@ const priceLine = hasPromo
    // 🔔 MENSAGEM DE PROMOÇÃO ATIVA
 const promoBox = $("promoMessageBox");
 
-if(promoMessage){
+if(trad.superPromoApplied){
+  promoBox.style.display = "block";
+  promoBox.textContent = `🔥 OFF SUPER PROMO ativada no Boost Tradicional (${Math.round(trad.superPromoPct * 100)}% OFF). Cupom desativado por não ser acumulativo.`;
+}else if(promoMessage){
   promoBox.style.display = "block";
   promoBox.textContent = promoMessage;
 }else{
@@ -1700,7 +1794,7 @@ if(selectedAny){
 
 [
   "useTrad","useDouble","useCasual","useRecal","useReplay","useCoach",
-  "tradAtual","tradDesejado","tradOff",
+  "tradAtual","tradDesejado","tradOff","tradSuperPromo",
   "doubleMMR","doubleDays","doubleOff",
   "casualDays","casualOff",
   "recalMMR","recalOff",
