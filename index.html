@@ -160,6 +160,43 @@ button:disabled{opacity:.55;cursor:not-allowed;}
   color:#facc15;
 }
 
+/* ========= NOVOS SERVIÇOS ========= */
+input[type=range]{
+  -webkit-appearance:none;
+  width:100%;
+  height:10px;
+  border-radius:999px;
+  background:linear-gradient(90deg,#111,#ef4444);
+}
+
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:#ef4444;
+  border:3px solid #000;
+}
+
+input[type=range]::-moz-range-thumb{
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:#ef4444;
+  border:3px solid #000;
+}
+
+.rangeRow{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.offBadge{
+  color:#f97316;
+  font-weight:700;
+}
+
 </style>
 </head>
 <body>
@@ -533,6 +570,113 @@ button:disabled{opacity:.55;cursor:not-allowed;}
       </div>
     </div>
 
+
+        <!-- Low Priority -->
+    <div class="card">
+      <h2>
+        <span>Low Priority</span>
+        <span class="pill">🚫 Sem desconto</span>
+        <span class="pill">
+          <label class="check" style="margin:0">
+            <input type="checkbox" id="useLow"> Incluir
+          </label>
+        </span>
+      </h2>
+
+      <div class="serviceBody" id="bodyLow">
+        <p style="font-size:13px;line-height:1.5">
+          • Preço base: <strong>R$ 40,00 por Low</strong><br>
+          • Serviço focado em <strong>entregar a conta sem Low Priority</strong><br>
+          • Quantidade representa o <strong>limite operacional</strong>
+        </p>
+
+        <label>Quantidade de Low Priority (2 a 5)</label>
+        <input type="range" id="lowQty" min="2" max="5" step="1" value="2" disabled>
+
+        <div class="result" id="lowQtyView">Quantidade selecionada: <strong>2</strong></div>
+
+        <div class="check">
+          <input type="checkbox" id="lowOff" disabled>
+          <span>Executar serviço OFF-STREAM (+ R$20,00)</span>
+        </div>
+
+        <details>
+          <summary>Saiba mais sobre a Low Priority</summary>
+          <p><strong>📘 Sobre o serviço</strong></p>
+          <ul>
+            <li>Objetivo: entregar a conta sem Low Priority</li>
+            <li>A quantidade selecionada representa um limite operacional</li>
+            <li>Streaming incluso, OFF opcional</li>
+          </ul>
+        </details>
+
+        <div class="result" id="lowRes">Selecione as opções para ver o valor.</div>
+        <div class="alert" id="lowAlert"></div>
+      </div>
+    </div>
+
+
+        <!-- Turbo Evento de XP -->
+    <div class="card">
+      <h2>
+        <span>Turbo Evento de XP</span>
+        <span class="pill">⚡ Sem desconto</span>
+        <span class="pill">
+          <label class="check" style="margin:0">
+            <input type="checkbox" id="useTurbo"> Incluir
+          </label>
+        </span>
+      </h2>
+
+      <div class="serviceBody" id="bodyTurbo">
+        <p style="font-size:13px;line-height:1.5">
+          • <strong>1 dia</strong> representa <strong>8 jogos</strong><br>
+          • Cada dia custa <strong>R$ 80,00</strong><br>
+          • O serviço é vendido <strong>por dia</strong>, não por vitória
+        </p>
+
+        <label>Dias de serviço (1 a 30)</label>
+        <input type="number" id="turboDays" min="1" max="30" value="1" disabled>
+
+        <div class="check">
+          <input type="checkbox" id="turboOff" disabled>
+          <span>Off-stream (sem live) + R$ 20,00 por dia</span>
+        </div>
+
+        <div class="hr"></div>
+
+        <small class="muted">
+          Esta simulação é <strong>apenas informativa</strong> e não interfere no valor do serviço contratado.
+        </small>
+
+        <label>Vitórias por dia (1 a 8)</label>
+        <div class="rangeRow">
+          <input type="range" id="turboWins" min="1" max="8" value="6" disabled>
+          <strong id="turboWinsTxt">6</strong>/8
+        </div>
+
+        <label>Dias simulados (1 a 30)</label>
+        <div class="rangeRow">
+          <input type="range" id="turboSimDays" min="1" max="30" value="1" disabled>
+          <strong id="turboSimDaysTxt">1</strong>
+        </div>
+
+        <div class="result" id="turboSimRes">A simulação de XP aparecerá aqui.</div>
+
+        <details>
+          <summary>Saiba mais sobre o Turbo Evento</summary>
+          <ul>
+            <li>Serviço por dia, não por vitória</li>
+            <li>1 dia = 8 partidas</li>
+            <li>Vitórias não são garantidas</li>
+            <li>Pagamento antecipado</li>
+          </ul>
+        </details>
+
+        <div class="result" id="turboRes">Selecione as opções para ver o valor.</div>
+        <div class="alert" id="turboAlert"></div>
+      </div>
+    </div>
     
 <!-- Informações de desconto -->
 <div class="card big">
@@ -732,6 +876,9 @@ limitInput("recalMMR", 0, 6000, 6000);
 limitInput("repQtd", 1, 6, 6);
 limitInput("repDias", 1, 6, 6);
 
+// TURBO EVENTO DE XP
+limitInput("turboDays", 1, 30, 30);
+limitInput("turboSimDays", 1, 30, 30);
 
 function calcTradByBudget(mmrAtual, budget){
   let mmrTemp = mmrAtual;
@@ -762,6 +909,8 @@ function syncBodies(){
     ["useRecal","bodyRecal"],
     ["useReplay","bodyReplay"],
     ["useCoach","bodyCoach"],
+    ["useLow","bodyLow"],
+    ["useTurbo","bodyTurbo"],
   ];
   pairs.forEach(([chk, body]) => {
     $(body).classList.toggle("active", $(chk).checked);
@@ -862,7 +1011,7 @@ function tradDiscountPct(mmrAtual, delta){
 }
 
 
-function calcTrad(perDayOff){
+function calcTrad(perDayOff, disableDiscounts = false){
   if(!$("useTrad").checked){
     $("tradRes").innerHTML = "Preencha os dados para ver o valor.";
     $("tradAlert").textContent = "";
@@ -919,7 +1068,7 @@ function calcTrad(perDayOff){
   let baseValue = base;
   let superPromoApplied = false;
 
-  if(superPromoChecked){
+    if(!disableDiscounts && superPromoChecked){
     // se a super promo estiver ativa, o desconto padrão do site é desligado
     superPromoPct = getTradSuperPromoPct(atual);
 
@@ -928,11 +1077,16 @@ function calcTrad(perDayOff){
       baseValue = base - superPromoDiscount;
       superPromoApplied = true;
     }
-  }else{
-    // só aplica desconto padrão se a super promo NÃO estiver ativa
-    pct = tradDiscountPct(atual, delta);
-    baseAfterSiteDiscount = base - (base * pct);
-    baseValue = baseAfterSiteDiscount;
+    }else{
+    if(!disableDiscounts){
+      pct = tradDiscountPct(atual, delta);
+      baseAfterSiteDiscount = base - (base * pct);
+      baseValue = baseAfterSiteDiscount;
+    }else{
+      pct = 0;
+      baseAfterSiteDiscount = base;
+      baseValue = base;
+    }
   }
 
   // OFF-STREAM
@@ -1029,7 +1183,7 @@ function doubleBaseByMMR(mmr){
   return null;
 }
 
-function calcDouble(){
+function calcDouble(disableDiscounts = false){
   if(!$("useDouble").checked){
     $("doubleRes").innerHTML = "Preencha os dados para ver o valor.";
     return { selected:false, ok:true, total:0, totalNoPromo:0 };
@@ -1068,7 +1222,8 @@ function calcDouble(){
   if(off){
     offOriginal = days * 20;
 
-    if(
+     if(
+      !disableDiscounts &&
       activePromo === null &&
       $("useCoach").checked &&
       ($("coachP1").checked || $("coachP2").checked)
@@ -1118,7 +1273,7 @@ function calcDouble(){
 
 
 /* ========= Boost Casual ========= */
-function calcCasual(){
+function calcCasual(disableDiscounts = false){
   if(!$("useCasual").checked){
     $("casualRes").innerHTML = "Preencha os dados para ver o valor.";
     return { selected:false, ok:true, total:0, totalNoPromo:0 };
@@ -1138,7 +1293,7 @@ let offPromoText = "";
 if(off){
   offOriginal = days * 20;
 
-  if(activePromo === null){
+    if(!disableDiscounts && activePromo === null){
     offValue = days * 15;
     promoApplied = true;
     offPromoText = "Promoção fixa do Boost Casual";
@@ -1259,7 +1414,7 @@ function calcRecal(){
 
 
 /* ========= Replay (CORRIGIDO) ========= */
-function calcReplay(){
+function calcReplay(disableDiscounts = false){
   if(!$("useReplay").checked){
     $("repRes").innerHTML = "Preencha os dados para ver o valor.";
     return { selected:false, ok:true, total:0, totalNoPromo:0 };
@@ -1288,14 +1443,15 @@ let baseValue = baseNoPromo;
 let descontoReplay = 0;
 
 // 🔥 DESCONTO POR VOLUME (2 ou 3 análises no mesmo dia)
-if(porDia >= 2 && porDia <= 3){
+if(!disableDiscounts && porDia >= 2 && porDia <= 3){
   baseValue = qtd * 40; // preço com desconto
   descontoReplay = baseNoPromo - baseValue;
 }
 
   let promoApplied = false;
 
-  if(
+    if(
+  !disableDiscounts &&
   activePromo === null &&
   $("useCoach").checked &&
   $("coachP1").checked &&
@@ -1314,15 +1470,15 @@ if(porDia >= 2 && porDia <= 3){
   let offPromoText = "";
 
   if(off){
-    offOriginal = dias * (porDia > 3 ? 20 : 10);
+  offOriginal = dias * (porDia > 3 ? 20 : 10);
 
-    if(porDia <= 3){
-      offValue = dias * 10;
-      offPromoText = "Promoção: até 3 análises por dia";
-    }else{
-      offValue = dias * 20;
-    }
+  if(!disableDiscounts && porDia <= 3){
+    offValue = dias * 10;
+    offPromoText = "Promoção: até 3 análises por dia";
+  }else{
+    offValue = offOriginal;
   }
+}
 
   const total = baseValue + offValue;
   const totalNoPromo = baseNoPromo + offOriginal;
@@ -1393,7 +1549,7 @@ ${descontoReplay > 0
 
 
 /* ========= Coach ========= */
-function calcCoach(tradEligible){
+function calcCoach(tradEligible, disableDiscounts = false){
   if(!$("useCoach").checked){
     $("coachRes").innerHTML = "Selecione as opções para ver o valor.";
     $("coachAlert").textContent = "";
@@ -1416,7 +1572,7 @@ function calcCoach(tradEligible){
 
   // desconto: 50% na parte 2 se Boost Tradicional >= R$200
   let disc = 0;
-  if(p1 && p2 && tradEligible){
+    if(!disableDiscounts && p1 && p2 && tradEligible){
     disc = 100;
   }
 
@@ -1448,9 +1604,10 @@ function calcCoach(tradEligible){
 
 
 /* ========= Combo controlado ========= */
-function comboCasualReplay(cas, rep){
+function comboCasualReplay(cas, rep, disableDiscounts = false){
   // 🔥 Combo: Boost Casual + Replay
-  if(
+    if(
+    !disableDiscounts &&
     activePromo === null &&
     cas.selected && cas.ok &&
     rep.selected && rep.ok &&
@@ -1473,6 +1630,167 @@ function offBoostPerDay(){
   return 20; // valor padrão
 }
 
+
+/* ========= Low Priority ========= */
+function calcLowPriority(){
+  if(!$("useLow").checked){
+    $("lowRes").innerHTML = "Selecione as opções para ver o valor.";
+    $("lowAlert").textContent = "";
+    $("lowQtyView").innerHTML = `Quantidade selecionada: <strong>${$("lowQty").value}</strong>`;
+    return {
+      selected:false,
+      ok:true,
+      total:0,
+      totalNoPromo:0,
+      text:"",
+      details:"",
+      blocksDiscounts:false
+    };
+  }
+
+  const qty = clampInt(Number($("lowQty").value), 2, 5);
+  const off = $("lowOff").checked;
+
+  $("lowAlert").textContent = "";
+  $("lowQtyView").innerHTML = `Quantidade selecionada: <strong>${qty}</strong>`;
+
+  if(qty === null){
+    $("lowRes").innerHTML = "<strong>Preço: INVÁLIDO</strong>";
+    $("lowAlert").textContent = "🔴 Quantidade inválida.";
+    return {
+      selected:true,
+      ok:false,
+      total:0,
+      totalNoPromo:0,
+      text:"",
+      details:"",
+      blocksDiscounts:true
+    };
+  }
+
+  const base = qty * 40;
+  const offValue = off ? 20 : 0;
+  const total = base + offValue;
+
+  $("lowRes").innerHTML = `
+    <strong>Low Priority:</strong> ${qty}<br>
+    <strong>Valor do serviço:</strong> ${money(base)}<br>
+    <strong>Off-stream:</strong> ${off ? money(offValue) : money(0)}<br>
+    <strong>Total:</strong> <span class="newPrice">${money(total)}</span>
+  `;
+
+  return {
+    selected:true,
+    ok:true,
+    total,
+    totalNoPromo: total,
+    baseValue: base,
+    offValue,
+    offLabel: "Low Priority",
+    text:`Low Priority: ${qty} | Total: ${money(total)}`,
+    details:
+`🚫 LOW PRIORITY
+• Quantidade selecionada: ${qty}
+• Valor do serviço: ${money(base)}
+• Off-stream: ${off ? money(offValue) : "Não"}
+• Total: ${money(total)}`,
+    blocksDiscounts:true
+  };
+}
+
+/* ========= Turbo Evento de XP ========= */
+function formatXP(v){
+  return v.toLocaleString("pt-BR") + " XP";
+}
+
+function calcTurboXP(){
+  if(!$("useTurbo").checked){
+    $("turboRes").innerHTML = "Selecione as opções para ver o valor.";
+    $("turboAlert").textContent = "";
+    $("turboSimRes").innerHTML = "A simulação de XP aparecerá aqui.";
+    return {
+      selected:false,
+      ok:true,
+      total:0,
+      totalNoPromo:0,
+      text:"",
+      details:"",
+      blocksDiscounts:false
+    };
+  }
+
+  const days = clampInt(Number($("turboDays").value), 1, 30);
+  const off = $("turboOff").checked;
+
+  const wins = clampInt(Number($("turboWins").value), 1, 8);
+  const simDays = clampInt(Number($("turboSimDays").value), 1, 30);
+
+  $("turboWinsTxt").textContent = wins ?? 1;
+  $("turboSimDaysTxt").textContent = simDays ?? 1;
+  $("turboAlert").textContent = "";
+
+  if(days === null){
+    $("turboRes").innerHTML = "<strong>Preço: INVÁLIDO</strong>";
+    $("turboAlert").textContent = "🔴 Dias inválidos.";
+    return {
+      selected:true,
+      ok:false,
+      total:0,
+      totalNoPromo:0,
+      text:"",
+      details:"",
+      blocksDiscounts:true
+    };
+  }
+
+  const PRICE_DAY = 80;
+  const OFF_DAY = 20;
+  const XP_WIN = 425;
+  const XP_LOSS = 175;
+
+  const base = days * PRICE_DAY;
+  const offValue = off ? days * OFF_DAY : 0;
+  const total = base + offValue;
+
+  $("turboRes").innerHTML = `
+    <strong>📆 Dias contratados:</strong> ${days}<br>
+    <strong>🎮 Total de jogos:</strong> ${days * 8}<br>
+    <strong>Off-stream:</strong> ${off ? money(offValue) : money(0)}<br>
+    <div class="hr"></div>
+    <strong>Total:</strong> <span class="newPrice">${money(total)}</span>
+  `;
+
+  const losses = 8 - wins;
+  const xpWins = wins * XP_WIN * simDays;
+  const xpLoss = losses * XP_LOSS * simDays;
+  const xpTotal = xpWins + xpLoss;
+
+  $("turboSimRes").innerHTML = `
+    <strong>XP com vitórias:</strong> ${formatXP(xpWins)}<br>
+    <strong>XP com derrotas:</strong> ${formatXP(xpLoss)}<br>
+    <div class="hr"></div>
+    <strong>Total estimado de XP:</strong> <span class="newPrice">${formatXP(xpTotal)}</span>
+  `;
+
+  return {
+    selected:true,
+    ok:true,
+    total,
+    totalNoPromo: total,
+    baseValue: base,
+    offValue,
+    offLabel: "Turbo Evento de XP",
+    text:`Turbo Evento de XP: ${days} dia(s) | Total: ${money(total)}`,
+    details:
+`⚡ TURBO EVENTO DE XP
+• Dias: ${days}
+• Jogos: ${days * 8}
+• Valor do serviço: ${money(base)}
+• Off-stream: ${off ? money(offValue) : "Não"}
+• Total: ${money(total)}`,
+    blocksDiscounts:true
+  };
+}
 
 /* ========= update all ========= */
 function updateAll(){
@@ -1516,12 +1834,14 @@ if(sug && sug.checked){
 }
 
 
-  enableGroup("useTrad",   ["tradAtual","tradDesejado","tradOff","tradSuperPromo"]);
+    enableGroup("useTrad",   ["tradAtual","tradDesejado","tradOff","tradSuperPromo"]);
   enableGroup("useDouble", ["doubleMMR","doubleDays","doubleOff"]);
   enableGroup("useCasual", ["casualDays","casualOff"]);
   enableGroup("useRecal",  ["recalMMR","recalOff"]);
   enableGroup("useReplay", ["repQtd","repDias","repOff"]);
   enableGroup("useCoach",  ["coachP1","coachP2"]);
+  enableGroup("useLow",    ["lowQty","lowOff"]);
+  enableGroup("useTurbo",  ["turboDays","turboOff","turboWins","turboSimDays"]);
 
   // 🔒 REGRA REPLAY: dias não podem ultrapassar análises
 if($("useReplay").checked){
@@ -1543,18 +1863,26 @@ if($("useReplay").checked){
 }
 
 
-  const perDayOff = offBoostPerDay();
+    const perDayOff = offBoostPerDay();
 
-  const trad = calcTrad(perDayOff);
-  const dbl  = calcDouble(perDayOff);
-  const cas  = calcCasual();
+  const low = calcLowPriority();
+  const turbo = calcTurboXP();
+
+  const disableAllDiscounts =
+    (low.selected && low.ok) ||
+    (turbo.selected && turbo.ok);
+
+  const trad = calcTrad(perDayOff, disableAllDiscounts);
+  const dbl  = calcDouble(disableAllDiscounts);
+  const cas  = calcCasual(disableAllDiscounts);
   const rec  = calcRecal();
-  const rep  = calcReplay();
+  const rep  = calcReplay(disableAllDiscounts);
 
   // 🔒 BLOQUEIO DE CUPOM SE A SUPER PROMO DO TRADICIONAL ESTIVER ATIVA
-  const couponInput = $("couponInput");
+    const couponInput = $("couponInput");
   const couponMsg = $("couponMsg");
   const tradSuperPromoIsActive = trad.superPromoApplied === true;
+  const noDiscountServiceActive = disableAllDiscounts;
 
   if(tradSuperPromoIsActive){
     activeCoupon = null;
@@ -1564,6 +1892,14 @@ if($("useReplay").checked){
     couponMsg.style.display = "block";
     couponMsg.style.color = "var(--danger)";
     couponMsg.textContent = "❌ Cupom desativado: OFF SUPER PROMO não é acumulativa.";
+  }else if(noDiscountServiceActive){
+    activeCoupon = null;
+    couponDiscount = 0;
+    couponInput.value = "";
+    couponInput.disabled = true;
+    couponMsg.style.display = "block";
+    couponMsg.style.color = "var(--danger)";
+    couponMsg.textContent = "❌ Este serviço não pode ser combinado com cupom ou descontos.";
   }else{
     couponInput.disabled = false;
 
@@ -1575,11 +1911,11 @@ if($("useReplay").checked){
   }
 
   // trad eligibility for coach discount: trad selected, ok, and spend >= 200
-  const tradEligible = trad.selected && trad.ok && trad.tradSpend >= 200;
+    const tradEligible = trad.selected && trad.ok && trad.tradSpend >= 200;
 
-  const coach = calcCoach(tradEligible);
+  const coach = calcCoach(tradEligible, disableAllDiscounts);
 
-  const selectedAny = [trad,dbl,cas,rec,rep,coach].some(x => x.selected);
+  const selectedAny = [trad,dbl,cas,rec,rep,coach,low,turbo].some(x => x.selected);
   const packTerms = $("packTerms").checked;
   const bs = $("globalBS").checked;
 
@@ -1591,7 +1927,7 @@ if($("useReplay").checked){
 let offTotal = 0;
 
 
-  [trad,dbl,cas,rec,rep,coach].forEach(obj => {
+    [trad,dbl,cas,rec,rep,coach,low,turbo].forEach(obj => {
   if(obj.selected){
     if(!obj.ok){
       invalid.push("⚠️ Corrija os dados de um dos serviços selecionados.");
@@ -1626,7 +1962,7 @@ let offTotal = 0;
 
 
   // apply combo casual+replay
-  const combo = comboCasualReplay(cas, rep);
+    const combo = comboCasualReplay(cas, rep, disableAllDiscounts);
   if(combo.active){
     $("comboBadge").style.display = "block";
     total += combo.delta;
@@ -1639,7 +1975,7 @@ let offTotal = 0;
 // ===== calcula porcentagem de desconto FINAL =====
 
 // 🔥 CUPOM TEM PRIORIDADE TOTAL
-if (activeCoupon && couponDiscount > 0) {
+if (!disableAllDiscounts && activeCoupon && couponDiscount > 0) {
   total = totalNoPromo * (1 - couponDiscount);
   discountPct = Math.round(couponDiscount * 100);
 } else {
@@ -1692,7 +2028,10 @@ const priceLine = hasPromo
    // 🔔 MENSAGEM DE PROMOÇÃO ATIVA
 const promoBox = $("promoMessageBox");
 
-if(trad.superPromoApplied){
+if(disableAllDiscounts){
+  promoBox.style.display = "block";
+  promoBox.textContent = "❌ Este serviço não pode ser combinado com cupom ou descontos.";
+}else if(trad.superPromoApplied){
   promoBox.style.display = "block";
   promoBox.textContent = `🔥 OFF SUPER PROMO ativada no Boost Tradicional (${Math.round(trad.superPromoPct * 100)}% OFF). Cupom desativado por não ser acumulativo.`;
 }else if(promoMessage){
@@ -1717,7 +2056,7 @@ $("zapBtn").disabled = !canZap;
 $("zapBtn").onclick = () => {
   let detalhes = [];
 
-  [trad,dbl,cas,rec,rep,coach].forEach(obj => {
+    [trad,dbl,cas,rec,rep,coach,low,turbo].forEach(obj => {
     if(obj.selected && obj.ok && obj.details){
       detalhes.push(obj.details);
     }
@@ -1725,7 +2064,7 @@ $("zapBtn").onclick = () => {
   let offLines = [];
 let offTotal = 0;
 
-[trad,dbl,cas,rec,rep,coach].forEach(obj => {
+[trad,dbl,cas,rec,rep,coach,low,turbo].forEach(obj => {
   if(obj.selected && obj.ok && obj.offValue > 0){
     offLines.push(`• ${obj.offLabel}: ${money(obj.offValue)}`);
     offTotal += obj.offValue;
@@ -1793,13 +2132,15 @@ if(selectedAny){
 
 
 [
-  "useTrad","useDouble","useCasual","useRecal","useReplay","useCoach",
+  "useTrad","useDouble","useCasual","useRecal","useReplay","useCoach","useLow","useTurbo",
   "tradAtual","tradDesejado","tradOff","tradSuperPromo",
   "doubleMMR","doubleDays","doubleOff",
   "casualDays","casualOff",
   "recalMMR","recalOff",
   "repQtd","repDias","repOff",
   "coachP1","coachP2","coachOff",
+  "lowQty","lowOff",
+  "turboDays","turboOff","turboWins","turboSimDays",
   "packTerms","globalBS",
   "tradSuggest","tradBudget"
 ].forEach(id => {
