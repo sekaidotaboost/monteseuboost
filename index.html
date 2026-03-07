@@ -417,6 +417,94 @@ input[type=range]::-moz-range-thumb{
   text-align:center;
 }
 
+#lowPreviewBox{
+  align-items:center;
+  gap:16px;
+  min-height:140px;
+}
+
+#lowPreviewImg{
+  width:150px;
+  height:150px;
+  object-fit:contain;
+  flex-shrink:0;
+  display:block;
+}
+
+#lowPreviewBox .servicePreviewText{
+  flex:1;
+}
+
+#lowPreviewBox .servicePreviewText strong{
+  font-size:24px;
+  line-height:1.15;
+  margin-bottom:8px;
+}
+
+#lowPreviewDetails{
+  font-size:18px;
+  font-weight:700;
+  color:var(--text);
+  margin-top:6px;
+}
+
+/* ========= PROMOÇÕES BONITAS ========= */
+/* PROMOÇÕES */
+
+.promoGrid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+  gap:12px;
+  margin-top:12px;
+}
+
+.promoCard{
+  background: rgba(20,20,35,0.75);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:12px;
+  padding:14px;
+  text-align:center;
+  transition:0.2s;
+}
+
+.promoCard:hover{
+  border-color:#7b6cff;
+  transform:translateY(-2px);
+}
+
+.promoIcon{
+  font-size:28px;
+  margin-bottom:6px;
+}
+
+.promoTitle{
+  font-size:14px;
+  font-weight:700;
+  margin-bottom:4px;
+}
+
+.promoDesc{
+  font-size:12px;
+  line-height:1.4;
+  color:#c9c9d8;
+}
+
+.promoDesc strong{
+  color:#3dff8f;
+}
+
+.promoOpenSummary{
+  font-weight:700;
+  cursor:pointer;
+  font-size:14px;
+}
+
+.promoNote{
+  margin-top:10px;
+  font-size:11px;
+  color:#999;
+  text-align:center;
+}
 
 </style>
 </head>
@@ -901,52 +989,65 @@ input[type=range]::-moz-range-thumb{
         </div>
       </div>
 
-        <!-- Low Priority -->
-    <div class="card">
-      <h2>
-        <span>Low Priority</span>
-        <span class="pill">🚫 Sem desconto</span>
-        <span class="pill">
-          <label class="check" style="margin:0">
-            <input type="checkbox" id="useLow"> Incluir
-          </label>
-        </span>
-      </h2>
+                <!-- Low Priority -->
+<div class="card">
+  <h2>
+    <span>Low Priority</span>
+    <span class="pill">🚫 Sem desconto</span>
+    <span class="pill">
+      <label class="check" style="margin:0">
+        <input type="checkbox" id="useLow"> Incluir
+      </label>
+    </span>
+  </h2>
 
-      <div class="serviceBody" id="bodyLow">
-        <p style="font-size:13px;line-height:1.5">
-          • Preço base: <strong>R$ 40,00 por Low</strong><br>
-          • Serviço focado em <strong>entregar a conta sem Low Priority</strong><br>
-          • Quantidade representa o <strong>limite operacional</strong>
-        </p>
+  <div class="serviceBody" id="bodyLow">
+    <p style="font-size:13px;line-height:1.5">
+      • Preço base: <strong>R$ 40,00 por vitória</strong><br>
+      • Serviço focado em <strong>entregar a conta sem Low Priority</strong><br>
+      • Quantidade representa o <strong>limite operacional</strong>
+    </p>
 
-        <label>Quantidade de Low Priority (2 a 5)</label>
-        <input type="range" id="lowQty" min="2" max="5" step="1" value="2" disabled>
+    <label>Quantidade de vitórias contratadas (2 a 5)</label>
+    <input type="range" id="lowQty" min="2" max="5" step="1" value="2" disabled>
 
-        <div class="result" id="lowQtyView">Quantidade selecionada: <strong>2</strong></div>
+    <div class="result" id="lowQtyView" style="display:none;"></div>
 
-        <div class="check">
-          <input type="checkbox" id="lowOff" disabled>
-          <span>Executar serviço OFF-STREAM (+ R$20,00)</span>
+    <div class="servicePreviewBox" id="lowPreviewBox">
+      <img id="lowPreviewImg" src="medalhas/lowpriority.png" alt="Low Priority">
+      <div class="servicePreviewText">
+        <span>Serviço selecionado</span>
+        <strong>Serviço de remoção de Low Priority</strong>
+        <div id="lowPreviewDetails">
+          Vitórias contratadas: 2
         </div>
-
-        <details>
-          <summary>Saiba mais sobre a Low Priority</summary>
-          <p><strong>📘 Sobre o serviço</strong></p>
-          <ul>
-            <li>Objetivo: entregar a conta sem Low Priority</li>
-            <li>A quantidade selecionada representa um limite operacional</li>
-            <li>Streaming incluso, OFF opcional</li>
-          </ul>
-        </details>
-
-        <div class="result" id="lowRes">Selecione as opções para ver o valor.</div>
-        <div class="alert" id="lowAlert"></div>
       </div>
     </div>
 
+    <div class="check">
+      <input type="checkbox" id="lowOff" disabled>
+      <span>Executar serviço OFF-STREAM (+ R$20,00)</span>
+    </div>
 
-        <!-- Turbo Evento de XP -->
+    <details>
+      <summary>Saiba mais sobre a Low Priority</summary>
+      <p><strong>📘 Sobre o serviço de Low Priority</strong></p>
+      <p>
+        Este serviço tem como objetivo entregar a conta sem Low Priority.
+        A quantidade selecionada representa um limite operacional, usado
+        para garantir a execução correta do serviço.
+      </p>
+      <p>
+        A penalidade pode variar conforme histórico da conta e sistema do jogo.
+        Por isso, o serviço é focado em resultado final, não em número exato de partidas.
+      </p>
+    </details>
+
+    <div class="result" id="lowRes">Selecione as opções para ver o valor.</div>
+    <div class="alert" id="lowAlert"></div>
+  </div>
+</div>
+    <!-- Turbo Evento de XP -->
     <div class="card">
       <h2>
         <span>Turbo Evento de XP</span>
@@ -968,30 +1069,22 @@ input[type=range]::-moz-range-thumb{
         <label>Dias de serviço (1 a 30)</label>
         <input type="number" id="turboDays" min="1" max="30" value="1" disabled>
 
+        <div class="servicePreviewBox" id="turboPreviewBox">
+          <img id="turboPreviewImg" src="medalhas/turboxp.png" alt="Turbo Evento de XP">
+          <div class="servicePreviewText">
+            <span>Serviço selecionado</span>
+            <strong>Turbo Evento de XP</strong>
+            <div id="turboPreviewDetails">
+  Total de jogos: 8<br>
+  Dias contratados: 1
+</div>
+          </div>
+        </div>
+
         <div class="check">
           <input type="checkbox" id="turboOff" disabled>
           <span>Off-stream (sem live) + R$ 20,00 por dia</span>
         </div>
-
-        <div class="hr"></div>
-
-        <small class="muted">
-          Esta simulação é <strong>apenas informativa</strong> e não interfere no valor do serviço contratado.
-        </small>
-
-        <label>Vitórias por dia (1 a 8)</label>
-        <div class="rangeRow">
-          <input type="range" id="turboWins" min="1" max="8" value="6" disabled>
-          <strong id="turboWinsTxt">6</strong>/8
-        </div>
-
-        <label>Dias simulados (1 a 30)</label>
-        <div class="rangeRow">
-          <input type="range" id="turboSimDays" min="1" max="30" value="1" disabled>
-          <strong id="turboSimDaysTxt">1</strong>
-        </div>
-
-        <div class="result" id="turboSimRes">A simulação de XP aparecerá aqui.</div>
 
         <details>
           <summary>Saiba mais sobre o Turbo Evento</summary>
@@ -1005,121 +1098,148 @@ input[type=range]::-moz-range-thumb{
 
         <div class="result" id="turboRes">Selecione as opções para ver o valor.</div>
         <div class="alert" id="turboAlert"></div>
+
+        <div class="hr"></div>
+
+        <div class="rankPickerWrap" id="turboSimBox">
+          <div class="rankPreviewBox" style="min-height:auto;">
+            <div>
+              <div class="rankPreviewTitle">Simulação ilustrativa</div>
+              <div class="rankPreviewName" style="font-size:18px;">Calculadora de XP</div>
+              <div class="rankManualHint" style="margin-top:6px;">
+                Ajuste os controles abaixo para visualizar uma estimativa de XP no evento.
+                Esta área é apenas um exemplo e não altera o valor contratado.
+              </div>
+            </div>
+          </div>
+
+          <label>Vitórias por dia (1 a 8)</label>
+          <div class="rangeRow">
+            <input type="range" id="turboWins" min="1" max="8" value="6" disabled>
+            <strong id="turboWinsTxt">6</strong>/8
+          </div>
+
+          <label>Dias simulados (1 a 30)</label>
+          <div class="rangeRow">
+            <input type="range" id="turboSimDays" min="1" max="30" value="1" disabled>
+            <strong id="turboSimDaysTxt">1</strong>
+          </div>
+
+          <div class="result" id="turboSimRes">A simulação de XP aparecerá aqui.</div>
+        </div>
       </div>
     </div>
-    
-<!-- Informações de desconto -->
+
+  
+    <!-- Informações de desconto -->
 <div class="card big">
   <h2>
     <span>Informações de desconto</span>
     <span class="pill">Promoções</span>
   </h2>
 
-  <!-- BOTÃO / TOGGLE -->
-  <details>
-    <summary style="cursor:pointer;font-weight:700">
-      🎁 Mostrar promoções disponíveis
-    </summary>
+  <div class="promoSection">
+    <details>
+      <summary class="promoOpenSummary">🎁 Mostrar promoções disponíveis</summary>
 
-    <div style="margin-top:12px;color:var(--muted);font-size:13px;line-height:1.5">
+      <div class="promoGrid">
 
-      <div class="hr"></div>
+        <div class="promoCard">
+          <div class="promoIcon">🎓</div>
+          <div class="promoTitle">Coach + Replay</div>
+          <div class="promoDesc">
+            Contratando <strong>Coach Parte 1</strong> + <strong>1 Análise de Replay</strong>,
+            a replay recebe <strong>20% OFF</strong>.
+          </div>
+        </div>
 
-      <details>
-        <summary>🎓 <strong>Coach + Replay</strong> 👉 Saiba mais sobre essa promoção</summary>
-        <p>• Coach (Parte 1) + 1 Análise de Replay</p>
-        <p>🔥 A análise recebe <strong>20% de desconto</strong></p>
-      </details>
+        <div class="promoCard">
+          <div class="promoIcon">⚡</div>
+          <div class="promoTitle">Double MMR + Coach</div>
+          <div class="promoDesc">
+            Contratando <strong>Double MMR</strong> + <strong>1 Coach</strong>,
+            a taxa off-stream do Double recebe <strong>25% OFF</strong>.
+          </div>
+        </div>
 
-      <div class="hr"></div>
+        <div class="promoCard">
+          <div class="promoIcon">📊</div>
+          <div class="promoTitle">Replay por volume</div>
+          <div class="promoDesc">
+            Fazendo <strong>2 a 3 análises por dia</strong>,
+            a taxa off-stream recebe <strong>50% OFF</strong>.
+          </div>
+        </div>
 
-      <details>
-        <summary>⚡ <strong>Double MMR + Coach</strong> 👉 Saiba mais sobre essa promoção</summary>
-        <p>• Double MMR + 1 Coach (Parte 1 ou Parte 2)</p>
-        <p>🔥 Taxa off-stream do Double MMR recebe <strong>25% de desconto</strong></p>
-      </details>
+        <div class="promoCard">
+          <div class="promoIcon">💰</div>
+          <div class="promoTitle">Boost Casual + Replay</div>
+          <div class="promoDesc">
+            Contratando <strong>Boost Casual (1 dia)</strong> + <strong>2 Replays</strong>,
+            as análises recebem <strong>25% OFF</strong>.
+          </div>
+        </div>
 
-      <div class="hr"></div>
+        <div class="promoCard">
+          <div class="promoIcon">🔄</div>
+          <div class="promoTitle">Recalibração + Boost Casual</div>
+          <div class="promoDesc">
+            Contratando <strong>Recalibração</strong> + <strong>Boost Casual (1 dia)</strong>,
+            o Boost Casual recebe <strong>aprox. 6% OFF</strong>.
+          </div>
+        </div>
 
-      <details>
-        <summary>📊 <strong>Replay — Desconto por volume</strong> 👉 Saiba mais</summary>
-        <p>• De 2 a 3 análises por dia</p>
-        <p>🔥 Taxa off-stream recebe <strong>50% de desconto</strong></p>
-      </details>
+      </div>
 
-      <div class="hr"></div>
-
-      <details>
-        <summary>💰 <strong>Boost Casual + Replay</strong> 👉 Saiba mais</summary>
-        <p>• Boost Casual (1 dia) + 2 Análises de Replay</p>
-        <p>🔥 As análises recebem <strong>25% de desconto</strong></p>
-      </details>
-
-      <div class="hr"></div>
-
-      <details>
-        <summary>🔄 <strong>Recalibração + Boost Casual</strong> 👉 Saiba mais</summary>
-        <p>• Recalibração + Boost Casual (1 dia)</p>
-        <p>🔥 Boost Casual recebe <strong>aprox. 6% de desconto</strong></p>
-      </details>
-
-      <div class="hr"></div>
-
-      <small class="muted">
-        Obs.: Cada serviço possui cálculo próprio.  
-        As promoções são aplicadas automaticamente quando os critérios são atendidos.
-      </small>
-
-    </div>
-  </details>
+      <div class="promoNote">
+        Obs.: Cada serviço possui cálculo próprio. As promoções são aplicadas automaticamente
+        quando os critérios são atendidos.
+      </div>
+    </details>
+  </div>
 </div>
 
-
-
-
     <!-- Total -->
-<div class="card big">
-  <h2><span>Resumo do pacote</span><span class="pill">Total final</span></h2>
+    <div class="card big">
+      <h2><span>Resumo do pacote</span><span class="pill">Total final</span></h2>
 
-  <!-- 🔥 MENSAGEM DE PROMOÇÃO ATIVA -->
-  <div class="result ok" id="promoMessageBox" style="display:none">
-    <!-- texto da promoção aparece aqui -->
-  </div>
+      <div class="result ok" id="promoMessageBox" style="display:none">
+        <!-- texto da promoção aparece aqui -->
+      </div>
 
       <div class="result" id="totalRes">Selecione serviços para ver o total.</div>
       <div class="alert" id="totalAlert"></div>
 
       <div class="hr"></div>
 
-<label>Cupom de desconto </label>
-<input type="text" id="couponInput" placeholder="Digite seu cupom aqui">
-<div class="badge" id="couponMsg"></div>
+      <label>Cupom de desconto </label>
+      <input type="text" id="couponInput" placeholder="Digite seu cupom aqui">
+      <div class="badge" id="couponMsg"></div>
 
-<small class="muted">
-Cupons liberados somente em datas comemorativas.
-Não acumulativo com descontos base do site.
-</small>
-
-<div class="check">
-  <input type="checkbox" id="globalBS">
-  <span>⚠️ Confirmo que a conta possui <strong>8.000+ de Behavior Score</strong></span>
-</div>
+      <small class="muted">
+        Cupons liberados somente em datas comemorativas.
+        Não acumulativo com descontos base do site.
+      </small>
 
       <div class="check">
-  <input type="checkbox" id="packTerms">
-  <span>Li e concordo que o pagamento é necessário para garantir minha vaga e que datas exatas devem ser combinadas via WhatsApp.</span>
-</div>
+        <input type="checkbox" id="globalBS">
+        <span>⚠️ Confirmo que a conta possui <strong>8.000+ de Behavior Score</strong></span>
+      </div>
 
+      <div class="check">
+        <input type="checkbox" id="packTerms">
+        <span>Li e concordo que o pagamento é necessário para garantir minha vaga e que datas exatas devem ser combinadas via WhatsApp.</span>
+      </div>
 
       <button id="zapBtn" disabled>Contratar pacote via WhatsApp</button>
-      <div class="footer">
-  Twitch: sekai_oficial • WhatsApp: +55 21 99184-4917<br>
-  <small style="opacity:0.7">
-    Calculadora desenvolvida por <strong>@Kerolynchan</strong>
-  </small>
-</div>
-</div>
 
+      <div class="footer">
+        Twitch: sekai_oficial • WhatsApp: +55 21 99184-4917<br>
+        <small style="opacity:0.7">
+          Calculadora desenvolvida por <strong>@Kerolynchan</strong>
+        </small>
+      </div>
+    </div>
 
 <script>
 
@@ -2222,12 +2342,11 @@ function offBoostPerDay(){
 }
 
 
-/* ========= Low Priority ========= */
 function calcLowPriority(){
   if(!$("useLow").checked){
     $("lowRes").innerHTML = "Selecione as opções para ver o valor.";
     $("lowAlert").textContent = "";
-    $("lowQtyView").innerHTML = `Quantidade selecionada: <strong>${$("lowQty").value}</strong>`;
+    $("lowQtyView").innerHTML = `Vitórias contratadas: <strong>${$("lowQty").value}</strong>`;
     return {
       selected:false,
       ok:true,
@@ -2243,7 +2362,7 @@ function calcLowPriority(){
   const off = $("lowOff").checked;
 
   $("lowAlert").textContent = "";
-  $("lowQtyView").innerHTML = `Quantidade selecionada: <strong>${qty}</strong>`;
+  $("lowQtyView").innerHTML = `Vitórias contratadas: <strong>${qty}</strong>`;
 
   if(qty === null){
     $("lowRes").innerHTML = "<strong>Preço: INVÁLIDO</strong>";
@@ -2259,30 +2378,69 @@ function calcLowPriority(){
     };
   }
 
-  const base = qty * 40;
-  const offValue = off ? 20 : 0;
-  const total = base + offValue;
+  let baseOriginal = qty * 40;
+  let baseValue = baseOriginal;
+  let discountPct = 0;
+  let discountValue = 0;
 
-  $("lowRes").innerHTML = `
-    <strong>Low Priority:</strong> ${qty}<br>
-    <strong>Valor do serviço:</strong> ${money(base)}<br>
+  if(qty === 3){
+    baseValue = 115;
+    discountPct = 4;
+  }else if(qty === 4){
+    baseValue = 150;
+    discountPct = 6;
+  }else if(qty === 5){
+    baseValue = 180;
+    discountPct = 10;
+  }
+
+  discountValue = baseOriginal - baseValue;
+
+  const offValue = off ? 20 : 0;
+  const total = baseValue + offValue;
+  const totalNoPromo = baseOriginal + offValue;
+
+  let html = `
+    <strong>Vitórias contratadas:</strong> ${qty}<br>
+  `;
+
+  if(discountPct > 0){
+    html += `
+      <strong>Valor base:</strong> <span class="oldPrice">${money(baseOriginal)}</span><br>
+      <strong>Desconto aplicado:</strong> <span class="promoTag">🔥 ${discountPct}% OFF</span><br>
+      <strong>Valor com desconto:</strong> <span class="newPrice">${money(baseValue)}</span><br>
+    `;
+  }else{
+    html += `
+      <strong>Valor do serviço:</strong> <span class="newPrice">${money(baseValue)}</span><br>
+    `;
+  }
+
+  html += `
     <strong>Off-stream:</strong> ${off ? money(offValue) : money(0)}<br>
     <strong>Total:</strong> <span class="newPrice">${money(total)}</span>
   `;
+
+  $("lowRes").innerHTML = html;
 
   return {
     selected:true,
     ok:true,
     total,
-    totalNoPromo: total,
-    baseValue: base,
+    totalNoPromo,
+    baseValue,
     offValue,
     offLabel: "Low Priority",
-    text:`Low Priority: ${qty} | Total: ${money(total)}`,
+    discountPct,
+    discountValue,
+    text:`Low Priority: ${qty} vitória(s) | Total: ${money(total)}`,
     details:
 `🚫 LOW PRIORITY
-• Quantidade selecionada: ${qty}
-• Valor do serviço: ${money(base)}
+• Serviço: Remoção de Low Priority
+• Vitórias contratadas: ${qty}
+• Valor base: ${money(baseOriginal)}
+• Desconto aplicado: ${discountPct > 0 ? discountPct + "% OFF" : "Nenhum"}
+• Valor do serviço: ${money(baseValue)}
 • Off-stream: ${off ? money(offValue) : "Não"}
 • Total: ${money(total)}`,
     blocksDiscounts:true
@@ -2410,6 +2568,21 @@ function updateReplayPreview(){
   }
 }
 
+function updateTurboPreview(){
+  const days = Number($("turboDays")?.value || 1);
+
+  const totalJogos = days * 8;
+  const xpAproximado = days * 2900;
+
+  const details = $("turboPreviewDetails");
+
+  if(details){
+    details.innerHTML =
+      `Total de jogos: ${totalJogos}<br>
+       XP aproximadamente de: ${xpAproximado.toLocaleString("pt-BR")} XP`;
+  }
+}
+
 function updateCasualPreview(){
   const days = Number($("casualDays")?.value || 1);
 
@@ -2421,6 +2594,15 @@ function updateCasualPreview(){
     details.innerHTML =
       `Quantidade de partidas: ${partidas}<br>
        Dias contratados: ${days}`;
+  }
+}
+
+function updateLowPreview(){
+  const qty = Number($("lowQty")?.value || 2);
+  const details = $("lowPreviewDetails");
+
+  if(details){
+    details.innerHTML = `Vitórias contratadas: ${qty}`;
   }
 }
 
@@ -2484,6 +2666,8 @@ function updateAll(){
 updateDoublePreview();
 updateReplayPreview();
 updateCasualPreview();
+updateLowPreview();
+updateTurboPreview();
 updateCoachCards();
 updateRecalCards(false);
 
@@ -2843,6 +3027,7 @@ initTradRankPickers();
 updateDoublePreview();
 updateReplayPreview();
 updateCasualPreview();
+updateTurboPreview();
 updateCoachCards();
 
 $("recalMode1")?.addEventListener("change", () => {
