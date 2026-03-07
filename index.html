@@ -197,6 +197,227 @@ input[type=range]::-moz-range-thumb{
   font-weight:700;
 }
 
+/* ========= SELETOR VISUAL DE MEDALHAS ========= */
+.rankPickerWrap{
+  margin-top:12px;
+  padding:12px;
+  border-radius:14px;
+  background:rgba(20,24,36,.65);
+  border:1px solid rgba(139,92,246,.15);
+}
+
+.rankPreviewBox{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:12px;
+  padding:10px;
+  border-radius:12px;
+  background:rgba(255,255,255,.03);
+  min-height:82px;
+}
+
+.rankPreviewBox img{
+  width:58px;
+  height:58px;
+  object-fit:contain;
+  display:block;
+}
+
+.rankPreviewTitle{
+  font-size:12px;
+  color:var(--muted);
+}
+
+.rankPreviewName{
+  font-size:16px;
+  font-weight:700;
+  color:var(--text);
+  line-height:1.2;
+}
+
+.rankGrid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+}
+
+.rankMedalBtn{
+  border:1px solid rgba(139,92,246,.18);
+  background:rgba(255,255,255,.03);
+  border-radius:10px;
+  padding:6px 4px;
+  cursor:pointer;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  transition:.18s ease;
+}
+
+.rankMedalBtn:hover{
+  border-color:rgba(139,92,246,.5);
+  transform:translateY(-1px);
+}
+
+.rankMedalBtn.active{
+  border-color:#8b5cf6;
+  box-shadow:0 0 0 2px rgba(139,92,246,.18) inset;
+  background:rgba(139,92,246,.10);
+}
+
+.rankMedalBtn img{
+  width:34px;
+  height:34px;
+  object-fit:contain;
+  display:block;
+}
+
+.rankMedalBtn span{
+  font-size:11px;
+  color:var(--muted);
+  text-align:center;
+  line-height:1.1;
+}
+
+.rankStars{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:8px;
+  margin-top:10px;
+}
+
+.rankStarBtn{
+  border:1px solid rgba(139,92,246,.18);
+  background:rgba(255,255,255,.03);
+  color:var(--text);
+  border-radius:10px;
+  padding:8px 0;
+  cursor:pointer;
+  font-weight:700;
+  transition:.18s ease;
+}
+
+.rankStarBtn:hover{
+  border-color:rgba(139,92,246,.5);
+}
+
+.rankStarBtn.active{
+  background:#8b5cf6;
+  border-color:#8b5cf6;
+}
+
+.rankManualHint{
+  margin-top:8px;
+  font-size:12px;
+  color:var(--muted);
+}
+
+
+/* ========= PREVIEW DE IMAGEM NOS SERVIÇOS ========= */
+.servicePreviewBox{
+  margin-top:10px;
+  padding:10px;
+  border-radius:12px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(139,92,246,.15);
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-height:78px;
+}
+
+.servicePreviewBox img{
+  width:54px;
+  height:54px;
+  object-fit:contain;
+  display:block;
+}
+
+.servicePreviewText{
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.3;
+}
+
+.servicePreviewText strong{
+  display:block;
+  color:var(--text);
+  font-size:15px;
+}
+
+/* ========= CARDS BONITOS DO COACH ========= */
+.coachGrid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+  margin-top:10px;
+}
+
+@media(min-width:700px){
+  .coachGrid{
+    grid-template-columns:1fr 1fr;
+  }
+}
+
+.coachCard{
+  border:1px solid rgba(139,92,246,.16);
+  background:rgba(255,255,255,.03);
+  border-radius:14px;
+  padding:12px;
+  cursor:pointer;
+  transition:.18s ease;
+}
+
+.coachCard:hover{
+  border-color:rgba(139,92,246,.45);
+  transform:translateY(-1px);
+}
+
+.coachCard.active{
+  border-color:#8b5cf6;
+  background:rgba(139,92,246,.10);
+  box-shadow:0 0 0 2px rgba(139,92,246,.12) inset;
+}
+
+.coachCard input{
+  display:none;
+}
+
+.coachCard img{
+  width:100%;
+  max-width:92px;
+  height:92px;
+  object-fit:contain;
+  display:block;
+  margin:0 auto 10px;
+}
+
+.coachCardTitle{
+  font-weight:700;
+  color:var(--text);
+  font-size:15px;
+  text-align:center;
+}
+
+.coachCardPrice{
+  text-align:center;
+  color:var(--success);
+  font-weight:700;
+  margin-top:4px;
+  font-size:14px;
+}
+
+.coachCardDesc{
+  margin-top:8px;
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.4;
+  text-align:center;
+}
+
+
 </style>
 </head>
 <body>
@@ -218,17 +439,53 @@ input[type=range]::-moz-range-thumb{
             <input type="checkbox" id="useTrad"> Incluir
           </label>
         </span>
-      </h2>
+            </h2>
 
       <div class="serviceBody" id="bodyTrad">
-        <div class="two">
+
+        <div class="two" id="tradRankSelectors" style="display:none;">
           <div>
             <label>MMR Atual</label>
             <input type="number" id="tradAtual" min="0" max="8500" placeholder="Ex: 4000" disabled>
+
+            <div class="rankPickerWrap">
+              <div class="rankPreviewBox">
+                <img id="tradAtualPreviewImg" src="medalhas/SeasonalRank1-1.png" alt="Medalha atual">
+                <div>
+                  <div class="rankPreviewTitle">Seleção rápida atual</div>
+                  <div class="rankPreviewName" id="tradAtualPreviewText">Arauto I</div>
+                </div>
+              </div>
+
+              <div class="rankGrid" id="tradAtualMedals"></div>
+              <div class="rankStars" id="tradAtualStars"></div>
+
+              <div class="rankManualHint">
+  Informe o MMR exato da conta. Medalhas são apenas ilustrativas.
+</div>
+            </div>
           </div>
+
           <div>
             <label>MMR Desejado (0 - 8500)</label>
             <input type="number" id="tradDesejado" min="0" max="8500" placeholder="Ex: 4500" disabled>
+
+            <div class="rankPickerWrap">
+              <div class="rankPreviewBox">
+                <img id="tradDesejadoPreviewImg" src="medalhas/SeasonalRank1-1.png" alt="Medalha desejada">
+                <div>
+                  <div class="rankPreviewTitle">Seleção rápida desejada</div>
+                  <div class="rankPreviewName" id="tradDesejadoPreviewText">Arauto I</div>
+                </div>
+              </div>
+
+              <div class="rankGrid" id="tradDesejadoMedals"></div>
+              <div class="rankStars" id="tradDesejadoStars"></div>
+
+              <div class="rankManualHint">
+  Defina o MMR desejado. O cálculo é feito pelo MMR contratado.
+</div>
+            </div>
           </div>
         </div>
 
@@ -270,6 +527,14 @@ input[type=range]::-moz-range-thumb{
         <!-- SAIBA MAIS -->
         <details>
   <summary>Saiba mais sobre o Boost Tradicional</summary>
+
+  <p><strong>🎖️ Sobre medalhas</strong></p>
+<ul>
+  <li>As medalhas exibidas na calculadora são apenas ilustrativas.</li>
+  <li>O serviço é contratado e calculado com base no <strong>MMR</strong>, não na medalha.</li>
+  <li>Pequenas variações de medalha podem ocorrer dependendo da calibragem do sistema do jogo.</li>
+  <li>O que garantimos é o <strong>MMR contratado</strong>, independentemente da medalha exibida.</li>
+</ul>
 
   <p><strong>🔽 Abaixo de 4.000 MMR (valor fixo)</strong></p>
   <ul>
@@ -314,7 +579,15 @@ input[type=range]::-moz-range-thumb{
 
       <div class="serviceBody" id="bodyDouble">
         <label>MMR Atual</label>
-        <input type="number" id="doubleMMR" min="0" placeholder="Ex: 3200" disabled>
+<input type="number" id="doubleMMR" min="0" placeholder="Ex: 3200" disabled>
+
+<div class="servicePreviewBox" id="doublePreviewBox">
+  <img id="doublePreviewImg" src="medalhas/SeasonalRank1-1.png" alt="Medalha Double MMR">
+  <div class="servicePreviewText">
+    <span>Medalha detectada</span>
+    <strong id="doublePreviewText">Arauto I</strong>
+  </div>
+</div>
 
         <label>Dias contratados (1 a 7)</label>
         <input type="number" id="doubleDays" min="1" max="7" value="1" disabled>
@@ -426,8 +699,32 @@ input[type=range]::-moz-range-thumb{
 
       <div class="serviceBody" id="bodyRecal">
     
-        <label>MMR Atual</label>
-        <input type="number" id="recalMMR" min="0" placeholder="Ex: 3500" disabled>
+        <div class="coachGrid">
+
+<label class="coachCard" id="recalCard1">
+  <input type="radio" name="recalMode" id="recalMode1" disabled>
+  <img src="medalhas/recalibracao1.png">
+  <div class="coachCardTitle">Modo de serviço</div>
+  <div class="coachCardDesc">
+    Recalibração para contas<br>
+    <strong>0 a 4000 MMR</strong>
+  </div>
+</label>
+
+<label class="coachCard" id="recalCard2">
+  <input type="radio" name="recalMode" id="recalMode2" disabled>
+  <img src="medalhas/recalibracao2.png">
+  <div class="coachCardTitle">Modo de serviço</div>
+  <div class="coachCardDesc">
+    Recalibração para contas<br>
+    <strong>4001 a 6000 MMR</strong>
+  </div>
+</label>
+
+</div>
+
+<label>Ou digite o MMR manualmente</label>
+<input type="number" id="recalMMR" min="0" placeholder="Ex: 3500" disabled>
 
         <div class="check">
           <input type="checkbox" id="recalOff" disabled>
@@ -475,15 +772,23 @@ input[type=range]::-moz-range-thumb{
 
       <div class="serviceBody" id="bodyReplay">
         <label>Quantidade de análises</label>
-        <input type="number" id="repQtd" min="1" value="1" disabled>
+<input type="number" id="repQtd" min="1" value="1" disabled>
 
-        <label>Em quantos dias deseja dividir?</label>
-        <input type="number" id="repDias" min="1" value="1" disabled>
+<label>Em quantos dias deseja dividir?</label>
+<input type="number" id="repDias" min="1" value="1" disabled>
 
-        <div class="check">
-          <input type="checkbox" id="repOff" disabled>
-          <span>Análise Off Stream</span>
-        </div>
+<div class="servicePreviewBox" id="replayPreviewBox">
+  <img id="replayPreviewImg" src="medalhas/repley.png" alt="Replay">
+  <div class="servicePreviewText">
+    <span>Modo do serviço</span>
+    <strong id="replayPreviewText">Análise de Replay</strong>
+  </div>
+</div>
+
+<div class="check">
+  <input type="checkbox" id="repOff" disabled>
+  <span>Análise Off Stream</span>
+</div>
 
         <!-- SAIBA MAIS -->
         <details>
@@ -529,14 +834,28 @@ input[type=range]::-moz-range-thumb{
       </h2>
 
       <div class="serviceBody" id="bodyCoach">
-        <div class="check">
-          <input type="checkbox" id="coachP1" disabled>
-          <span>Coach Parte 1 — R$ 200,00</span>
-        </div>
-        <div class="check">
-          <input type="checkbox" id="coachP2" disabled>
-          <span>Coach Parte 2 — R$ 200,00</span>
-        </div>
+
+<div class="coachGrid">
+  <label class="coachCard" id="coachCard1">
+    <input type="checkbox" id="coachP1" disabled>
+    <img src="medalhas/coach1.png" alt="Coach Parte 1">
+    <div class="coachCardTitle">Coach Parte 1</div>
+    <div class="coachCardPrice">R$ 200,00</div>
+    <div class="coachCardDesc">
+      Aula demonstrativa com explicação em tempo real.
+    </div>
+  </label>
+
+  <label class="coachCard" id="coachCard2">
+    <input type="checkbox" id="coachP2" disabled>
+    <img src="medalhas/coach2.png" alt="Coach Parte 2">
+    <div class="coachCardTitle">Coach Parte 2</div>
+    <div class="coachCardPrice">R$ 200,00</div>
+    <div class="coachCardDesc">
+      Você joga e recebe orientação durante as partidas.
+    </div>
+  </label>
+</div>
 
         <!-- SAIBA MAIS -->
     <details>
@@ -567,9 +886,8 @@ input[type=range]::-moz-range-thumb{
 
         <div class="result" id="coachRes">Selecione as opções para ver o valor.</div>
         <div class="alert" id="coachAlert"></div>
+        </div>
       </div>
-    </div>
-
 
         <!-- Low Priority -->
     <div class="card">
@@ -830,6 +1148,109 @@ const $ = (id) => document.getElementById(id);
 const money = (n) => "R$ " + n.toFixed(2).replace(".", ",");
 const clampInt = (v, min, max) => (isNaN(v) ? null : Math.min(Math.max(v, min), max));
 
+/* ========= MEDALHAS BOOST TRADICIONAL ========= */
+const RANKS = [
+  {
+    key: "arauto",
+    label: "Arauto",
+    baseImg: "medalhas/SeasonalRank1-1.png",
+    stars: [
+      { star: 1, mmr: 0,   max: 153,  img: "medalhas/SeasonalRank1-1.png", label: "Arauto I" },
+      { star: 2, mmr: 154, max: 307,  img: "medalhas/SeasonalRank1-2.png", label: "Arauto II" },
+      { star: 3, mmr: 308, max: 461,  img: "medalhas/SeasonalRank1-3.png", label: "Arauto III" },
+      { star: 4, mmr: 462, max: 615,  img: "medalhas/SeasonalRank1-4.png", label: "Arauto IV" },
+      { star: 5, mmr: 616, max: 769,  img: "medalhas/SeasonalRank1-5.png", label: "Arauto V" }
+    ]
+  },
+  {
+    key: "guardiao",
+    label: "Guardião",
+    baseImg: "medalhas/SeasonalRank2-1.png",
+    stars: [
+      { star: 1, mmr: 770,  max: 923,  img: "medalhas/SeasonalRank2-1.png", label: "Guardião I" },
+      { star: 2, mmr: 924,  max: 1077, img: "medalhas/SeasonalRank2-2.png", label: "Guardião II" },
+      { star: 3, mmr: 1078, max: 1231, img: "medalhas/SeasonalRank2-3.png", label: "Guardião III" },
+      { star: 4, mmr: 1232, max: 1385, img: "medalhas/SeasonalRank2-4.png", label: "Guardião IV" },
+      { star: 5, mmr: 1386, max: 1539, img: "medalhas/SeasonalRank2-5.png", label: "Guardião V" }
+    ]
+  },
+  {
+    key: "cruzado",
+    label: "Cruzado",
+    baseImg: "medalhas/SeasonalRank3-1.png",
+    stars: [
+      { star: 1, mmr: 1540, max: 1693, img: "medalhas/SeasonalRank3-1.png", label: "Cruzado I" },
+      { star: 2, mmr: 1694, max: 1847, img: "medalhas/SeasonalRank3-2.png", label: "Cruzado II" },
+      { star: 3, mmr: 1848, max: 2001, img: "medalhas/SeasonalRank3-3.png", label: "Cruzado III" },
+      { star: 4, mmr: 2002, max: 2155, img: "medalhas/SeasonalRank3-4.png", label: "Cruzado IV" },
+      { star: 5, mmr: 2156, max: 2309, img: "medalhas/SeasonalRank3-5.png", label: "Cruzado V" }
+    ]
+  },
+  {
+    key: "arconte",
+    label: "Arconte",
+    baseImg: "medalhas/SeasonalRank4-1.png",
+    stars: [
+      { star: 1, mmr: 2310, max: 2463, img: "medalhas/SeasonalRank4-1.png", label: "Arconte I" },
+      { star: 2, mmr: 2464, max: 2617, img: "medalhas/SeasonalRank4-2.png", label: "Arconte II" },
+      { star: 3, mmr: 2618, max: 2771, img: "medalhas/SeasonalRank4-3.png", label: "Arconte III" },
+      { star: 4, mmr: 2772, max: 2925, img: "medalhas/SeasonalRank4-4.png", label: "Arconte IV" },
+      { star: 5, mmr: 2926, max: 3079, img: "medalhas/SeasonalRank4-5.png", label: "Arconte V" }
+    ]
+  },
+  {
+    key: "lenda",
+    label: "Lenda",
+    baseImg: "medalhas/SeasonalRank5-1.png",
+    stars: [
+      { star: 1, mmr: 3080, max: 3233, img: "medalhas/SeasonalRank5-1.png", label: "Lenda I" },
+      { star: 2, mmr: 3234, max: 3387, img: "medalhas/SeasonalRank5-2.png", label: "Lenda II" },
+      { star: 3, mmr: 3388, max: 3541, img: "medalhas/SeasonalRank5-3.png", label: "Lenda III" },
+      { star: 4, mmr: 3542, max: 3695, img: "medalhas/SeasonalRank5-4.png", label: "Lenda IV" },
+      { star: 5, mmr: 3696, max: 3849, img: "medalhas/SeasonalRank5-5.png", label: "Lenda V" }
+    ]
+  },
+  {
+    key: "anciao",
+    label: "Ancião",
+    baseImg: "medalhas/SeasonalRank6-1.png",
+    stars: [
+      { star: 1, mmr: 3850, max: 4003, img: "medalhas/SeasonalRank6-1.png", label: "Ancião I" },
+      { star: 2, mmr: 4004, max: 4157, img: "medalhas/SeasonalRank6-2.png", label: "Ancião II" },
+      { star: 3, mmr: 4158, max: 4311, img: "medalhas/SeasonalRank6-3.png", label: "Ancião III" },
+      { star: 4, mmr: 4312, max: 4465, img: "medalhas/SeasonalRank6-4.png", label: "Ancião IV" },
+      { star: 5, mmr: 4466, max: 4619, img: "medalhas/SeasonalRank6-5.png", label: "Ancião V" }
+    ]
+  },
+  {
+    key: "divino",
+    label: "Divino",
+    baseImg: "medalhas/SeasonalRank7-1.png",
+    stars: [
+      { star: 1, mmr: 4620, max: 4819, img: "medalhas/SeasonalRank7-1.png", label: "Divino I" },
+      { star: 2, mmr: 4820, max: 5019, img: "medalhas/SeasonalRank7-2.png", label: "Divino II" },
+      { star: 3, mmr: 5020, max: 5219, img: "medalhas/SeasonalRank7-3.png", label: "Divino III" },
+      { star: 4, mmr: 5220, max: 5419, img: "medalhas/SeasonalRank7-4.png", label: "Divino IV" },
+      { star: 5, mmr: 5420, max: 5619, img: "medalhas/SeasonalRank7-5.png", label: "Divino V" }
+    ]
+  },
+  {
+    key: "imortal",
+    label: "Imortal",
+    baseImg: "medalhas/Imortal.png",
+    stars: [
+      { star: 1, mmr: 8500, max: 99999, img: "medalhas/Imortal.png", label: "Imortal" }
+    ]
+  }
+];
+
+const ROMAN = ["I","II","III","IV","V"];
+
+const rankPickerState = {
+  atual: { rankIndex: 0, star: 1 },
+  desejado: { rankIndex: 0, star: 1 }
+};
+
 /* ========= LIMITADORES DE INPUT (ANTI-EXCESSO) ========= */
 
 function limitInput(id, min, max, fallback = max){
@@ -879,6 +1300,164 @@ limitInput("repDias", 1, 6, 6);
 // TURBO EVENTO DE XP
 limitInput("turboDays", 1, 30, 30);
 limitInput("turboSimDays", 1, 30, 30);
+
+
+function getRankByMMR(mmr){
+  const safeMMR = Math.max(0, Number(mmr) || 0);
+
+  for(const rank of RANKS){
+    for(const starData of rank.stars){
+      if(safeMMR >= starData.mmr && safeMMR <= starData.max){
+        return {
+          key: rank.key,
+          label: rank.label,
+          star: starData.star,
+          mmr: starData.mmr,
+          max: starData.max,
+          img: starData.img,
+          fullLabel: starData.label
+        };
+      }
+    }
+  }
+
+  return {
+    key: "imortal",
+    label: "Imortal",
+    star: 1,
+    mmr: 8500,
+    max: 99999,
+    img: "medalhas/Imortal.png",
+    fullLabel: "Imortal"
+  };
+}
+
+function getRankData(rankIndex, star){
+  const rank = RANKS[rankIndex] || RANKS[0];
+  const starData = rank.stars.find(s => s.star === star) || rank.stars[0];
+  return { rank, starData };
+}
+
+function setTradMMRFromPicker(side){
+  const inputId = side === "atual" ? "tradAtual" : "tradDesejado";
+  const state = rankPickerState[side];
+  const { starData } = getRankData(state.rankIndex, state.star);
+
+  const input = $(inputId);
+  if(input){
+    input.value = starData.mmr;
+
+    // dispara eventos para garantir atualização completa
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+    input.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+
+  updateRankPreview(side);
+  updateAll();
+}
+
+function updateRankPreview(side){
+  const inputId = side === "atual" ? "tradAtual" : "tradDesejado";
+  const imgId = side === "atual" ? "tradAtualPreviewImg" : "tradDesejadoPreviewImg";
+  const textId = side === "atual" ? "tradAtualPreviewText" : "tradDesejadoPreviewText";
+  const medalsId = side === "atual" ? "tradAtualMedals" : "tradDesejadoMedals";
+  const starsId = side === "atual" ? "tradAtualStars" : "tradDesejadoStars";
+
+  const mmr = Number($(inputId)?.value || 0);
+  const detected = getRankByMMR(mmr);
+
+  const rankIndex = RANKS.findIndex(r => r.key === detected.key);
+  rankPickerState[side].rankIndex = rankIndex >= 0 ? rankIndex : 0;
+  rankPickerState[side].star = detected.star;
+
+  if($(imgId)) $(imgId).src = detected.img;
+  if($(textId)) $(textId).textContent = detected.fullLabel;
+
+  if($(medalsId)){
+    [...$(medalsId).querySelectorAll(".rankMedalBtn")].forEach((btn, index) => {
+      btn.classList.toggle("active", index === rankPickerState[side].rankIndex);
+    });
+  }
+
+  if($(starsId)){
+    [...$(starsId).querySelectorAll(".rankStarBtn")].forEach((btn) => {
+      const star = Number(btn.dataset.star);
+      btn.classList.toggle("active", star === rankPickerState[side].star);
+    });
+  }
+}
+
+function renderRankPicker(side){
+  const medalsId = side === "atual" ? "tradAtualMedals" : "tradDesejadoMedals";
+  const starsId = side === "atual" ? "tradAtualStars" : "tradDesejadoStars";
+
+  const medalsWrap = $(medalsId);
+  const starsWrap = $(starsId);
+
+  if(!medalsWrap || !starsWrap) return;
+
+  medalsWrap.innerHTML = "";
+  starsWrap.innerHTML = "";
+
+  RANKS.forEach((rank, index) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "rankMedalBtn";
+    btn.innerHTML = `
+      <img src="${rank.baseImg}" alt="${rank.label}">
+      <span>${rank.label}</span>
+    `;
+    btn.addEventListener("click", () => {
+      rankPickerState[side].rankIndex = index;
+      rankPickerState[side].star = 1;
+      setTradMMRFromPicker(side);
+    });
+    medalsWrap.appendChild(btn);
+  });
+
+  ROMAN.forEach((roman, i) => {
+    const star = i + 1;
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "rankStarBtn";
+    btn.dataset.star = String(star);
+    btn.textContent = roman;
+
+    btn.addEventListener("click", () => {
+      const currentRank = RANKS[rankPickerState[side].rankIndex];
+      const maxStars = currentRank.stars.length;
+      rankPickerState[side].star = Math.min(star, maxStars);
+      setTradMMRFromPicker(side);
+    });
+
+    starsWrap.appendChild(btn);
+  });
+
+  updateRankPreview(side);
+}
+
+function initTradRankPickers(){
+  renderRankPicker("atual");
+  renderRankPicker("desejado");
+
+  ["tradAtual","tradDesejado"].forEach(id => {
+    const el = $(id);
+    if(!el) return;
+
+    el.addEventListener("input", () => {
+      const side = id === "tradAtual" ? "atual" : "desejado";
+      updateRankPreview(side);
+      updateAll();
+    });
+
+    el.addEventListener("change", () => {
+      const side = id === "tradAtual" ? "atual" : "desejado";
+      updateRankPreview(side);
+      updateAll();
+    });
+  });
+}
+
 
 function calcTradByBudget(mmrAtual, budget){
   let mmrTemp = mmrAtual;
@@ -1791,6 +2370,81 @@ function calcTurboXP(){
     blocksDiscounts:true
   };
 }
+function updateDoublePreview(){
+  const mmr = Number($("doubleMMR")?.value || 0);
+  const rank = getRankByMMR(mmr);
+
+  if($("doublePreviewImg")) $("doublePreviewImg").src = rank.img;
+  if($("doublePreviewText")) $("doublePreviewText").textContent = rank.fullLabel;
+}
+
+function updateReplayPreview(){
+  const qtd = Number($("repQtd")?.value || 1);
+  const dias = Number($("repDias")?.value || 1);
+
+  const img = $("replayPreviewImg");
+  const text = $("replayPreviewText");
+
+  if(!img || !text) return;
+
+  const porDia = Math.ceil(qtd / dias);
+
+  if(porDia >= 2 && porDia <= 3){
+    img.src = "medalhas/repleypromo.png";
+    text.textContent = "Replay com promoção";
+  }else{
+    img.src = "medalhas/repley.png";
+    text.textContent = "Análise de Replay";
+  }
+}
+
+function updateRecalCards(fromClick = false){
+  const c1 = $("recalCard1");
+  const c2 = $("recalCard2");
+
+  const r1 = $("recalMode1");
+  const r2 = $("recalMode2");
+  const mmrInput = $("recalMMR");
+
+  if(!r1 || !r2 || !mmrInput) return;
+
+  let mmr = Number(mmrInput.value || 0);
+
+  if(fromClick){
+    if(r1.checked){
+      mmrInput.value = 1;
+      mmr = 1;
+    }else if(r2.checked){
+      mmrInput.value = 4001;
+      mmr = 4001;
+    }
+  }else{
+    if(mmr >= 1 && mmr <= 4000){
+      r1.checked = true;
+      r2.checked = false;
+    }else if(mmr >= 4001 && mmr <= 6000){
+      r1.checked = false;
+      r2.checked = true;
+    }else{
+      r1.checked = false;
+      r2.checked = false;
+    }
+  }
+
+  if(c1) c1.classList.toggle("active", r1.checked);
+  if(c2) c2.classList.toggle("active", r2.checked);
+}
+
+function updateCoachCards(){
+  const card1 = $("coachCard1");
+  const card2 = $("coachCard2");
+  const p1 = $("coachP1")?.checked;
+  const p2 = $("coachP2")?.checked;
+
+  if(card1) card1.classList.toggle("active", !!p1);
+  if(card2) card2.classList.toggle("active", !!p2);
+}
+
 
 /* ========= update all ========= */
 function updateAll(){
@@ -1801,8 +2455,10 @@ function updateAll(){
 
   // 🔥 isso garante que promoções antigas morram
   syncBodies();
-
-
+updateDoublePreview();
+updateReplayPreview();
+updateCoachCards();
+updateRecalCards(false);
 
    // 🔮 CONTROLE DA SUGESTÃO POR VALOR
   const sug = $("tradSuggest");
@@ -1833,6 +2489,10 @@ if(sug && sug.checked){
   $("tradDesejado").disabled = false;
 }
 
+const tradRankSelectors = $("tradRankSelectors");
+if(tradRankSelectors){
+  tradRankSelectors.style.display = $("useTrad").checked ? "grid" : "none";
+}
 
     enableGroup("useTrad",   ["tradAtual","tradDesejado","tradOff","tradSuperPromo"]);
   enableGroup("useDouble", ["doubleMMR","doubleDays","doubleOff"]);
@@ -2132,7 +2792,7 @@ if(selectedAny){
 
 
 [
-  "useTrad","useDouble","useCasual","useRecal","useReplay","useCoach","useLow","useTurbo",
+  "recalMode1","recalMode2","useTrad","useDouble","useCasual","useRecal","useReplay","useCoach","useLow","useTurbo",
   "tradAtual","tradDesejado","tradOff","tradSuperPromo",
   "doubleMMR","doubleDays","doubleOff",
   "casualDays","casualOff",
@@ -2151,6 +2811,26 @@ if(selectedAny){
 
 // 👇 COLE EXATAMENTE AQUI
 $("couponInput").addEventListener("input", checkCoupon);
+
+initTradRankPickers();
+updateDoublePreview();
+updateReplayPreview();
+updateCoachCards();
+
+$("recalMode1")?.addEventListener("change", () => {
+  updateRecalCards(true);
+  updateAll();
+});
+
+$("recalMode2")?.addEventListener("change", () => {
+  updateRecalCards(true);
+  updateAll();
+});
+
+$("recalMMR")?.addEventListener("input", () => {
+  updateRecalCards(false);
+  updateAll();
+});
 
 updateAll();
 
