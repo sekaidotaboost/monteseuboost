@@ -654,6 +654,18 @@ input[type=range]::-moz-range-thumb{
         <label>Quantos dias de serviço? (1 a 30)</label>
         <input type="number" id="casualDays" min="1" max="30" value="1" disabled>
 
+<div class="servicePreviewBox" id="casualPreviewBox">
+  <img id="casualPreviewImg" src="medalhas/burrinho.png" alt="Boost Casual">
+  <div class="servicePreviewText">
+    <span>Serviço selecionado</span>
+    <strong>Boost Casual</strong>
+    <div id="casualPreviewDetails">
+      Quantidade de partidas: 7<br>
+      Dias contratados: 1
+    </div>
+  </div>
+</div>
+
         <div class="check">
           <input type="checkbox" id="casualOff" disabled>
           <span>Jogar Off Stream (<span style="color:var(--danger);text-decoration:line-through;">R$ 20,00</span> → <span style="color:var(--success);">R$ 15,00</span> por dia) na Twitch sekai_oficial</span>
@@ -2398,6 +2410,20 @@ function updateReplayPreview(){
   }
 }
 
+function updateCasualPreview(){
+  const days = Number($("casualDays")?.value || 1);
+
+  const partidas = days * 7;
+
+  const details = $("casualPreviewDetails");
+
+  if(details){
+    details.innerHTML =
+      `Quantidade de partidas: ${partidas}<br>
+       Dias contratados: ${days}`;
+  }
+}
+
 function updateRecalCards(fromClick = false){
   const c1 = $("recalCard1");
   const c2 = $("recalCard2");
@@ -2457,6 +2483,7 @@ function updateAll(){
   syncBodies();
 updateDoublePreview();
 updateReplayPreview();
+updateCasualPreview();
 updateCoachCards();
 updateRecalCards(false);
 
@@ -2815,6 +2842,7 @@ $("couponInput").addEventListener("input", checkCoupon);
 initTradRankPickers();
 updateDoublePreview();
 updateReplayPreview();
+updateCasualPreview();
 updateCoachCards();
 
 $("recalMode1")?.addEventListener("change", () => {
