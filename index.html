@@ -2076,7 +2076,117 @@ input[type=text]:focus{
 
 }
 
+/* ===== MODAL BAIXAR APP ===== */
+.appModalCard{
+  max-width:720px;
+}
 
+.appModalTop{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin-bottom:18px;
+  padding:16px;
+  border-radius:18px;
+  background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+  border:1px solid rgba(139,92,246,.16);
+}
+
+.appModalLogo{
+  width:78px;
+  height:78px;
+  border-radius:20px;
+  object-fit:cover;
+  display:block;
+  box-shadow:0 10px 24px rgba(0,0,0,.24);
+  border:1px solid rgba(139,92,246,.22);
+  background:rgba(255,255,255,.04);
+}
+
+.appModalAppName{
+  font-size:24px;
+  font-weight:900;
+  color:#fff;
+  line-height:1.1;
+  margin-bottom:6px;
+}
+
+.appModalMini{
+  font-size:13px;
+  color:#cdbaf1;
+  line-height:1.45;
+}
+
+.appModalText{
+  margin-top:12px;
+  padding:16px;
+  border-radius:18px;
+  background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.02));
+  border:1px solid rgba(139,92,246,.14);
+  color:#ddd6fe;
+  font-size:14px;
+  line-height:1.7;
+}
+
+.appModalText strong{
+  color:#fff;
+}
+
+.appDownloadWrap{
+  margin-top:18px;
+}
+
+.appDownloadBtn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  width:100%;
+  padding:18px 20px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.08);
+  background:linear-gradient(135deg, #8b5cf6, #6d28d9);
+  color:#fff;
+  font-size:17px;
+  font-weight:900;
+  letter-spacing:.2px;
+  box-shadow:0 16px 32px rgba(139,92,246,.22);
+  transition:.22s ease;
+}
+
+.appDownloadBtn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 20px 40px rgba(139,92,246,.30);
+}
+
+.appDownloadNote{
+  margin-top:12px;
+  font-size:12px;
+  color:#b9a7d9;
+  text-align:center;
+  line-height:1.45;
+}
+
+@media(max-width:700px){
+  .appModalTop{
+    align-items:flex-start;
+  }
+
+  .appModalLogo{
+    width:64px;
+    height:64px;
+    border-radius:18px;
+  }
+
+  .appModalAppName{
+    font-size:20px;
+  }
+
+  .appDownloadBtn{
+    font-size:15px;
+    padding:16px 18px;
+  }
+}
 
 
 </style>
@@ -2117,18 +2227,22 @@ input[type=text]:focus{
 
         <div class="topDropdown" id="topDropdown">
           <div class="menuLevel active" id="menuMainLevel">
-            <button type="button" class="menuItemBtn openLegalModal" data-modal="pixModal">
-              💠 Pix
-            </button>
+  <button type="button" class="menuItemBtn openLegalModal" data-modal="pixModal">
+    💠 Pix
+  </button>
 
-            <button type="button" class="menuItemBtn" id="openSocialMenu">
-              🌐 Redes sociais
-            </button>
+  <button type="button" class="menuItemBtn" id="openSocialMenu">
+    🌐 Redes sociais
+  </button>
 
-            <button type="button" class="menuItemBtn" id="openTermsMenu">
-              📄 Termos de compromisso
-            </button>
-          </div>
+  <button type="button" class="menuItemBtn" id="openTermsMenu">
+    📄 Termos de compromisso
+  </button>
+
+  <button type="button" class="menuItemBtn openLegalModal" data-modal="appModal">
+    📲 Baixar app
+  </button>
+</div>
 
           <div class="menuLevel" id="menuSocialLevel">
             <a href="https://www.instagram.com/sekaidota/" target="_blank" class="menuItemBtn">📷 Instagram</a>
@@ -3292,6 +3406,51 @@ Aqui meu foco é oferecer um serviço sério e confiável, sempre com transparê
     </div>
   </div>
 </div>
+
+
+<!-- POPUP BAIXAR APP -->
+<div class="modalOverlay legalModal" id="appModal">
+  <div class="modalCard appModalCard" onclick="event.stopPropagation()">
+    <div class="modalHeader">
+      <div class="modalTitle">Baixar app</div>
+      <button type="button" class="modalClose closeModalBtn">✕</button>
+    </div>
+
+    <div class="legalTextBox">
+      <div class="appModalTop">
+        <img src="medalhas/logo-sekai.png" alt="Logo Sekai Dota Boost" class="appModalLogo">
+
+        <div>
+          <div class="appModalAppName">Sekai Dota Boost</div>
+          <div class="appModalMini">
+            Acesso rápido à versão mobile da plataforma.
+          </div>
+        </div>
+      </div>
+
+      <div class="appModalText">
+        <strong>Tenha a Sekai Dota Boost na palma da sua mão.</strong><br><br>
+        Este app foi pensado para facilitar o acesso à página no celular, permitindo abrir a plataforma de forma mais rápida, prática e organizada sempre que precisar.<br><br>
+        Com ele, você pode consultar serviços, montar seu pacote e acessar a plataforma com muito mais comodidade no dia a dia, diretamente no aplicativo da Sekai Dota Boost.
+      </div>
+
+      <div class="appDownloadWrap">
+        <a 
+          href="https://docs.google.com/uc?export=download&id=1oPRzmD677I62-GR2-i7NfXuiOK55I_o9" 
+          target="_blank" 
+          class="appDownloadBtn"
+        >
+          📲 Baixar app
+        </a>
+
+        <div class="appDownloadNote">
+          Compatível com uso no celular para abrir a versão web da plataforma com mais rapidez.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <script>
 
