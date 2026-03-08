@@ -20,21 +20,12 @@
 body{
   margin:0;
   min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
   background:
-    linear-gradient(
-      rgba(15, 17, 23, 0.349),
-      rgba(15, 17, 23, 0.349)
-    ),
+    linear-gradient(rgba(22, 2, 41, 0.671), rgba(22, 2, 41, 0.671)),
     url("sua-imagem-cosmica.png");
-
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
   color:var(--text);
 }
 .sub{
@@ -45,55 +36,315 @@ body{
 }
 .wrap{
   width:100%;
-  max-width:1100px;
-  padding:20px;
+  max-width:1280px;
+  margin:0 auto;
+  padding:18px;
+}
+
+.app-shell{
+  min-height:100vh;
+}
+
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:14px 18px;
+  backdrop-filter:blur(14px);
+  background:rgba(10,12,22,.72);
+  border-bottom:1px solid rgba(139,92,246,.14);
+}
+
+.brandBlock{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.brandOrb{
+  width:52px;
+  height:52px;
+  border-radius:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg, rgba(139,92,246,.95), rgba(76,29,149,.95));
+  box-shadow:0 0 24px rgba(139,92,246,.32);
+  font-size:22px;
+}
+
+.brandTexts h1{
+  margin:0;
+  font-size:22px;
+  color:#fff;
+  letter-spacing:.4px;
+}
+
+.brandTexts .sub{
+  margin-top:4px;
+  color:#d9c6ff;
+  font-size:12px;
+  line-height:1.35;
+}
+
+.topRight{
+  position:relative;
+}
+
+.profileMenuBtn{
+  width:52px;
+  height:52px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.05);
+  overflow:hidden;
+  cursor:pointer;
+  padding:0;
+  box-shadow:0 8px 24px rgba(0,0,0,.25);
+}
+
+.profileMenuBtn img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.profileDropdown{
+  position:absolute;
+  top:62px;
+  right:0;
+  min-width:240px;
+  background:linear-gradient(180deg, rgba(24,20,36,.98), rgba(16,20,30,.98));
+  border:1px solid rgba(139,92,246,.16);
+  border-radius:18px;
+  box-shadow:0 20px 40px rgba(0,0,0,.38);
+  padding:10px;
+  display:none;
+}
+
+.profileDropdown.open{
+  display:block;
+}
+
+.profileDropdown a,
+.profileDropdown button{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+  background:transparent;
+  border:none;
+  color:var(--text);
+  font-size:14px;
+  padding:12px 12px;
+  border-radius:12px;
+  cursor:pointer;
+  text-align:left;
+}
+
+.profileDropdown a:hover,
+.profileDropdown button:hover{
+  background:rgba(139,92,246,.10);
+}
+
+.heroPanel{
+  margin-bottom:16px;
+  background:linear-gradient(180deg, rgba(34,20,37,.82), rgba(20,24,36,.86));
+  border:1px solid rgba(139,92,246,.12);
+  border-radius:22px;
+  padding:16px;
+  box-shadow:0 20px 45px rgba(162,0,255,.10);
+}
+
+.heroTop{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:14px;
+}
+
+.heroTitle{
+  font-size:20px;
+  font-weight:800;
+  color:#fff;
+  margin-bottom:4px;
+}
+
+.heroText{
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.45;
+}
+
+.filterBar{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  overflow-x:auto;
+  padding-bottom:4px;
+  scrollbar-width:none;
+}
+
+.filterBar::-webkit-scrollbar{
+  display:none;
+}
+
+.categoryBtn{
+  width:auto;
+  min-width:max-content;
+  padding:12px 16px;
+  border-radius:16px;
+  border:1px solid rgba(139,92,246,.16);
+  background:rgba(255,255,255,.035);
+  color:#ddd6fe;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.18s ease;
+  box-shadow:none;
+}
+
+.categoryBtn:hover{
+  transform:translateY(-1px);
+  border-color:rgba(139,92,246,.45);
+}
+
+.categoryBtn.active{
+  background:linear-gradient(135deg, rgba(139,92,246,1), rgba(109,40,217,.95));
+  color:#fff;
+  border-color:rgba(255,255,255,.08);
+  box-shadow:0 10px 20px rgba(139,92,246,.20);
+}
+.promoToggleBtn{
+  width:auto;
+  padding:11px 14px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(250,204,21,.10);
+  color:#fde68a;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.promoToggleBtn:hover{
+  transform:translateY(-1px);
+}
+
+.promoExpandable{
+  margin-top:14px;
+  display:none;
+}
+
+.promoExpandable.open{
+  display:block;
+}
+
+.service-card{
+  transition:.18s ease;
+}
+
+.customerBox{
+  margin-top:14px;
+  padding:14px;
+  border-radius:14px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(139,92,246,.14);
+}
+#customerBox{
+  display:none;
+}
+
+#confirmBox{
+  display:none;
+}
+
+#couponBox{
+  display:none;
+}
+
+.customerHint{
+  margin-top:6px;
+  font-size:12px;
+  color:var(--muted);
+}
+
+.hiddenByFilter{
+  display:none !important;
 }
 
 
 .grid{display:grid;grid-template-columns:1fr;gap:14px;}
 @media(min-width:980px){.grid{grid-template-columns:1fr 1fr;}}
 .card{
-  background:var(--card);
-  border-radius:18px;
-  padding:18px;
-  box-shadow:0 20px 45px rgba(162, 0, 255, 0.171);
+  background:linear-gradient(180deg, rgba(26,18,38,.95), rgba(16,20,30,.96));
+  border-radius:24px;
+  padding:16px;
+  box-shadow:0 12px 28px rgba(0,0,0,.22);
+  border:1px solid rgba(139,92,246,.08);
+  backdrop-filter:blur(12px);
 }
 .card h2{
   margin:0;
-  font-size:16px;
-  color:var(--muted);
+  font-size:15px;
+  color:#f4efff;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:10px;
+  gap:8px;
 }
 .pill{
   font-size:12px;
   padding:6px 10px;
   border-radius:999px;
-  background:rgba(128, 74, 255, 0.247);
-  color:var(--muted);
-  border:1px solid rgba(128, 74, 255, 0.247);
+  background:rgba(139,92,246,.16);
+  color:#d8c8ff;
+  border:1px solid rgba(139,92,246,.20);
 }
 label{display:block;margin-top:10px;margin-bottom:6px;font-size:13px}
 input[type=number], input[type=text]{
   width:100%;
-  padding:11px 12px;
-  border-radius:12px;
-  border:1px solid #2a2f45;
-  background:var(--card-soft);
+  padding:12px 13px;
+  border-radius:14px;
+  border:1px solid rgba(139,92,246,.14);
+  background:rgba(15,24,40,.92);
   color:var(--text);
+  outline:none;
+  transition:.18s ease;
 }
+
+input[type=number]:focus,
+input[type=text]:focus{
+  border-color:rgba(139,92,246,.45);
+  box-shadow:0 0 0 3px rgba(139,92,246,.12);
+}
+
 .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+@media(max-width:760px){
+  .two{
+    grid-template-columns:1fr;
+  }
+}
+
 .check{display:flex;gap:8px;align-items:center;margin-top:10px;font-size:13px}
 small.muted{color:var(--muted)}
 .result{
   margin-top:12px;
-  padding:12px;
-  border-radius:12px;
-  background:var(--card-soft);
+  padding:13px;
+  border-radius:14px;
+  background:rgba(15,24,40,.86);
+  border:1px solid rgba(255,255,255,.05);
   min-height:62px;
   font-size:13px;
+  line-height:1.5;
 }
 .alert{margin-top:8px;color:var(--danger);font-size:13px}
 .ok{color:var(--success)}
@@ -102,19 +353,27 @@ summary{cursor:pointer}
 .big{grid-column:1 / -1;}
 button{
   width:100%;
-  padding:14px;
+  padding:15px;
   border:none;
-  border-radius:14px;
-  background:var(--primary);
+  border-radius:18px;
+  background:linear-gradient(135deg, #8b5cf6, #6d28d9);
   color:white;
-  font-size:16px;
+  font-size:15px;
+  font-weight:800;
   cursor:pointer;
+  transition:.18s ease;
 }
+button:hover{
+  transform:translateY(-1px);
+  box-shadow:0 10px 24px rgba(139,92,246,.22);
+}
+
 button:disabled{opacity:.55;cursor:not-allowed;}
 .footer{text-align:center;margin-top:12px;color:var(--muted);font-size:12px}
 .badge{display:none;margin-top:8px;font-size:12px;color:var(--success)}
 /* collapsible sections */
 .serviceBody{display:none;margin-top:10px}
+.serviceBody.hiddenService{display:none}
 .serviceBody.active{display:block}
 /* promo price formatting */
 .oldPrice{color:var(--danger);text-decoration:line-through;font-weight:700}
@@ -154,10 +413,146 @@ button:disabled{opacity:.55;cursor:not-allowed;}
   color:var(--success);
 }
 
+.ft-items{
+  margin-bottom:10px;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+
+.ft-item{
+  font-size:12px;
+  color:#cfc4ea;
+  line-height:1.2;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  opacity:.95;
+}
+
+.ft-item::before{
+  content:"• ";
+  color:#8b5cf6;
+  font-weight:700;
+}
+
+.ft-empty{
+  font-size:12px;
+  color:var(--muted);
+  opacity:.8;
+}
+
 .ft-discount{
   font-size:12px;
   margin-top:4px;
   color:#facc15;
+}
+
+#summaryCard{
+  border:1px solid rgba(34,197,94,.16);
+  box-shadow:0 18px 40px rgba(34,197,94,.08);
+  position:relative;
+  margin-top:8px;
+}
+
+
+.pixModalCard{
+  max-width:700px;
+}
+
+.pixBox{
+  margin-bottom:18px;
+}
+
+.pixLabel{
+  font-size:14px;
+  font-weight:700;
+  color:#fff;
+  margin-bottom:10px;
+}
+
+.pixKeyWrap{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
+.pixKeyInput{
+  flex:1;
+  min-width:220px;
+  width:100%;
+  padding:14px 16px;
+  border-radius:14px;
+  border:1px solid rgba(139,92,246,.18);
+  background:rgba(255,255,255,.04);
+  color:#fff;
+  font-size:14px;
+}
+
+.pixCopyBtn,
+.pixQrBtn{
+  width:auto;
+  min-width:140px;
+  padding:12px 16px;
+  border-radius:14px;
+  border:none;
+  background:linear-gradient(135deg, #8b5cf6, #6d28d9);
+  color:#fff;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.pixCopyMsg{
+  margin-top:10px;
+  font-size:12px;
+  color:#22c55e;
+  min-height:16px;
+}
+
+.pixQrSection{
+  margin-top:10px;
+}
+
+.pixQrWrap{
+  margin-top:14px;
+  padding:14px;
+  border-radius:16px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(139,92,246,.14);
+  text-align:center;
+}
+
+.pixQrImg{
+  width:100%;
+  max-width:280px;
+  display:block;
+  margin:0 auto;
+  border-radius:14px;
+}
+
+.pixNote{
+  margin-top:18px;
+  padding:12px 14px;
+  border-radius:14px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(139,92,246,.12);
+  color:#d6d3e5;
+  font-size:14px;
+  line-height:1.5;
+}
+
+@media(max-width:700px){
+  .pixKeyWrap{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .pixCopyBtn,
+  .pixQrBtn{
+    width:100%;
+  }
 }
 
 /* ========= NOVOS SERVIÇOS ========= */
@@ -335,6 +730,11 @@ input[type=range]::-moz-range-thumb{
   display:block;
 }
 
+.roleFarmPreviewBox img{
+  width:80px;
+  height:80px;
+}
+
 .servicePreviewText{
   font-size:13px;
   color:var(--muted);
@@ -453,18 +853,62 @@ input[type=range]::-moz-range-thumb{
 
 .promoGrid{
   display:grid;
-  grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
-  gap:12px;
+  grid-template-columns:repeat(5, 1fr);
+  gap:10px;
   margin-top:12px;
 }
 
 .promoCard{
-  background: rgba(20,20,35,0.75);
+  background:rgba(20,20,35,0.75);
   border:1px solid rgba(255,255,255,0.08);
   border-radius:12px;
-  padding:14px;
+  padding:10px 8px;
   text-align:center;
   transition:0.2s;
+  min-height:125px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.promoIcon{
+  font-size:22px;
+  margin-bottom:4px;
+}
+
+.promoTitle{
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:4px;
+  line-height:1.2;
+}
+
+.promoDesc{
+  font-size:11px;
+  line-height:1.35;
+  color:#c9c9d8;
+}
+
+.promoDesc strong{
+  color:#3dff8f;
+}
+
+@media(max-width:1100px){
+  .promoGrid{
+    grid-template-columns:repeat(3, 1fr);
+  }
+}
+
+@media(max-width:700px){
+  .promoGrid{
+    grid-template-columns:repeat(2, 1fr);
+  }
+}
+
+@media(max-width:480px){
+  .promoGrid{
+    grid-template-columns:1fr;
+  }
 }
 
 .promoCard:hover{
@@ -506,19 +950,1300 @@ input[type=range]::-moz-range-thumb{
   text-align:center;
 }
 
+@media(max-width:860px){
+  body{
+    background-attachment:scroll;
+  }
+
+  .topbar{
+    padding:10px 12px;
+    align-items:center;
+    border-bottom:none;
+  }
+
+  .brandOrb{
+    width:42px;
+    height:42px;
+    border-radius:14px;
+    font-size:18px;
+  }
+
+  .brandTexts h1{
+    font-size:16px;
+  }
+
+  .brandTexts .sub{
+    font-size:11px;
+  }
+
+  .heroPanel{
+    padding:14px;
+    border-radius:20px;
+  }
+
+  .heroTitle{
+    font-size:18px;
+  }
+
+  .heroText{
+    font-size:13px;
+  }
+
+  .wrap{
+    padding:12px;
+  }
+
+  .card{
+    padding:14px;
+    border-radius:20px;
+  }
+
+  .categoryBtn,
+  .promoToggleBtn{
+    font-size:12px;
+    padding:11px 14px;
+  }
+
+  .floating-total{
+    right:12px;
+    left:12px;
+    bottom:12px;
+    min-width:auto;
+  }
+}
+.brandLogoWrap{
+  width:68px;
+  height:68px;
+  border-radius:18px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(139,92,246,.18);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  box-shadow:0 10px 24px rgba(0,0,0,.25);
+}
+
+.brandLogoImg{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.topRight{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.sekaiInfoBtn{
+  width:auto;
+  padding:12px 16px;
+  border-radius:14px;
+  border:1px solid rgba(139,92,246,.22);
+  background:rgba(255,255,255,.04);
+  color:#f3e8ff;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.18s ease;
+  white-space:nowrap;
+}
+
+.sekaiInfoBtn:hover{
+  transform:translateY(-1px);
+  border-color:rgba(139,92,246,.45);
+  background:rgba(139,92,246,.10);
+}
+
+.menuAnchor{
+  position:relative;
+}
+
+.topMenuBtn{
+  width:auto;
+  padding:8px 10px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.05);
+  display:flex;
+  align-items:center;
+  gap:10px;
+  cursor:pointer;
+  box-shadow:0 8px 24px rgba(0,0,0,.25);
+}
+
+.topMenuIconBox{
+  width:54px;
+  height:54px;
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(255,255,255,.05);
+  flex-shrink:0;
+}
+
+.topMenuMainImg{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.topMenuBars{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+  padding:0 6px 0 2px;
+}
+
+.topMenuBars span{
+  width:20px;
+  height:2px;
+  border-radius:999px;
+  background:#fff;
+  display:block;
+}
+
+.topDropdown{
+  position:absolute;
+  top:76px;
+  right:0;
+  min-width:270px;
+  background:linear-gradient(180deg, rgba(24,20,36,.98), rgba(16,20,30,.98));
+  border:1px solid rgba(139,92,246,.18);
+  border-radius:20px;
+  box-shadow:0 20px 40px rgba(0,0,0,.38);
+  padding:12px;
+  display:none;
+  z-index:1200;
+}
+
+.topDropdown.open{
+  display:block;
+}
+
+.menuLevel{
+  display:none;
+  flex-direction:column;
+  gap:8px;
+}
+
+.menuLevel.active{
+  display:flex;
+}
+
+.menuItemBtn{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(139,92,246,.12);
+  color:var(--text);
+  font-size:14px;
+  padding:13px 14px;
+  border-radius:14px;
+  cursor:pointer;
+  text-align:left;
+  transition:.18s ease;
+}
+
+.menuItemBtn:hover{
+  background:rgba(139,92,246,.10);
+  border-color:rgba(139,92,246,.35);
+}
+
+.menuBackBtn{
+  color:#d8c8ff;
+}
+
+.modalOverlay{
+  position:fixed;
+  inset:0;
+  background:rgba(5,8,16,.60);
+  backdrop-filter:blur(6px);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  z-index:3000;
+}
+
+.modalOverlay.open{
+  display:flex;
+}
+
+.modalCard{
+  width:100%;
+  max-width:960px;
+  max-height:90vh;
+  overflow:auto;
+  background:
+    linear-gradient(180deg, rgba(28,19,42,.94), rgba(15,18,30,.95));
+  border:1px solid rgba(139,92,246,.24);
+  border-radius:28px;
+  box-shadow:
+    0 30px 60px rgba(0,0,0,.45),
+    0 0 30px rgba(139,92,246,.10);
+  padding:22px;
+}
+
+.modalHeader{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  margin-bottom:16px;
+}
+
+.modalTitle{
+  font-size:22px;
+  font-weight:800;
+  color:#fff;
+}
+
+.modalClose{
+  width:auto;
+  min-width:46px;
+  padding:10px 14px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.05);
+  color:#fff;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.sekaiProfileTop{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  gap:18px;
+  margin-bottom:18px;
+}
+
+@media(max-width:800px){
+  .sekaiProfileTop{
+    grid-template-columns:1fr;
+  }
+}
+
+.sekaiPhotoCard,
+.sekaiInfoCard,
+.heroCard,
+.legalTextBox{
+  background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.025));
+  border:1px solid rgba(139,92,246,.16);
+  border-radius:20px;
+  padding:16px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
+}
+
+.sekaiMainPhoto{
+  width:100%;
+  height:300px;
+  object-fit:cover;
+  border-radius:18px;
+  display:block;
+  margin-bottom:14px;
+  box-shadow:
+    0 16px 30px rgba(0,0,0,.26),
+    0 0 18px rgba(139,92,246,.10);
+}
+
+.sekaiRankPhoto{
+  width:100%;
+  max-width:190px;
+  height:190px;
+  object-fit:contain;
+  display:block;
+  margin-top:14px;
+  filter:drop-shadow(0 0 16px rgba(139,92,246,.18));
+}
+
+.sekaiInfoGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:14px;
+}
+
+@media(max-width:700px){
+  .sekaiInfoGrid{
+    grid-template-columns:1fr;
+  }
+}
+
+.infoLine{
+  background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;
+  padding:13px 14px;
+  font-size:14px;
+  line-height:1.45;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
+}
+
+.infoLine strong{
+  color:#fff;
+}
+
+.sectionTitleModal{
+  font-size:18px;
+  font-weight:800;
+  margin:18px 0 12px;
+  color:#fff;
+}
+.heroRolesWrap{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+  margin-top:8px;
+}
+
+.heroRoleSection{
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(139,92,246,.12);
+  border-radius:18px;
+  padding:16px;
+}
+
+.heroRoleHeader{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:14px;
+}
+
+.heroRoleIcon{
+  width:28px;
+  height:28px;
+  object-fit:contain;
+  display:block;
+  flex-shrink:0;
+}
+
+.heroRoleTitle{
+  font-size:18px;
+  font-weight:800;
+  color:#fff;
+}
+
+.heroRoleGrid{
+  display:grid;
+  grid-template-columns:repeat(9, 1fr);
+  gap:10px;
+}
+
+
+
+.heroRoleBlock{
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(139,92,246,.14);
+  border-radius:20px;
+  padding:16px;
+  min-height:230px;
+}
+
+.heroRoleGrid{
+  display:grid;
+  grid-template-columns:repeat(3, 70px);
+  justify-content:center;
+  gap:10px;
+}
+
+.heroCardTall{
+  width:70px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(139,92,246,.14);
+  border-radius:12px;
+  padding:6px;
+  transition:0.2s;
+}
+
+.heroCardTall:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 10px rgba(139,92,246,.6);
+}
+
+.heroCardTall img{
+  width:100%;
+  aspect-ratio:9/16;
+  object-fit:cover;
+  object-position:center;
+  border-radius:10px;
+  display:block;
+  margin-bottom:6px;
+}
+
+.heroCardTall .heroItemName{
+  text-align:center;
+  font-size:11px;
+  color:#ddd6fe;
+  font-weight:700;
+}
+
+.rolesRow.top{
+  grid-template-columns:repeat(3, 1fr);
+  align-items:stretch;
+}
+
+.rolesRow.bottom{
+  grid-template-columns:repeat(2, minmax(260px, 360px));
+  justify-content:center;
+  align-items:stretch;
+}
+
+
+
+
+
+@media(max-width:900px){
+  .heroRoleGrid{
+    grid-template-columns:repeat(2, 1fr);
+  }
+
+  .heroCardTall img{
+    height:220px;
+  }
+}
+
+@media(max-width:560px){
+  .heroRoleGrid{
+    grid-template-columns:1fr;
+  }
+
+  .heroRoleTitle{
+    font-size:16px;
+  }
+
+  .heroCardTall img{
+    height:240px;
+  }
+}
+
+.legalTextBox{
+  font-size:14px;
+  line-height:1.7;
+  color:#d6d3e5;
+}
+
+@media(max-width:860px){
+  .topRight{
+    gap:8px;
+  }
+
+  .sekaiInfoBtn{
+    font-size:12px;
+    padding:10px 12px;
+  }
+
+  .topMenuIconBox{
+    width:46px;
+    height:46px;
+  }
+
+  .topDropdown{
+    right:0;
+    min-width:240px;
+  }
+
+  .brandLogoWrap{
+    width:54px;
+    height:54px;
+    border-radius:16px;
+  }
+}
+
+.pixHeaderInfo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.pixHeaderLogo{
+  width:38px;
+  height:38px;
+  object-fit:contain;
+  display:block;
+  filter:drop-shadow(0 0 10px rgba(139,92,246,.18));
+}
+
+.pixModalCard{
+  max-width:720px;
+}
+
+.pixBox{
+  margin-bottom:18px;
+}
+
+.pixLabel{
+  font-size:14px;
+  font-weight:700;
+  color:#fff;
+  margin-bottom:10px;
+}
+
+.pixKeyWrap{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
+.pixKeyInput{
+  flex:1;
+  min-width:220px;
+  width:100%;
+  padding:14px 16px;
+  border-radius:14px;
+  border:1px solid rgba(139,92,246,.22);
+  background:rgba(8,14,28,.88);
+  color:#fff;
+  font-size:14px;
+  box-shadow:inset 0 0 0 1px rgba(139,92,246,.06);
+}
+
+.pixCopyBtn,
+.pixQrBtn{
+  width:auto;
+  min-width:120px;
+  padding:12px 16px;
+  border-radius:14px;
+  border:none;
+  background:linear-gradient(135deg, #8b5cf6, #6d28d9);
+  color:#fff;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.pixConfirmBox{
+  margin-top:14px;
+  padding:14px 16px;
+  border-radius:16px;
+  background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02));
+  border:1px solid rgba(139,92,246,.14);
+}
+
+.pixConfirmTitle{
+  font-size:13px;
+  font-weight:800;
+  color:#f3e8ff;
+  margin-bottom:8px;
+}
+
+.pixConfirmLine{
+  font-size:13px;
+  color:#d6d3e5;
+  line-height:1.55;
+}
+
+.pixConfirmLine strong{
+  color:#fff;
+}
+
+.pixCopyMsg{
+  margin-top:10px;
+  font-size:12px;
+  color:#22c55e;
+  min-height:16px;
+}
+
+.pixQrSection{
+  margin-top:14px;
+}
+
+.pixQrWrap{
+  margin-top:12px;
+  padding:18px;
+  border-radius:18px;
+  background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.02));
+  border:1px solid rgba(139,92,246,.14);
+  text-align:center;
+}
+
+.pixQrImg{
+  width:100%;
+  max-width:240px;
+  display:block;
+  margin:0 auto;
+  border-radius:16px;
+  background:#fff;
+  padding:8px;
+  box-shadow:0 8px 28px rgba(0,0,0,.28);
+}
+
+.pixNote{
+  margin-top:18px;
+  padding:12px 14px;
+  border-radius:14px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(139,92,246,.12);
+  color:#d6d3e5;
+  font-size:13px;
+  line-height:1.5;
+}
+
+@media(max-width:700px){
+  .pixKeyWrap{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .pixCopyBtn,
+  .pixQrBtn{
+    width:100%;
+  }
+
+  .pixHeaderLogo{
+    width:34px;
+    height:34px;
+  }
+}
+
+.pixQrSection{
+  margin-top:14px;
+}
+
+#pixQrSection{
+  display:none;
+}
+
+
+.rolesWrap{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
+.rolesRow{
+  display:grid;
+  gap:18px;
+}
+
+.rolesRow.top{
+  grid-template-columns:repeat(3, 1fr);
+}
+
+.rolesRow.bottom{
+  grid-template-columns:repeat(2, minmax(260px, 360px));
+  justify-content:center;
+}
+
+.heroRoleBlock{
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(139,92,246,.14);
+  border-radius:20px;
+  padding:16px;
+
+  min-height:180px;
+  display:flex;
+  flex-direction:column;
+
+  width:100%; /* ocupa toda largura da coluna */
+}
+
+.heroRoleTitle{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:18px;
+  font-weight:800;
+  color:#fff;
+  margin-bottom:14px;
+}
+
+.heroRoleTitle img{
+  width:24px;
+  height:24px;
+  object-fit:contain;
+  display:block;
+}
+
+.rolesRow.top{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:20px;
+  align-items:stretch;
+}
+
+
+.heroCardTall .heroItemName{
+  text-align:center;
+  font-size:11px;
+  color:#ddd6fe;
+  font-weight:700;
+}
+
+@media(max-width:1100px){
+  .rolesRow.top{
+    grid-template-columns:1fr;
+  }
+
+  .rolesRow.bottom{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:20px;
+    justify-content:center;
+  }
+}
+
+.heroRoleBlock:hover{
+  border-color:#8b5cf6;
+  transform:translateY(-3px);
+  transition:0.2s;
+}
+
+.service-card{
+  transition: all .25s ease;
+  position: relative;
+}
+
+.service-card.is-selected{
+  border-color: rgba(34, 197, 94, .45);
+  box-shadow:
+    0 0 0 1px rgba(34,197,94,.18),
+    0 16px 35px rgba(34,197,94,.12);
+  transform: translateY(-2px);
+  background: linear-gradient(180deg, rgba(30,24,40,.98), rgba(18,24,30,.98));
+}
+
+
+.check{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-top:10px;
+  font-size:13px;
+  cursor:pointer;
+}
+
+.check input[type="checkbox"]{
+  appearance:none;
+  -webkit-appearance:none;
+  width:20px;
+  height:20px;
+  border-radius:6px;
+  border:2px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.04);
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  transition:.22s ease;
+  flex-shrink:0;
+  position:relative;
+}
+
+.check input[type="checkbox"]::after{
+  content:"✓";
+  font-size:13px;
+  font-weight:900;
+  color:#fff;
+  transform:scale(0);
+  transition:.18s ease;
+}
+
+.check input[type="checkbox"]:checked{
+  background:linear-gradient(135deg, #22c55e, #16a34a);
+  border-color:#4ade80;
+  box-shadow:
+    0 0 0 3px rgba(34,197,94,.12),
+    0 0 14px rgba(34,197,94,.35);
+}
+
+.check input[type="checkbox"]:checked::after{
+  transform:scale(1);
+}
+
+.check input[type="checkbox"]:hover{
+  border-color:rgba(255,255,255,.6);
+}
+
+.premiumCheck{
+  padding:12px 14px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.03);
+  transition:.22s ease;
+}
+
+.premiumCheck:has(input:checked){
+  border-color:rgba(34,197,94,.35);
+  background:rgba(34,197,94,.08);
+  box-shadow:0 0 0 1px rgba(34,197,94,.14) inset;
+}
+
+.serviceBody{
+  display:none;
+  margin-top:10px;
+  opacity:0;
+  transform:translateY(-6px);
+  transition:opacity .22s ease, transform .22s ease;
+}
+
+.serviceBody.active{
+  display:block;
+  opacity:1;
+  transform:translateY(0);
+}
+
+.service-card.is-selected h2{
+  color:#ffffff;
+}
+
+.service-card.is-selected .pill{
+  border-color:rgba(34,197,94,.25);
+}
+
+#zapBtn{
+  transition:.22s ease;
+}
+
+#zapBtn:not(:disabled){
+  box-shadow:0 14px 28px rgba(139,92,246,.28);
+}
+
+#zapBtn:not(:disabled):hover{
+  transform:translateY(-2px) scale(1.01);
+}
+
+input[type=number]:focus,
+input[type=text]:focus{
+  border-color:rgba(139,92,246,.55);
+  box-shadow:
+    0 0 0 3px rgba(139,92,246,.12),
+    0 0 18px rgba(139,92,246,.10);
+}
+
+
+/* ===== MELHORIAS PREMIUM NO MODAL E TOP HERÓIS ===== */
+
+/* subtítulo abaixo do título da seção */
+.sectionSubText{
+  margin:-4px 0 18px;
+  font-size:13px;
+  color:#b9a7d9;
+  line-height:1.5;
+}
+
+/* scrollbar personalizada do modal */
+.modalCard::-webkit-scrollbar{
+  width:10px;
+}
+
+.modalCard::-webkit-scrollbar-track{
+  background:rgba(255,255,255,.04);
+  border-radius:999px;
+}
+
+.modalCard::-webkit-scrollbar-thumb{
+  background:linear-gradient(180deg, rgba(139,92,246,.85), rgba(109,40,217,.85));
+  border-radius:999px;
+  border:2px solid rgba(18,18,28,.85);
+}
+
+.modalCard{
+  scrollbar-width:thin;
+  scrollbar-color: #8b5cf6 rgba(255,255,255,.05);
+}
+
+/* título da seção mais forte */
+.sectionTitleModal{
+  font-size:24px;
+  font-weight:900;
+  margin:22px 0 8px;
+  color:#fff;
+  letter-spacing:.2px;
+  text-shadow:0 0 16px rgba(139,92,246,.18);
+  position:relative;
+}
+
+/* linha brilhante abaixo do título */
+.sectionTitleModal::after{
+  content:"";
+  display:block;
+  width:92px;
+  height:3px;
+  margin-top:10px;
+  border-radius:999px;
+  background:linear-gradient(90deg, #8b5cf6, rgba(139,92,246,0));
+  box-shadow:0 0 14px rgba(139,92,246,.32);
+}
+
+/* espaço geral da área dos heróis */
+.rolesWrap{
+  display:flex;
+  flex-direction:column;
+  gap:22px;
+  margin-top:10px;
+}
+
+.rolesRow{
+  display:grid;
+  gap:22px;
+}
+
+.rolesRow.top{
+  grid-template-columns:repeat(3, 1fr);
+}
+
+.rolesRow.bottom{
+  grid-template-columns:repeat(2, minmax(260px, 360px));
+  justify-content:center;
+}
+
+/* bloco de função mais premium */
+.heroRoleBlock{
+  position:relative;
+  background:
+    linear-gradient(180deg, rgba(33,24,52,.86), rgba(16,18,30,.92));
+  border:1px solid rgba(139,92,246,.22);
+  border-radius:24px;
+  padding:18px 18px 16px;
+  min-height:210px;
+  display:flex;
+  flex-direction:column;
+  width:100%;
+  overflow:hidden;
+  box-shadow:
+    0 14px 30px rgba(0,0,0,.22),
+    inset 0 1px 0 rgba(255,255,255,.03);
+  transition:.28s ease;
+}
+
+/* brilho decorativo */
+.heroRoleBlock::before{
+  content:"";
+  position:absolute;
+  top:-40px;
+  right:-20px;
+  width:120px;
+  height:120px;
+  background:radial-gradient(circle, rgba(139,92,246,.16), transparent 68%);
+  pointer-events:none;
+}
+
+.heroRoleBlock:hover{
+  border-color:rgba(139,92,246,.55);
+  transform:translateY(-4px);
+  box-shadow:
+    0 18px 36px rgba(0,0,0,.28),
+    0 0 22px rgba(139,92,246,.12);
+}
+
+/* título da função mais bonito */
+.heroRoleTitle{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:28px;
+  font-weight:900;
+  color:#fff;
+  margin-bottom:18px;
+  line-height:1;
+  letter-spacing:.2px;
+}
+
+.heroRoleTitle img{
+  width:22px;
+  height:22px;
+  object-fit:contain;
+  display:block;
+  filter:drop-shadow(0 0 8px rgba(255,255,255,.12));
+}
+
+.heroRoleTitle span{
+  position:relative;
+}
+
+.heroRoleTitle span::after{
+  content:"";
+  display:block;
+  width:100%;
+  height:2px;
+  margin-top:6px;
+  border-radius:999px;
+  background:linear-gradient(90deg, rgba(139,92,246,.65), rgba(139,92,246,0));
+}
+
+/* grade dos heróis */
+.heroRoleGrid{
+  display:grid;
+  grid-template-columns:repeat(3, 78px);
+  justify-content:center;
+  gap:12px;
+}
+
+/* card do herói */
+.heroCardTall{
+  width:78px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+  border:1px solid rgba(139,92,246,.20);
+  border-radius:14px;
+  padding:7px;
+  transition:.24s ease;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.04),
+    0 6px 16px rgba(0,0,0,.18);
+}
+
+.heroCardTall:hover{
+  transform:translateY(-4px) scale(1.04);
+  border-color:rgba(139,92,246,.55);
+  box-shadow:
+    0 12px 24px rgba(0,0,0,.26),
+    0 0 16px rgba(139,92,246,.20);
+}
+
+/* imagem do herói */
+.heroCardTall img{
+  width:100%;
+  aspect-ratio:9/16;
+  object-fit:cover;
+  object-position:center;
+  border-radius:10px;
+  display:block;
+  margin-bottom:8px;
+  box-shadow:0 8px 14px rgba(0,0,0,.20);
+}
+
+/* nome do herói */
+.heroCardTall .heroItemName{
+  text-align:center;
+  font-size:10px;
+  color:#f2ecff;
+  font-weight:800;
+  line-height:1.15;
+  letter-spacing:.2px;
+  min-height:24px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-shadow:0 0 10px rgba(139,92,246,.10);
+}
+
+/* cards com placeholder mais discretos */
+.heroCardTall.placeholder{
+  opacity:.72;
+  filter:saturate(.7);
+}
+
+.heroCardTall.placeholder .heroItemName{
+  color:#c8bddf;
+}
+
+/* responsivo */
+@media(max-width:1100px){
+  .rolesRow.top{
+    grid-template-columns:1fr;
+  }
+
+  .rolesRow.bottom{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:700px){
+  .sectionTitleModal{
+    font-size:21px;
+  }
+
+  .heroRoleTitle{
+    font-size:22px;
+  }
+
+  .heroRoleGrid{
+    grid-template-columns:repeat(3, 72px);
+    gap:10px;
+  }
+
+  .heroCardTall{
+    width:72px;
+  }
+
+/* Cupom válido visual */
+.coupon-valid{
+  color:#22c55e !important;
+  font-weight:700;
+  border-color:#22c55e !important;
+  box-shadow:0 0 10px rgba(34,197,94,.35);
+}
+
+}
+
+
+
+
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="header">
-    <h1>SEKAI DOTA BOOST</h1>
-    <div class="sub"><strong>SITE EM BETA TESTER</strong> • valores exibidos podem conter ERROS e são revisados pelo SEKAI. ⚠️</div>
-  
+<div class="app-shell">
+
+  <div class="topbar">
+    <div class="brandBlock">
+      <div class="brandLogoWrap">
+        <img src="medalhas/logo-sekai.png" alt="Logo Sekai" class="brandLogoImg">
+      </div>
+
+      <div class="brandTexts">
+        <h1>Sekai Dota Boost</h1>
+        <div class="sub">
+          Confiança e Clareza para almentar seu MMR.
+        </div>
+      </div>
+    </div>
+
+    <div class="topRight">
+      <button type="button" class="sekaiInfoBtn" id="sekaiInfoBtn">
+        Quem é Sekai?
+      </button>
+
+      <div class="menuAnchor">
+        <button class="topMenuBtn" id="topMenuBtn" type="button">
+          <div class="topMenuIconBox">
+            <img src="medalhas/dota2.png" alt="Dota 2" class="topMenuMainImg">
+          </div>
+          <div class="topMenuBars">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </button>
+
+        <div class="topDropdown" id="topDropdown">
+          <div class="menuLevel active" id="menuMainLevel">
+            <button type="button" class="menuItemBtn openLegalModal" data-modal="pixModal">
+              💠 Pix
+            </button>
+
+            <button type="button" class="menuItemBtn" id="openSocialMenu">
+              🌐 Redes sociais
+            </button>
+
+            <button type="button" class="menuItemBtn" id="openTermsMenu">
+              📄 Termos de compromisso
+            </button>
+          </div>
+
+          <div class="menuLevel" id="menuSocialLevel">
+            <a href="https://www.instagram.com/sekaidota/" target="_blank" class="menuItemBtn">📷 Instagram</a>
+            <a href="https://www.twitch.tv/sekai_oficial" target="_blank" class="menuItemBtn">🎥 Twitch</a>
+            <a href="https://wa.me/5521991844917" target="_blank" class="menuItemBtn">💬 WhatsApp</a>
+            <button type="button" class="menuItemBtn menuBackBtn" data-back="main">⬅ Voltar</button>
+          </div>
+
+          <div class="menuLevel" id="menuTermsLevel">
+            <button type="button" class="menuItemBtn openLegalModal" data-modal="condicoesModal">
+              📑 Termos de condição
+            </button>
+            <button type="button" class="menuItemBtn openLegalModal" data-modal="privacidadeModal">
+              🔒 Termos de privacidade
+            </button>
+            <button type="button" class="menuItemBtn openLegalModal" data-modal="reembolsoModal">
+              💸 Política de reembolso
+            </button>
+            <button type="button" class="menuItemBtn openLegalModal" data-modal="legalModal">
+              ⚠ Aviso legal
+            </button>
+            <button type="button" class="menuItemBtn menuBackBtn" data-back="main">⬅ Voltar</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="grid">
+  <div class="wrap">
+
+    <div class="heroPanel">
+      <div class="heroTop">
+        <div>
+          <div class="heroTitle">Monte seu pacote ideal</div>
+          <div class="heroText">
+  Escolha o serviço, ajuste as opções e acompanhe o valor do pacote em tempo real.
+</div>
+        </div>
+      </div>
+
+      <div class="filterBar">
+        <button type="button" class="categoryBtn active" data-category="all">Todos os serviços</button>
+        <button type="button" class="categoryBtn" data-category="aulas">Aulas</button>
+        <button type="button" class="categoryBtn" data-category="boost">Boost</button>
+        <button type="button" class="categoryBtn" data-category="economico">Econômico</button>
+        <button type="button" class="categoryBtn" data-category="penalidade">Penalidade</button>
+        <button type="button" class="categoryBtn" data-category="evento">Evento</button>
+
+        <button type="button" class="promoToggleBtn" id="promoToggleBtn">🎁 Promoções</button>
+      </div>
+
+      <div class="promoExpandable" id="promoExpandable">
+        <div class="promoSection">
+          
+
+            <div class="promoGrid">
+
+              <div class="promoCard">
+                <div class="promoIcon">🎓</div>
+                <div class="promoTitle">Coach + Replay</div>
+                <div class="promoDesc">
+                  Contratando <strong>Coach Parte 1</strong> + <strong>1 Análise de Replay</strong>,
+                  a replay recebe <strong>20% OFF</strong>.
+                </div>
+              </div>
+
+              <div class="promoCard">
+                <div class="promoIcon">⚡</div>
+                <div class="promoTitle">Double MMR + Coach</div>
+                <div class="promoDesc">
+                  Contratando <strong>Double MMR</strong> + <strong>1 Coach</strong>,
+                  a taxa off-stream do Double recebe <strong>25% OFF</strong>.
+                </div>
+              </div>
+
+              <div class="promoCard">
+                <div class="promoIcon">📊</div>
+                <div class="promoTitle">Replay por volume</div>
+                <div class="promoDesc">
+                  Fazendo <strong>2 a 3 análises por dia</strong>,
+                  a taxa off-stream recebe <strong>50% OFF</strong>.
+                </div>
+              </div>
+
+              <div class="promoCard">
+                <div class="promoIcon">💰</div>
+                <div class="promoTitle">Boost Casual + Replay</div>
+                <div class="promoDesc">
+                  Contratando <strong>Boost Casual (1 dia)</strong> + <strong>2 Replays</strong>,
+                  as análises recebem <strong>25% OFF</strong>.
+                </div>
+              </div>
+
+              <div class="promoCard">
+                <div class="promoIcon">🔄</div>
+                <div class="promoTitle">Recalibração + Boost Casual</div>
+                <div class="promoDesc">
+                  Contratando <strong>Recalibração</strong> + <strong>Boost Casual (1 dia)</strong>,
+                  o Boost Casual recebe <strong>aprox. 6% OFF</strong>.
+                </div>
+              </div>
+
+            </div>
+
+            <div class="promoNote">
+  Obs.: Cada serviço possui cálculo próprio. As promoções são aplicadas automaticamente quando os critérios são atendidos.
+</div>
+        </div>
+      </div>
+    </div>
+
+  
+    <div class="grid" id="servicesGrid">
     <!-- Boost Tradicional -->
-    <div class="card">
+    <div class="card service-card" data-service="trad">
       <h2>
         <span>Boost Tradicional</span>
         <span class="pill">⭐ Mais contratado</span>
@@ -653,8 +2378,8 @@ input[type=range]::-moz-range-thumb{
       </div>
     </div>
 
-    <!-- Double MMR -->
-    <div class="card">
+<!-- Double MMR -->
+    <div class="card service-card" data-service="double">
       <h2>
         <span>Double MMR</span>
         <span class="pill">⚡ Mais prático</span>
@@ -727,7 +2452,7 @@ input[type=range]::-moz-range-thumb{
 
     
     <!-- Boost Casual -->
-    <div class="card">
+    <div class="card service-card" data-service="casual">
       <h2>
         <span>Boost Casual</span>
         <span class="pill">💰 Melhor custo-benefício</span>
@@ -754,10 +2479,11 @@ input[type=range]::-moz-range-thumb{
   </div>
 </div>
 
-        <div class="check">
-          <input type="checkbox" id="casualOff" disabled>
-          <span>Jogar Off Stream (<span style="color:var(--danger);text-decoration:line-through;">R$ 20,00</span> → <span style="color:var(--success);">R$ 15,00</span> por dia) na Twitch sekai_oficial</span>
-        </div>
+
+        <label class="check premiumCheck">
+  <input type="checkbox" id="casualOff" disabled>
+  <span>Jogar Off Stream (<span style="color:var(--danger);text-decoration:line-through;">R$ 20,00</span> → <span style="color:var(--success);">R$ 15,00</span> por dia) na Twitch sekai_oficial</span>
+</label>
 
         <!-- SAIBA MAIS -->
         <details>
@@ -784,8 +2510,84 @@ input[type=range]::-moz-range-thumb{
       </div>
     </div>
 
+
+
+    
+
+<!-- Role Farm -->
+<div class="card service-card" data-service="rolefarm">
+  <h2>
+    <span>Role Farm</span>
+    <span class="pill">⚔️ Farm de função</span>
+    <span class="pill">
+      <label class="check" style="margin:0">
+        <input type="checkbox" id="useRoleFarm"> Incluir
+      </label>
+    </span>
+  </h2>
+
+  <div class="serviceBody" id="bodyRoleFarm">
+
+<label>Dias de serviço (1 a 2)</label>
+<input type="number" id="roleFarmDays" min="1" max="2" value="1" disabled>
+
+<div class="servicePreviewBox roleFarmPreviewBox">
+  <img src="medalhas/rolefarm.png">
+  <div class="servicePreviewText">
+    <span>Serviço selecionado</span>
+    <strong>Role Farm</strong>
+
+    <div id="roleFarmPreviewDetails">
+  Quantidade de partidas ranked: 7<br>
+  Dias contratados: 1<br>
+  Fichas farmadas: 28
+</div>
+  </div>
+</div>
+
+<label class="check premiumCheck">
+  <input type="checkbox" id="roleFarmOff" disabled>
+  <span>
+    Jogar Off Stream 
+    (<span style="color:var(--danger);text-decoration:line-through;">R$ 20,00</span> → 
+    <span style="color:var(--success);">R$ 15,00</span> por dia) 
+    na Twitch sekai_oficial
+  </span>
+</label>
+
+
+<details>
+<summary>Saiba mais sobre o Role Farm</summary>
+
+<ul>
+<li>🎮 7 partidas ranked por dia</li>
+<li>❌ Não garanto vitórias</li>
+<li>🎯 Heróis escolhidos conforme necessidade</li>
+<li>💰 R$ 120,00 por dia</li>
+<li>😎 28 fichas de função farmadas por dia</li>
+</ul>
+
+<p><strong>📌 Regras</strong></p>
+
+<ul>
+<li>✔ Até 6.500 MMR</li>
+<li>❌ Acima disso não é aceito</li>
+<li>✔ 8.000+ de Behavior Score</li>
+</ul>
+
+</details>
+
+<div class="result" id="roleFarmRes">Preencha os dados para ver o valor.</div>
+<div class="alert" id="roleFarmAlert"></div>
+
+</div>
+</div>
+
+
+
+
     <!-- Recalibração -->
-    <div class="card">
+   <div class="card service-card" data-service="recal">
       <h2>
         <span>Recalibração</span>
         <span class="pill">🔄 recomendado</span>
@@ -858,8 +2660,69 @@ input[type=range]::-moz-range-thumb{
       </div>
     </div>
 
-    <!-- Replay -->
-    <div class="card">
+<!-- Low Priority -->
+<div class="card service-card" data-service="low">
+  <h2>
+    <span>Low Priority</span>
+    <span class="pill">🚨 Ajuda</span>
+    <span class="pill">
+      <label class="check" style="margin:0">
+        <input type="checkbox" id="useLow"> Incluir
+      </label>
+    </span>
+  </h2>
+
+  <div class="serviceBody" id="bodyLow">
+    <p style="font-size:13px;line-height:1.5">
+      • Preço base: <strong>R$ 40,00 por vitória</strong><br>
+      • Serviço focado em <strong>entregar a conta sem Low Priority</strong><br>
+      • Quantidade representa o <strong>limite operacional</strong>
+    </p>
+
+    <label>Quantidade de vitórias contratadas (2 a 5)</label>
+    <input type="range" id="lowQty" min="2" max="5" step="1" value="2" disabled>
+
+    <div class="result" id="lowQtyView" style="display:none;"></div>
+
+    <div class="servicePreviewBox" id="lowPreviewBox">
+      <img id="lowPreviewImg" src="medalhas/lowpriority.png" alt="Low Priority">
+      <div class="servicePreviewText">
+        <span>Serviço selecionado</span>
+        <strong>Serviço de remoção de Low Priority</strong>
+        <div id="lowPreviewDetails">
+          Vitórias contratadas: 2
+        </div>
+      </div>
+    </div>
+
+
+    <div class="check">
+      <input type="checkbox" id="lowOff" disabled>
+      <span>Executar serviço OFF-STREAM (+ R$20,00)</span>
+    </div>
+
+    <details>
+      <summary>Saiba mais sobre a Low Priority</summary>
+      <p><strong>📘 Sobre o serviço de Low Priority</strong></p>
+      <p>
+        Este serviço tem como objetivo entregar a conta sem Low Priority.
+        A quantidade selecionada representa um limite operacional, usado
+        para garantir a execução correta do serviço.
+      </p>
+      <p>
+        A penalidade pode variar conforme histórico da conta e sistema do jogo.
+        Por isso, o serviço é focado em resultado final, não em número exato de partidas.
+      </p>
+    </details>
+
+    <div class="result" id="lowRes">Selecione as opções para ver o valor.</div>
+    <div class="alert" id="lowAlert"></div>
+  </div>
+</div>
+
+
+<!-- Replay -->
+    <div class="card service-card" data-service="replay">
       <h2>
         <span>Análise de Replay</span>
         <span class="pill">📊 Educativo</span>
@@ -921,8 +2784,10 @@ input[type=range]::-moz-range-thumb{
       </div>
     </div>
 
+
+
     <!-- Coach -->
-    <div class="card">
+    <div class="card service-card" data-service="coach">
       <h2>
         <span>Coach</span>
         <span class="pill">🎓 Evolução real</span>
@@ -989,69 +2854,12 @@ input[type=range]::-moz-range-thumb{
         </div>
       </div>
 
-                <!-- Low Priority -->
-<div class="card">
-  <h2>
-    <span>Low Priority</span>
-    <span class="pill">🚫 Sem desconto</span>
-    <span class="pill">
-      <label class="check" style="margin:0">
-        <input type="checkbox" id="useLow"> Incluir
-      </label>
-    </span>
-  </h2>
-
-  <div class="serviceBody" id="bodyLow">
-    <p style="font-size:13px;line-height:1.5">
-      • Preço base: <strong>R$ 40,00 por vitória</strong><br>
-      • Serviço focado em <strong>entregar a conta sem Low Priority</strong><br>
-      • Quantidade representa o <strong>limite operacional</strong>
-    </p>
-
-    <label>Quantidade de vitórias contratadas (2 a 5)</label>
-    <input type="range" id="lowQty" min="2" max="5" step="1" value="2" disabled>
-
-    <div class="result" id="lowQtyView" style="display:none;"></div>
-
-    <div class="servicePreviewBox" id="lowPreviewBox">
-      <img id="lowPreviewImg" src="medalhas/lowpriority.png" alt="Low Priority">
-      <div class="servicePreviewText">
-        <span>Serviço selecionado</span>
-        <strong>Serviço de remoção de Low Priority</strong>
-        <div id="lowPreviewDetails">
-          Vitórias contratadas: 2
-        </div>
-      </div>
-    </div>
-
-    <div class="check">
-      <input type="checkbox" id="lowOff" disabled>
-      <span>Executar serviço OFF-STREAM (+ R$20,00)</span>
-    </div>
-
-    <details>
-      <summary>Saiba mais sobre a Low Priority</summary>
-      <p><strong>📘 Sobre o serviço de Low Priority</strong></p>
-      <p>
-        Este serviço tem como objetivo entregar a conta sem Low Priority.
-        A quantidade selecionada representa um limite operacional, usado
-        para garantir a execução correta do serviço.
-      </p>
-      <p>
-        A penalidade pode variar conforme histórico da conta e sistema do jogo.
-        Por isso, o serviço é focado em resultado final, não em número exato de partidas.
-      </p>
-    </details>
-
-    <div class="result" id="lowRes">Selecione as opções para ver o valor.</div>
-    <div class="alert" id="lowAlert"></div>
-  </div>
-</div>
+                
     <!-- Turbo Evento de XP -->
-    <div class="card">
+   <div class="card service-card" data-service="turbo">
       <h2>
         <span>Turbo Evento de XP</span>
-        <span class="pill">⚡ Sem desconto</span>
+        <span class="pill">⏰ Evento</span>
         <span class="pill">
           <label class="check" style="margin:0">
             <input type="checkbox" id="useTurbo"> Incluir
@@ -1131,76 +2939,9 @@ input[type=range]::-moz-range-thumb{
     </div>
 
   
-    <!-- Informações de desconto -->
-<div class="card big">
-  <h2>
-    <span>Informações de desconto</span>
-    <span class="pill">Promoções</span>
-  </h2>
-
-  <div class="promoSection">
-    <details>
-      <summary class="promoOpenSummary">🎁 Mostrar promoções disponíveis</summary>
-
-      <div class="promoGrid">
-
-        <div class="promoCard">
-          <div class="promoIcon">🎓</div>
-          <div class="promoTitle">Coach + Replay</div>
-          <div class="promoDesc">
-            Contratando <strong>Coach Parte 1</strong> + <strong>1 Análise de Replay</strong>,
-            a replay recebe <strong>20% OFF</strong>.
-          </div>
-        </div>
-
-        <div class="promoCard">
-          <div class="promoIcon">⚡</div>
-          <div class="promoTitle">Double MMR + Coach</div>
-          <div class="promoDesc">
-            Contratando <strong>Double MMR</strong> + <strong>1 Coach</strong>,
-            a taxa off-stream do Double recebe <strong>25% OFF</strong>.
-          </div>
-        </div>
-
-        <div class="promoCard">
-          <div class="promoIcon">📊</div>
-          <div class="promoTitle">Replay por volume</div>
-          <div class="promoDesc">
-            Fazendo <strong>2 a 3 análises por dia</strong>,
-            a taxa off-stream recebe <strong>50% OFF</strong>.
-          </div>
-        </div>
-
-        <div class="promoCard">
-          <div class="promoIcon">💰</div>
-          <div class="promoTitle">Boost Casual + Replay</div>
-          <div class="promoDesc">
-            Contratando <strong>Boost Casual (1 dia)</strong> + <strong>2 Replays</strong>,
-            as análises recebem <strong>25% OFF</strong>.
-          </div>
-        </div>
-
-        <div class="promoCard">
-          <div class="promoIcon">🔄</div>
-          <div class="promoTitle">Recalibração + Boost Casual</div>
-          <div class="promoDesc">
-            Contratando <strong>Recalibração</strong> + <strong>Boost Casual (1 dia)</strong>,
-            o Boost Casual recebe <strong>aprox. 6% OFF</strong>.
-          </div>
-        </div>
-
-      </div>
-
-      <div class="promoNote">
-        Obs.: Cada serviço possui cálculo próprio. As promoções são aplicadas automaticamente
-        quando os critérios são atendidos.
-      </div>
-    </details>
-  </div>
-</div>
 
     <!-- Total -->
-    <div class="card big">
+    <div class="card big" id="summaryCard">
       <h2><span>Resumo do pacote</span><span class="pill">Total final</span></h2>
 
       <div class="result ok" id="promoMessageBox" style="display:none">
@@ -1212,34 +2953,345 @@ input[type=range]::-moz-range-thumb{
 
       <div class="hr"></div>
 
-      <label>Cupom de desconto </label>
-      <input type="text" id="couponInput" placeholder="Digite seu cupom aqui">
-      <div class="badge" id="couponMsg"></div>
+<div id="couponBox">
 
-      <small class="muted">
-        Cupons liberados somente em datas comemorativas.
-        Não acumulativo com descontos base do site.
-      </small>
+<label>Cupom de desconto </label>
+<input type="text" id="couponInput" placeholder="Digite seu cupom aqui">
+<div class="badge" id="couponMsg"></div>
 
-      <div class="check">
-        <input type="checkbox" id="globalBS">
-        <span>⚠️ Confirmo que a conta possui <strong>8.000+ de Behavior Score</strong></span>
-      </div>
+<small class="muted">
+  Cupons liberados somente em datas comemorativas.
+  Não acumulativo com descontos base do site.
+</small>
 
-      <div class="check">
-        <input type="checkbox" id="packTerms">
-        <span>Li e concordo que o pagamento é necessário para garantir minha vaga e que datas exatas devem ser combinadas via WhatsApp.</span>
-      </div>
+</div>
 
-      <button id="zapBtn" disabled>Contratar pacote via WhatsApp</button>
+
+<div class="customerBox" id="customerBox">
+  <label for="customerName">Nome do cliente</label>
+  <input type="text" id="customerName" placeholder="Digite seu nome">
+  <div class="customerHint">Digite pelo menos 3 letras para liberar o envio do pedido.</div>
+</div>
+
+      <div id="confirmBox">
+
+<label class="check">
+  <input type="checkbox" id="globalBS">
+  ⚠️ Confirmo que a conta possui 8.000+ de Behavior Score
+</label>
+
+<label class="check">
+  <input type="checkbox" id="packTerms">
+  Li e concordo que o pagamento é necessário para garantir minha vaga e que datas exatas devem ser combinadas via WhatsApp.
+</label>
+
+</div>
+
+      <button id="zapBtn" disabled>📲 Contratar pacote via WhatsApp</button>
 
       <div class="footer">
-        Twitch: sekai_oficial • WhatsApp: +55 21 99184-4917<br>
+        Twitch: sekai_oficial<br>
         <small style="opacity:0.7">
-          Calculadora desenvolvida por <strong>@Kerolynchan</strong>
+          Desenvolvida por <strong>@Kerolynchan</strong>
         </small>
       </div>
     </div>
+
+
+<!-- POPUP QUEM É SEKAI -->
+<div class="modalOverlay" id="sekaiModal">
+  <div class="modalCard" onclick="event.stopPropagation()">
+    <div class="modalHeader">
+      <div class="modalTitle">Quem é Sekai?</div>
+      <button type="button" class="modalClose closeModalBtn">✕</button>
+    </div>
+
+    <div class="sekaiProfileTop">
+      <div class="sekaiPhotoCard">
+        <img src="medalhas/sekai-foto.png" alt="Foto do Sekai" class="sekaiMainPhoto">
+
+        <div class="sectionTitleModal" style="margin-top:0;">Conquistas:</div>
+        <img src="medalhas/rank-maximo.png" alt="Maior rank do Sekai" class="sekaiRankPhoto">
+<div class="sectionTitleModal" style="margin-top:0;">TOP Ranked SA</div>
+      </div>
+
+      <div class="sekaiInfoCard">
+        <div class="legalTextBox" style="margin-bottom:14px;">
+  Sou o Sekai_oficial, jogador brasileiro de Dota 2, ex-jogador profissional, coach e booster.<br>
+Ao longo dos anos jogando competitivamente, aprendi que evoluir no Dota vai muito além de mecânica: envolve leitura de mapa, tomada de decisões e entender o ritmo da partida. Hoje utilizo essa experiência para ajudar outros jogadores a melhorarem dentro do jogo.<br>
+Também sou ativo na comunidade e nas lives da Twitch, onde compartilho análises, conhecimento e converso com quem acompanha meu trabalho.<br>
+Aqui meu foco é oferecer um serviço sério e confiável, sempre com transparência, respeito com cada cliente e cuidado com a conta do início ao fim.
+</div>
+
+        <div class="sekaiInfoGrid">
+          <div class="infoLine"><strong>Experiência com Dota2:</strong> 8 anos</div>
+          <div class="infoLine"><strong>Experiência como booster:</strong> 6 anos</div>
+<div class="infoLine"><strong>Contas concluídas:</strong> 680+ contas</div>
+<div class="infoLine"><strong>Atuação:</strong> Ex-jogador profissional</div>
+<div class="infoLine"><strong>Funções de heróis:</strong> todas</div>
+<div class="infoLine"><strong>Maior MMR alcançado:</strong> 11.000 MMR</div>
+        </div>
+
+        <div class="sectionTitleModal">Aba profissional</div>
+<div class="legalTextBox">
+  Com mais de 5 anos de experiência como booster e mais de 650 contas concluídas, ofereço serviços com foco em segurança, agilidade, profissionalismo e acompanhamento sério em cada contratação. Meu objetivo é entregar um serviço confiável, respeitando o cliente, a conta e a qualidade da execução do início ao fim.
+</div>
+      </div>
+    </div>
+
+    <div class="sectionTitleModal">Meus TOP heróis</div>
+<div class="sectionSubText">Especialidades por função e heróis com maior domínio competitivo.</div>
+
+<div class="rolesWrap">
+
+  <div class="rolesRow top">
+    <!-- Hard Carry -->
+    <div class="heroRoleBlock">
+      <div class="heroRoleTitle">
+        <img src="medalhas/icone1.png" alt="Ícone">
+        <span>Hard Carry</span>
+      </div>
+      <div class="heroRoleGrid">
+        <div class="heroCardTall">
+          <img src="medalhas/heroi1.png" alt="Herói 1">
+          <div class="heroItemName">LUNA</div>
+        </div>
+        <div class="heroCardTall">
+          <img src="medalhas/heroi2.png" alt="Herói 2">
+          <div class="heroItemName">KEZ</div>
+        </div>
+        <div class="heroCardTall">
+          <img src="medalhas/heroi3.png" alt="Herói 3">
+          <div class="heroItemName">SHADOW FIEND</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mid -->
+    <div class="heroRoleBlock">
+      <div class="heroRoleTitle">
+        <img src="medalhas/icone1.png" alt="Ícone">
+        <span>Mid</span>
+      </div>
+      <div class="heroRoleGrid">
+        <div class="heroCardTall">
+          <img src="medalhas/heroi4.png" alt="Herói 4">
+          <div class="heroItemName">STORM SPIRIT</div>
+        </div>
+        <div class="heroCardTall">
+          <img src="medalhas/heroi5.png" alt="Herói 5">
+          <div class="heroItemName">VOID SPIRIT</div>
+        </div>
+        <div class="heroCardTall">
+          <img src="medalhas/heroi6.png" alt="Herói 6">
+          <div class="heroItemName">EMBER SPIRIT</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Offlane -->
+    <div class="heroRoleBlock">
+      <div class="heroRoleTitle">
+        <img src="medalhas/icone1.png" alt="Ícone">
+        <span>Offlane</span>
+      </div>
+      <div class="heroRoleGrid">
+        <div class="heroCardTall">
+          <img src="medalhas/heroi7.png" alt="Herói 7">
+          <div class="heroItemName">NATURE'S PROPHET</div>
+        </div>
+        <div class="heroCardTall">
+          <img src="medalhas/heroi8.png" alt="Herói 8">
+          <div class="heroItemName">MAGNUS</div>
+        </div>
+        <div class="heroCardTall">
+          <img src="medalhas/heroi9.png" alt="Herói 9">
+          <div class="heroItemName">RAZOR</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rolesRow bottom">
+    <!-- Suporte 4 -->
+    <div class="heroRoleBlock">
+      <div class="heroRoleTitle">
+        <img src="medalhas/icone2.png" alt="Ícone">
+        <span>Suporte 4</span>
+      </div>
+      <div class="heroRoleGrid">
+        <div class="heroCardTall">
+          <img src="medalhas/heroi10.png" alt="Herói 10">
+          <div class="heroItemName">PHOENIX</div>
+        </div>
+        <div class="heroCardTall">
+          <img src="medalhas/heroi11.png" alt="Herói 11">
+          <div class="heroItemName">MIRANA</div>
+        </div>
+        <div class="heroCardTall">
+          <img src="medalhas/heroi12.png" alt="Herói 12">
+          <div class="heroItemName">BOUNTY HUNTER</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Suporte 5 -->
+    <div class="heroRoleBlock">
+      <div class="heroRoleTitle">
+        <img src="medalhas/icone2.png" alt="Ícone">
+        <span>Suporte 5</span>
+      </div>
+      <div class="heroRoleGrid">
+        <div class="heroCardTall">
+          <img src="medalhas/heroi13.png" alt="Herói 13">
+          <div class="heroItemName">PUDGE</div>
+        </div>
+        <div class="heroCardTall">
+          <img src="medalhas/heroi14.png" alt="Herói 14">
+          <div class="heroItemName">DARK WILLOW</div>
+        </div>
+        <div class="heroCardTall">
+          <img src="medalhas/heroi15.png" alt="Herói 15">
+          <div class="heroItemName">WINDRANGER</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+  </div>
+</div>
+
+<!-- TERMOS DE CONDIÇÃO -->
+<div class="modalOverlay legalModal" id="condicoesModal">
+  <div class="modalCard" onclick="event.stopPropagation()">
+    <div class="modalHeader">
+      <div class="modalTitle">Termos de condição</div>
+      <button type="button" class="modalClose closeModalBtn">✕</button>
+    </div>
+
+    <div class="legalTextBox">
+  1. A Sekai Dota Boost oferece serviços de elevação de MMR e outros serviços relacionados ao Dota 2, com atendimento personalizado conforme a escolha do cliente.<br><br>
+  2. O serviço não é oficialmente aprovado, apoiado ou endossado pela Valve Corporation. A contratação é realizada por conta e risco do cliente.<br><br>
+  3. Durante a execução do serviço, é proibido ao contratante acessar ou jogar na conta. Caso isso aconteça, eventuais penalidades aplicadas à conta serão de responsabilidade exclusiva do contratante.<br><br>
+  4. Caso ocorra abandono de partida por parte do prestador, essa partida será contabilizada como derrota no serviço contratado.<br><br>
+  5. Se a conta entrar em Low Priority durante a prestação do serviço, a penalidade será removida sem contar como vitória ou derrota no serviço contratado.<br><br>
+  6. Se houver variação no MMR inicial da conta por atraso no início do serviço, será realizado ajuste gratuito dentro de uma margem de até ±100 MMR. Acima disso, o valor poderá ser recalculado com base no novo MMR informado.<br><br>
+  7. O cliente pode solicitar a modalidade off-stream mediante pagamento de tarifa diária. A previsão de dias será informada no início da contratação, e o valor será calculado com base nessa previsão.<br><br>
+  8. Não haverá devolução da tarifa diária off-stream, mesmo que o serviço termine antes ou depois da previsão informada, pois o cálculo considera a estrutura operacional do serviço.<br><br>
+  9. Reembolsos seguem as regras descritas na Política de Reembolso da Sekai Dota Boost.<br><br>
+  10. Ao contratar qualquer serviço, o cliente declara estar ciente e de acordo com todos os termos apresentados na plataforma.
+</div>
+  </div>
+</div>
+
+<!-- TERMOS DE PRIVACIDADE -->
+<div class="modalOverlay legalModal" id="privacidadeModal">
+  <div class="modalCard" onclick="event.stopPropagation()">
+    <div class="modalHeader">
+      <div class="modalTitle">Termos de privacidade</div>
+      <button type="button" class="modalClose closeModalBtn">✕</button>
+    </div>
+
+    <div class="legalTextBox">
+  1. A Sekai Dota Boost valoriza a privacidade dos clientes e se compromete a proteger os dados pessoais informados durante a contratação.<br><br>
+  2. São coletadas apenas as informações necessárias para a prestação do serviço, como nome, contato e dados da conta do Dota 2.<br><br>
+  3. Os dados do cliente não serão compartilhados com terceiros, exceto quando houver obrigação legal.<br><br>
+  4. As informações fornecidas são utilizadas exclusivamente para atendimento, orçamento, suporte e execução do serviço contratado.<br><br>
+  5. O cliente pode solicitar a exclusão de seus dados pessoais entrando em contato diretamente pelo canal oficial de atendimento.<br><br>
+  6. Em serviços off-stream, poderá ser cobrada tarifa diária conforme as regras informadas no momento da contratação.<br><br>
+  7. Esta política poderá ser atualizada sempre que necessário, para melhor adequação operacional, legal ou de atendimento ao cliente.
+</div>
+  </div>
+</div>
+
+<!-- AVISO LEGAL -->
+<div class="modalOverlay legalModal" id="legalModal">
+  <div class="modalCard" onclick="event.stopPropagation()">
+    <div class="modalHeader">
+      <div class="modalTitle">Aviso legal</div>
+      <button type="button" class="modalClose closeModalBtn">✕</button>
+    </div>
+
+    <div class="legalTextBox">
+  Sekai Dota Boost não é afiliada, patrocinada, endossada ou oficialmente associada à Valve Corporation nem ao jogo Dota 2.<br><br>
+  Todos os nomes, marcas, imagens e elementos relacionados ao jogo pertencem aos seus respectivos proprietários.<br><br>
+  Os serviços oferecidos pela Sekai Dota Boost não são oficialmente aprovados pela Valve Corporation. A contratação é realizada por conta e risco do cliente.<br><br>
+  Apesar disso, Sekai_oficial se compromete a prestar o melhor serviço possível, com profissionalismo, segurança, responsabilidade e dedicação em cada atendimento.
+</div>
+  </div>
+</div>
+
+
+<!-- POLÍTICA DE REEMBOLSO -->
+<div class="modalOverlay legalModal" id="reembolsoModal">
+  <div class="modalCard" onclick="event.stopPropagation()">
+    <div class="modalHeader">
+      <div class="modalTitle">Política de reembolso</div>
+      <button type="button" class="modalClose closeModalBtn">✕</button>
+    </div>
+
+    <div class="legalTextBox">
+      1. O reembolso total pode ser solicitado antes do início do serviço, em casos como desistência ou mudança de ideia. Nessa situação, será cobrada taxa de R$ 50,00 pela desistência.<br><br>
+      2. Após o início do serviço, definido pelo login na conta, poderá ser solicitado reembolso parcial correspondente a 50% do valor da parte ainda não finalizada do serviço contratado.<br><br>
+      3. A previsão de término será informada no início da contratação, com base nas condições do serviço e da conta.<br><br>
+      4. Reembolsos serão analisados e processados em até 7 dias úteis após a solicitação.<br><br>
+      5. Solicitações de reembolso após a entrega da conta não serão aceitas. A partir da entrega, a responsabilidade sobre a conta passa a ser do contratante.<br><br>
+      6. É proibido acessar ou jogar na conta durante a execução do serviço. Caso isso aconteça, penalidades aplicadas à conta serão de responsabilidade exclusiva do contratante. Nessas situações, o reembolso será de apenas 50% do valor proporcional da parte ainda não executada.<br><br>
+      7. Caso ocorra abandono de partida por parte do prestador, a partida será considerada como derrota no serviço contratado.<br><br>
+      8. Se a conta entrar em Low Priority durante o serviço, a penalidade será removida sem contar como vitória ou derrota no serviço contratado.
+    </div>
+  </div>
+</div>
+
+
+<!-- POPUP PIX -->
+<div class="modalOverlay legalModal" id="pixModal">
+  <div class="modalCard pixModalCard" onclick="event.stopPropagation()">
+    <div class="modalHeader">
+      <div class="pixHeaderInfo">
+        <img src="medalhas/logopix.png" alt="Logo Pix" class="pixHeaderLogo">
+        <div class="modalTitle">Pagamento via Pix</div>
+      </div>
+      <button type="button" class="modalClose closeModalBtn">✕</button>
+    </div>
+
+    <div class="legalTextBox">
+      <div class="pixBox">
+        <div class="pixLabel">Chave Pix</div>
+
+        <div class="pixKeyWrap">
+          <input type="text" id="pixKey" class="pixKeyInput" value="21991844917" readonly>
+          <button type="button" class="pixCopyBtn" id="copyPixBtn">Copiar</button>
+          <button type="button" class="pixQrBtn" id="toggleQrBtn">Gerar QR</button>
+        </div>
+
+        <div class="pixConfirmBox">
+          <div class="pixConfirmTitle">Dados para confirmação</div>
+          <div class="pixConfirmLine"><strong>Destinatário:</strong> Fernando Acahú Silva</div>
+          <div class="pixConfirmLine"><strong> Banco:</strong> Mercado Pago</div>
+        </div>
+
+        <div class="pixCopyMsg" id="pixCopyMsg"></div>
+      </div>
+
+      <div class="pixQrSection" id="pixQrSection" style="display:none;">
+        <div class="pixLabel">Método por QR Code</div>
+
+        <div class="pixQrWrap" id="pixQrWrap">
+          <img src="medalhas/qrcode.png" alt="QR Code Pix" class="pixQrImg" id="pixQrImg">
+        </div>
+      </div>
+
+      <div class="pixNote">
+  ⚠️ Não efetue o pagamento sem antes confirmar o serviço pelo WhatsApp.<br>
+  ⏳ Aguarde a confirmação do serviço para evitar possíveis erros no sistema.<br>
+  📩 Após o pagamento, envie o comprovante pelo WhatsApp.<br>
+  💳 Aceito apenas pagamento via Pix.
+</div>
+    </div>
+  </div>
+</div>
 
 <script>
 
@@ -1279,6 +3331,19 @@ function getTradSuperPromoPct(mmrAtual){
 const $ = (id) => document.getElementById(id);
 const money = (n) => "R$ " + n.toFixed(2).replace(".", ",");
 const clampInt = (v, min, max) => (isNaN(v) ? null : Math.min(Math.max(v, min), max));
+
+const SERVICE_CATEGORIES = {
+  all: ["trad","double","casual","rolefarm","recal","replay","coach","low","turbo"],
+  aulas: ["replay","coach"],
+  boost: ["trad","double","casual"],
+  economico: ["casual","recal"],
+  penalidade: ["low","rolefarm"],
+  evento: ["turbo"]
+};
+
+function isValidCustomerName(name){
+  return (name || "").trim().length >= 3;
+}
 
 /* ========= MEDALHAS BOOST TRADICIONAL ========= */
 const RANKS = [
@@ -1479,14 +3544,206 @@ function setTradMMRFromPicker(side){
   if(input){
     input.value = starData.mmr;
 
-    // dispara eventos para garantir atualização completa
     input.dispatchEvent(new Event("input", { bubbles: true }));
     input.dispatchEvent(new Event("change", { bubbles: true }));
   }
 
   updateRankPreview(side);
+  syncSelectedCards();
   updateAll();
 }
+
+function resetTopDropdownToMain(){
+  $("menuMainLevel")?.classList.add("active");
+  $("menuSocialLevel")?.classList.remove("active");
+  $("menuTermsLevel")?.classList.remove("active");
+}
+
+function openModal(modalId){
+  const modal = $(modalId);
+  if(modal){
+    modal.classList.add("open");
+  }
+}
+
+function closeAllModals(){
+  document.querySelectorAll(".modalOverlay.open").forEach(modal => {
+    modal.classList.remove("open");
+  });
+}
+
+function initNewTopMenu(){
+  const topMenuBtn = $("topMenuBtn");
+  const topDropdown = $("topDropdown");
+  const openSocialMenu = $("openSocialMenu");
+  const openTermsMenu = $("openTermsMenu");
+  const sekaiInfoBtn = $("sekaiInfoBtn");
+
+  if(topMenuBtn && topDropdown){
+    topMenuBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isOpen = topDropdown.classList.contains("open");
+
+      if(!isOpen){
+        resetTopDropdownToMain();
+      }
+
+      topDropdown.classList.toggle("open");
+    });
+  }
+
+  if(openSocialMenu){
+    openSocialMenu.addEventListener("click", () => {
+      $("menuMainLevel")?.classList.remove("active");
+      $("menuTermsLevel")?.classList.remove("active");
+      $("menuSocialLevel")?.classList.add("active");
+    });
+  }
+
+  if(openTermsMenu){
+    openTermsMenu.addEventListener("click", () => {
+      $("menuMainLevel")?.classList.remove("active");
+      $("menuSocialLevel")?.classList.remove("active");
+      $("menuTermsLevel")?.classList.add("active");
+    });
+  }
+
+  document.querySelectorAll(".menuBackBtn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      resetTopDropdownToMain();
+    });
+  });
+
+  if(sekaiInfoBtn){
+    sekaiInfoBtn.addEventListener("click", () => {
+      openModal("sekaiModal");
+    });
+  }
+
+  document.querySelectorAll(".openLegalModal").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const modalId = btn.dataset.modal;
+      if(modalId){
+        openModal(modalId);
+      }
+    });
+  });
+
+  document.querySelectorAll(".closeModalBtn").forEach(btn => {
+    btn.addEventListener("click", closeAllModals);
+  });
+
+  document.querySelectorAll(".modalOverlay").forEach(modal => {
+    modal.addEventListener("click", () => {
+      modal.classList.remove("open");
+    });
+  });
+
+  document.addEventListener("click", (e) => {
+    if(topDropdown && topMenuBtn){
+      if(!topDropdown.contains(e.target) && !topMenuBtn.contains(e.target)){
+        topDropdown.classList.remove("open");
+        resetTopDropdownToMain();
+      }
+    }
+  });
+
+  const copyPixBtn = $("copyPixBtn");
+  const pixKey = $("pixKey");
+  const pixCopyMsg = $("pixCopyMsg");
+  
+
+  if(copyPixBtn && pixKey){
+    copyPixBtn.addEventListener("click", async () => {
+      try{
+        await navigator.clipboard.writeText(pixKey.value);
+        if(pixCopyMsg){
+          pixCopyMsg.textContent = "✅ Chave Pix copiada com sucesso.";
+        }
+      }catch(err){
+        pixKey.select();
+        document.execCommand("copy");
+        if(pixCopyMsg){
+          pixCopyMsg.textContent = "✅ Chave Pix copiada com sucesso.";
+        }
+      }
+    });
+  }
+
+
+const toggleQrBtn = $("toggleQrBtn");
+const pixQrSection = $("pixQrSection");
+
+if(toggleQrBtn && pixQrSection){
+  toggleQrBtn.addEventListener("click", () => {
+    const aberto = pixQrSection.style.display === "block";
+
+    pixQrSection.style.display = aberto ? "none" : "block";
+    toggleQrBtn.textContent = aberto ? "Gerar QR" : "Ocultar QR";
+
+    if(pixCopyMsg){
+      pixCopyMsg.textContent = aberto
+        ? ""
+        : "✅ QR Code exibido para pagamento.";
+    }
+  });
+}
+
+}
+
+function setActiveCategory(category){
+  const buttons = document.querySelectorAll(".categoryBtn");
+  let finalCategory = category;
+
+  if(!SERVICE_CATEGORIES[finalCategory]){
+    finalCategory = "all";
+  }
+
+  buttons.forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.category === finalCategory);
+  });
+
+  const allowed = SERVICE_CATEGORIES[finalCategory] || SERVICE_CATEGORIES.all;
+
+  document.querySelectorAll(".service-card").forEach(card => {
+    const service = card.dataset.service;
+    const show = allowed.includes(service);
+    card.classList.toggle("hiddenByFilter", !show);
+  });
+
+  syncBodies();
+}
+
+function ensureOneCategoryActive(){
+  const activeBtn = document.querySelector(".categoryBtn.active");
+  if(!activeBtn){
+    setActiveCategory("all");
+  }
+}
+
+function initCategoryFilters(){
+  document.querySelectorAll(".categoryBtn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      setActiveCategory(btn.dataset.category);
+    });
+  });
+
+  ensureOneCategoryActive();
+}
+
+function initPromoToggle(){
+  const btn = $("promoToggleBtn");
+  const box = $("promoExpandable");
+  if(!btn || !box) return;
+
+  btn.addEventListener("click", () => {
+    box.classList.toggle("open");
+  });
+}
+
+
+
+
 
 function updateRankPreview(side){
   const inputId = side === "atual" ? "tradAtual" : "tradDesejado";
@@ -1613,21 +3870,38 @@ function calcTradByBudget(mmrAtual, budget){
 
 /* collapse/expand service bodies */
 function syncBodies(){
+
   const pairs = [
     ["useTrad","bodyTrad"],
     ["useDouble","bodyDouble"],
     ["useCasual","bodyCasual"],
+    ["useRoleFarm","bodyRoleFarm"],
     ["useRecal","bodyRecal"],
     ["useReplay","bodyReplay"],
     ["useCoach","bodyCoach"],
     ["useLow","bodyLow"],
     ["useTurbo","bodyTurbo"],
   ];
-  pairs.forEach(([chk, body]) => {
-    $(body).classList.toggle("active", $(chk).checked);
-  });
-}
 
+  const activeCategoryBtn = document.querySelector(".categoryBtn.active");
+  const currentCategory = activeCategoryBtn ? activeCategoryBtn.dataset.category : "all";
+  const showingAll = currentCategory === "all";
+
+  pairs.forEach(([chk, bodyId]) => {
+    const body = $(bodyId);
+    const checkbox = $(chk);
+    if(!body || !checkbox) return;
+
+    body.classList.toggle("active", checkbox.checked);
+
+    if(showingAll){
+      body.classList.remove("hiddenService");
+    }else{
+      body.classList.toggle("hiddenService", !checkbox.checked);
+    }
+  });
+
+}
 
 function enableGroup(useId, fields){
   const on = $(useId).checked;
@@ -1667,6 +3941,7 @@ function checkCoupon() {
   }
 
   updateAll();
+  syncSelectedCards();
 }
 
 
@@ -2053,6 +4328,85 @@ return {
 
 
 }
+
+
+function calcRoleFarm(disableDiscounts = false){
+
+  if(!$("useRoleFarm").checked){
+    $("roleFarmRes").innerHTML = "Preencha os dados para ver o valor.";
+    return { selected:false, ok:true, total:0, totalNoPromo:0 };
+  }
+
+ let days = Number($("roleFarmDays").value);
+
+if(isNaN(days) || days < 1) days = 1;
+if(days > 2) days = 2;
+
+$("roleFarmDays").value = days;
+  const off = $("roleFarmOff").checked;
+
+  if(days === null){
+    $("roleFarmRes").innerHTML = "Dados inválidos.";
+    return { selected:true, ok:false, total:0, totalNoPromo:0 };
+  }
+
+  const partidas = days * 7;
+  const fichas = days * 28;
+
+  const baseValue = days * 120;
+
+  let offOriginal = 0;
+  let offValue = 0;
+
+  if(off){
+    offOriginal = days * 20;
+
+    if(!disableDiscounts){
+      offValue = days * 15;
+    }else{
+      offValue = offOriginal;
+    }
+  }
+
+  const total = baseValue + offValue;
+  const totalNoPromo = baseValue + offOriginal;
+
+  $("roleFarmPreviewDetails").innerHTML =
+  `Quantidade de partidas ranked: ${partidas}<br>
+   Dias contratados: ${days}<br>
+   Fichas farmadas: ${fichas}`;
+
+  $("roleFarmRes").innerHTML =
+  `<strong>Dias:</strong> ${days}<br>
+   <strong>Fichas farmadas:</strong> ${fichas}<br>
+   <strong>Valor do serviço:</strong> ${money(baseValue)}<br>
+   <strong>Off-stream:</strong> ${off ? money(offValue) : money(0)}<br>
+   <strong>Total:</strong> <span class="newPrice">${money(total)}</span>`;
+
+  return {
+    selected:true,
+    ok:true,
+
+    baseValue,
+    offValue,
+    offLabel:"Role Farm",
+
+    total,
+    totalNoPromo,
+
+    text:`Role Farm: ${days} dia(s) | Total: ${money(baseValue)}`,
+
+details:
+`🎮 ROLE FARM
+• Dias contratados: ${days}
+• Partidas: ${partidas}
+• Fichas farmadas: ${fichas}
+• Valor do serviço: ${money(baseValue)}
+• Off-stream: ${off ? money(offValue) : "Não"}
+• Total: ${money(total)}`
+  };
+}
+
 
 
 
@@ -2619,13 +4973,14 @@ function updateRecalCards(fromClick = false){
   let mmr = Number(mmrInput.value || 0);
 
   if(fromClick){
-    if(r1.checked){
-      mmrInput.value = 1;
-      mmr = 1;
-    }else if(r2.checked){
-      mmrInput.value = 4001;
-      mmr = 4001;
-    }
+  if(r1.checked){
+    mmrInput.value = 3000;
+    mmr = 3000;
+  }else if(r2.checked){
+    mmrInput.value = 5000;
+    mmr = 5000;
+  }
+
   }else{
     if(mmr >= 1 && mmr <= 4000){
       r1.checked = true;
@@ -2661,15 +5016,17 @@ function updateAll(){
   activePromo = null;
   promoMessage = "";
 
+  syncSelectedCards();
+
   // 🔥 isso garante que promoções antigas morram
   syncBodies();
-updateDoublePreview();
-updateReplayPreview();
-updateCasualPreview();
-updateLowPreview();
-updateTurboPreview();
-updateCoachCards();
-updateRecalCards(false);
+  updateDoublePreview();
+  updateReplayPreview();
+  updateCasualPreview();
+  updateLowPreview();
+  updateTurboPreview();
+  updateCoachCards();
+  updateRecalCards(false);
 
    // 🔮 CONTROLE DA SUGESTÃO POR VALOR
   const sug = $("tradSuggest");
@@ -2712,7 +5069,8 @@ if(tradRankSelectors){
   enableGroup("useReplay", ["repQtd","repDias","repOff"]);
   enableGroup("useCoach",  ["coachP1","coachP2"]);
   enableGroup("useLow",    ["lowQty","lowOff"]);
-  enableGroup("useTurbo",  ["turboDays","turboOff","turboWins","turboSimDays"]);
+  enableGroup("useRoleFarm", ["roleFarmDays","roleFarmOff"]);
+  enableGroup("useTurbo", ["turboDays","turboOff","turboWins","turboSimDays"]);
 
   // 🔒 REGRA REPLAY: dias não podem ultrapassar análises
 if($("useReplay").checked){
@@ -2737,23 +5095,28 @@ if($("useReplay").checked){
     const perDayOff = offBoostPerDay();
 
   const low = calcLowPriority();
-  const turbo = calcTurboXP();
+const turbo = calcTurboXP();
 
-  const disableAllDiscounts =
-    (low.selected && low.ok) ||
-    (turbo.selected && turbo.ok);
+const disableAllDiscounts =
+  (low.selected && low.ok) ||
+  (turbo.selected && turbo.ok);
 
-  const trad = calcTrad(perDayOff, disableAllDiscounts);
-  const dbl  = calcDouble(disableAllDiscounts);
-  const cas  = calcCasual(disableAllDiscounts);
-  const rec  = calcRecal();
-  const rep  = calcReplay(disableAllDiscounts);
+const trad = calcTrad(perDayOff, disableAllDiscounts);
+const dbl  = calcDouble(disableAllDiscounts);
+const cas  = calcCasual(disableAllDiscounts);
+const rec  = calcRecal();
+const rep  = calcReplay(disableAllDiscounts);
 
-  // 🔒 BLOQUEIO DE CUPOM SE A SUPER PROMO DO TRADICIONAL ESTIVER ATIVA
-    const couponInput = $("couponInput");
-  const couponMsg = $("couponMsg");
-  const tradSuperPromoIsActive = trad.superPromoApplied === true;
-  const noDiscountServiceActive = disableAllDiscounts;
+const rolefarm = calcRoleFarm(disableAllDiscounts);
+
+const tradEligible = trad.selected && trad.ok && trad.tradSpend >= 200;
+const coach = calcCoach(tradEligible, disableAllDiscounts);
+
+// 🔒 BLOQUEIO DE CUPOM SE A SUPER PROMO DO TRADICIONAL ESTIVER ATIVA
+const couponInput = $("couponInput");
+const couponMsg = $("couponMsg");
+const tradSuperPromoIsActive = trad.superPromoApplied === true;
+const noDiscountServiceActive = disableAllDiscounts;
 
   if(tradSuperPromoIsActive){
     activeCoupon = null;
@@ -2781,24 +5144,45 @@ if($("useReplay").checked){
     }
   }
 
-  // trad eligibility for coach discount: trad selected, ok, and spend >= 200
-    const tradEligible = trad.selected && trad.ok && trad.tradSpend >= 200;
 
-  const coach = calcCoach(tradEligible, disableAllDiscounts);
+// verifica se existe pelo menos 1 item no carrinho
+const selectedAny = [trad,dbl,cas,rolefarm,rec,rep,coach,low,turbo].some(x => x.selected);
 
-  const selectedAny = [trad,dbl,cas,rec,rep,coach,low,turbo].some(x => x.selected);
-  const packTerms = $("packTerms").checked;
-  const bs = $("globalBS").checked;
+// mostrar nome do cliente somente se houver item no carrinho
+const customerBox = $("customerBox");
+if(customerBox){
+  customerBox.style.display = selectedAny ? "block" : "none";
+}
+
+// mostrar cupom somente se houver item no carrinho
+const couponBox = $("couponBox");
+if(couponBox){
+  couponBox.style.display = selectedAny ? "block" : "none";
+}
+
+
+// mostrar confirmação somente se houver item no carrinho
+const confirmBox = $("confirmBox");
+if(confirmBox){
+  confirmBox.style.display = selectedAny ? "block" : "none";
+}
+
+
+const packTerms = $("packTerms").checked;
+const bs = $("globalBS").checked;
+const customerName = $("customerName")?.value || "";
+const validCustomerName = isValidCustomerName(customerName);
 
   let total = 0;
-  let totalNoPromo = 0;
-  let items = [];
-  let invalid = [];
-  let offLines = [];
+let totalNoPromo = 0;
+let items = [];
+let floatItems = [];
+let invalid = [];
+let offLines = [];
 let offTotal = 0;
 
 
-    [trad,dbl,cas,rec,rep,coach,low,turbo].forEach(obj => {
+    [trad,dbl,cas,rec,rep,coach,low,turbo,rolefarm].forEach(obj => {
   if(obj.selected){
     if(!obj.ok){
       invalid.push("⚠️ Corrija os dados de um dos serviços selecionados.");
@@ -2808,6 +5192,17 @@ let offTotal = 0;
 
       // item principal
       items.push("• " + obj.text);
+
+      // nomes para o mini carrinho
+      if(obj === trad) floatItems.push("Boost Tradicional");
+      if(obj === dbl) floatItems.push("Double MMR");
+      if(obj === cas) floatItems.push("Boost Casual");
+      if(obj === rolefarm) floatItems.push("Role Farm");
+      if(obj === rec) floatItems.push("Recalibração");
+      if(obj === rep) floatItems.push("Análise de Replay");
+      if(obj === coach) floatItems.push("Coach");
+      if(obj === low) floatItems.push("Low Priority");
+      if(obj === turbo) floatItems.push("Turbo Evento de XP");
 
       // ✅ DESCONTO DE VOLUME DO REPLAY (AQUI 👇)
       if(obj.descontoReplay && obj.descontoReplay > 0){
@@ -2859,14 +5254,24 @@ if (!disableAllDiscounts && activeCoupon && couponDiscount > 0) {
 
 
 
-  // total UI
-  if(!selectedAny){
-    $("totalRes").innerHTML = "Selecione serviços para ver o total.";
-    $("totalAlert").textContent = "";
-    $("zapBtn").disabled = true;
-    return;
-  }
+    // total UI
+if(!selectedAny){
+  $("totalRes").innerHTML = "Selecione serviços para ver o total.";
+  $("totalAlert").textContent = "";
+  $("zapBtn").disabled = true;
 
+  const floatBox  = $("floatingTotal");
+  const ftItemsEl = $("ftItems");
+  const ftPrice   = $("ftPrice");
+  const ftDisc    = $("ftDiscount");
+
+  if(floatBox) floatBox.classList.add("hidden");
+  if(ftItemsEl) ftItemsEl.innerHTML = "";
+  if(ftPrice) ftPrice.textContent = "R$ 0,00";
+  if(ftDisc) ftDisc.textContent = "";
+
+  return;
+}
   // price highlight if promo differs
 const hasPromo = Math.abs(totalNoPromo - total) > 0.009;
 
@@ -2915,11 +5320,12 @@ if(disableAllDiscounts){
 
   let alerts = [];
   if(invalid.length) alerts.push(invalid[0]);
-  if(!bs) alerts.push("⚠️ É necessário possuir mais de 8k de Behavior Score.");
-  if(!packTerms) alerts.push("⚠️ É necessário aceitar os termos do pacote para continuar.");
+  if(!validCustomerName) alerts.push("⚠️ Digite um nome.");
+if(!bs) alerts.push("⚠️ É necessário possuir mais de 8k de Behavior Score.");
+if(!packTerms) alerts.push("⚠️ É necessário aceitar os termos do pacote para continuar.");
   $("totalAlert").innerHTML = alerts.join("<br>");
 
-  const canZap = (invalid.length === 0) && packTerms && bs;
+  const canZap = (invalid.length === 0) && packTerms && bs && validCustomerName;
 
 // ESSA LINHA É O QUE FALTAVA 👇
 $("zapBtn").disabled = !canZap;
@@ -2927,7 +5333,7 @@ $("zapBtn").disabled = !canZap;
 $("zapBtn").onclick = () => {
   let detalhes = [];
 
-    [trad,dbl,cas,rec,rep,coach,low,turbo].forEach(obj => {
+    [trad,dbl,cas,rolefarm,rec,rep,coach,low,turbo].forEach(obj => {
     if(obj.selected && obj.ok && obj.details){
       detalhes.push(obj.details);
     }
@@ -2935,7 +5341,7 @@ $("zapBtn").onclick = () => {
   let offLines = [];
 let offTotal = 0;
 
-[trad,dbl,cas,rec,rep,coach,low,turbo].forEach(obj => {
+[trad,dbl,cas,rolefarm,rec,rep,coach,low,turbo].forEach(obj => {
   if(obj.selected && obj.ok && obj.offValue > 0){
     offLines.push(`• ${obj.offLabel}: ${money(obj.offValue)}`);
     offTotal += obj.offValue;
@@ -2943,8 +5349,13 @@ let offTotal = 0;
 });
 
 
-  const msg = encodeURIComponent(
+  const clientName = ($("customerName")?.value || "").trim();
+
+const msg = encodeURIComponent(
   "Olá! Quero contratar um pacote na *SEKAI DOTA BOOST*.\n\n" +
+
+  "👤 *CLIENTE*\n" +
+  "• Nome: " + clientName + "\n\n" +
 
   detalhes.join("\n\n") +
 
@@ -2977,13 +5388,18 @@ window.open("https://wa.me/5521991844917?text=" + msg);
 }; 
 /* ===== AQUI COMEÇA O BALÃO FLUTUANTE ===== */
 
-const floatBox = $("floatingTotal");
-const ftPrice  = $("ftPrice");
-const ftDisc   = $("ftDiscount");
+const floatBox  = $("floatingTotal");
+const ftItemsEl = $("ftItems");
+const ftPrice   = $("ftPrice");
+const ftDisc    = $("ftDiscount");
 
-
-if(selectedAny){
+if(floatBox && ftItemsEl && ftPrice && ftDisc){
+  if(floatItems.length > 0){
   floatBox.classList.remove("hidden");
+
+  ftItemsEl.innerHTML = floatItems.length
+    ? floatItems.map(name => `<div class="ft-item">${name}</div>`).join("")
+    : `<div class="ft-empty">Nenhum item</div>`;
 
   if(hasPromo){
     ftPrice.innerHTML = `
@@ -2997,16 +5413,20 @@ if(selectedAny){
   }
 }else{
   floatBox.classList.add("hidden");
+  ftItemsEl.innerHTML = "";
+  ftPrice.textContent = "R$ 0,00";
+  ftDisc.textContent = "";
 }
 }
 
-
+} // <- FALTAVA ESSA CHAVE FECHANDO updateAll()
 
 [
-  "recalMode1","recalMode2","useTrad","useDouble","useCasual","useRecal","useReplay","useCoach","useLow","useTurbo",
+  "recalMode1","recalMode2","useTrad","useDouble","useCasual","useRoleFarm","useRecal","useReplay","useCoach","useLow","useTurbo",
   "tradAtual","tradDesejado","tradOff","tradSuperPromo",
   "doubleMMR","doubleDays","doubleOff",
   "casualDays","casualOff",
+  "roleFarmDays","roleFarmOff",
   "recalMMR","recalOff",
   "repQtd","repDias","repOff",
   "coachP1","coachP2","coachOff",
@@ -3014,7 +5434,9 @@ if(selectedAny){
   "turboDays","turboOff","turboWins","turboSimDays",
   "packTerms","globalBS",
   "tradSuggest","tradBudget"
-].forEach(id => {
+]
+
+.forEach(id => {
   const el = $(id);
   if(!el) return;
   el.addEventListener(el.type === "checkbox" ? "change" : "input", updateAll);
@@ -3023,19 +5445,32 @@ if(selectedAny){
 // 👇 COLE EXATAMENTE AQUI
 $("couponInput").addEventListener("input", checkCoupon);
 
+$("customerName")?.addEventListener("input", updateAll);
+
 initTradRankPickers();
 updateDoublePreview();
 updateReplayPreview();
 updateCasualPreview();
 updateTurboPreview();
 updateCoachCards();
+initCategoryFilters();
+initPromoToggle();
+initNewTopMenu();
 
-$("recalMode1")?.addEventListener("change", () => {
+$("recalCard1")?.addEventListener("click", () => {
+  if (!$("useRecal").checked) return;
+
+  $("recalMode1").checked = true;
+  $("recalMode2").checked = false;
   updateRecalCards(true);
   updateAll();
 });
 
-$("recalMode2")?.addEventListener("change", () => {
+$("recalCard2")?.addEventListener("click", () => {
+  if (!$("useRecal").checked) return;
+
+  $("recalMode2").checked = true;
+  $("recalMode1").checked = false;
   updateRecalCards(true);
   updateAll();
 });
@@ -3053,9 +5488,16 @@ let lastScrollY = window.scrollY;
 
 window.addEventListener("scroll", () => {
   const floatBox = $("floatingTotal");
-  if(!floatBox) return;
+  const ftItemsEl = $("ftItems");
+  if(!floatBox || !ftItemsEl) return;
 
   const currentY = window.scrollY;
+  const hasItems = ftItemsEl.innerHTML.trim() !== "";
+
+  if(!hasItems){
+    floatBox.classList.add("hidden");
+    return;
+  }
 
   // Rolando para baixo → esconde
   if(currentY > lastScrollY + 10){
@@ -3069,13 +5511,53 @@ window.addEventListener("scroll", () => {
 
   lastScrollY = currentY;
 });
+
+$("roleFarmDays")?.addEventListener("input", () => {
+  let v = Number($("roleFarmDays").value);
+
+  if(isNaN(v) || v < 1) v = 1;
+  if(v > 2) v = 2;
+
+  $("roleFarmDays").value = v;
+});
+
+
+function syncSelectedCards(){
+  const map = [
+    ["useTrad", "trad"],
+    ["useDouble", "double"],
+    ["useCasual", "casual"],
+    ["useRoleFarm", "rolefarm"],
+    ["useRecal", "recal"],
+    ["useReplay", "replay"],
+    ["useCoach", "coach"],
+    ["useLow", "low"],
+    ["useTurbo", "turbo"]
+  ];
+
+  map.forEach(([inputId, serviceName]) => {
+    const checkbox = $(inputId);
+    const card = document.querySelector(`.service-card[data-service="${serviceName}"]`);
+    if(!checkbox || !card) return;
+
+    card.classList.toggle("is-selected", checkbox.checked);
+  });
+}
+
+
+
+
 </script>
 <!-- Mini carrinho flutuante -->
 <div id="floatingTotal" class="floating-total hidden">
   <div class="ft-title">💼 Seu pacote</div>
+
+  <div id="ftItems" class="ft-items"></div>
+
   <div id="ftPrice" class="ft-price">R$ 0,00</div>
   <div id="ftDiscount" class="ft-discount"></div>
 </div>
 
+</div>
 </body>
 </html>
