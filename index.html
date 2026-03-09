@@ -757,7 +757,7 @@ input[type=range]::-moz-range-thumb{
 
 @media(min-width:700px){
   .coachGrid{
-    grid-template-columns:1fr 1fr;
+    grid-template-columns:repeat(3, 1fr);
   }
 }
 
@@ -765,7 +765,7 @@ input[type=range]::-moz-range-thumb{
   border:1px solid rgba(139,92,246,.16);
   background:rgba(255,255,255,.03);
   border-radius:14px;
-  padding:12px;
+  padding:10px;
   cursor:pointer;
   transition:.18s ease;
 }
@@ -787,19 +787,20 @@ input[type=range]::-moz-range-thumb{
 
 .coachCard img{
   width:100%;
-  max-width:92px;
-  height:92px;
+  max-width:72px;
+  height:72px;
   object-fit:contain;
   display:block;
-  margin:0 auto 10px;
+  margin:0 auto 8px;
 }
 
 .coachCardTitle{
   font-weight:700;
   color:var(--text);
-  font-size:15px;
+  font-size:14px;
   text-align:center;
 }
+
 
 .coachCardPrice{
   text-align:center;
@@ -810,10 +811,10 @@ input[type=range]::-moz-range-thumb{
 }
 
 .coachCardDesc{
-  margin-top:8px;
-  font-size:12px;
+  margin-top:6px;
+  font-size:11px;
   color:var(--muted);
-  line-height:1.4;
+  line-height:1.35;
   text-align:center;
 }
 
@@ -2506,7 +2507,7 @@ input[type=text]:focus{
 
       <div class="serviceBody" id="bodyDouble">
         <label>MMR Atual</label>
-<input type="number" id="doubleMMR" min="0" placeholder="Ex: 3200" disabled>
+<input type="number" id="doubleMMR" min="1" max="8500" placeholder="Ex: 3200" disabled>
 
 <div class="servicePreviewBox" id="doublePreviewBox">
   <img id="doublePreviewImg" src="medalhas/SeasonalRank1-1.png" alt="Medalha Double MMR">
@@ -2537,16 +2538,17 @@ input[type=text]:focus{
 
   <p><strong>💰 Preço por faixa de MMR</strong></p>
   <ul>
-    <li>🟢 <strong>0 a 4.000 MMR</strong> → R$ 70,00 por dia</li>
-    <li>🟡 <strong>4.001 a 5.000 MMR</strong> → R$ 122,50 por dia</li>
-    <li>🔴 <strong>5.001 a 6.000 MMR</strong> → R$ 245,00 por dia</li>
+    <li>🟢 <strong>1 a 4.000 MMR</strong> → R$ 70,00 por dia</li>
+<li>🟡 <strong>4.001 a 5.000 MMR</strong> → R$ 122,50 por dia</li>
+<li>🟠 <strong>5.001 a 6.000 MMR</strong> → R$ 245,00 por dia</li>
+<li>🔴 <strong>6.001 a 8.500 MMR</strong> → R$ 500,00 por dia</li>
   </ul>
 
   <p><strong>⚠️ Importante</strong></p>
   <ul>
     <li>O valor pode mudar durante o serviço conforme o MMR sobe</li>
     <li>Cada nova diária é cobrada pelo MMR atual do dia</li>
-    <li>Máximo permitido: <strong>6.000 MMR</strong></li>
+    <li>Máximo permitido: <strong>8.500 MMR</strong></li>
     <li>Máximo de contratação: <strong>7 dias</strong></li>
   </ul>
 
@@ -2578,6 +2580,8 @@ input[type=text]:focus{
       </h2>
 
       <div class="serviceBody" id="bodyCasual">
+        <label>MMR atual (1 a 8500)</label>
+<input type="number" id="casualMMR" min="1" max="8500" placeholder="Ex: 3200" disabled>
         <label>Quantos dias de serviço? (1 a 30)</label>
         <input type="number" id="casualDays" min="1" max="30" value="1" disabled>
 
@@ -2596,7 +2600,12 @@ input[type=text]:focus{
 
         <label class="check premiumCheck">
   <input type="checkbox" id="casualOff" disabled>
-  <span>Jogar Off Stream (<span style="color:var(--danger);text-decoration:line-through;">R$ 20,00</span> → <span style="color:var(--success);">R$ 15,00</span> por dia) na Twitch sekai_oficial</span>
+  <span id="casualOffText">
+    Jogar Off Stream
+    (<span style="color:var(--danger);text-decoration:line-through;">R$ 20,00</span> →
+    <span style="color:var(--success);">R$ 15,00</span> por dia)
+    na Twitch sekai_oficial
+  </span>
 </label>
 
         <!-- SAIBA MAIS -->
@@ -2607,12 +2616,12 @@ input[type=text]:focus{
     <li>🎮 7 partidas por dia</li>
     <li>❌ Não garanto vitórias</li>
     <li>🎯 Heróis escolhidos conforme necessidade</li>
-    <li>💰 R$ 85,00 por dia</li>
+    <li>💰 R$ 85,00 por dia de 0 a 6500 MMR</li>
+    <li>💰 R$ 200,00 por dia de 6500 a 8500 MMR</li>
   </ul>
   <p><strong>📌 Regras</strong></p>
   <ul>
-    <li>✔ Até 6.500 MMR</li>
-    <li>❌ Acima disso não é aceito</li>
+    <li>✔ Máximo aceito: 8.500 MMR</li>
     <li>✔ 8.000+ de Behavior Score</li>
   </ul>
 </details>
@@ -2642,6 +2651,9 @@ input[type=text]:focus{
 
   <div class="serviceBody" id="bodyRoleFarm">
 
+    <label>MMR atual (1 a 8500)</label>
+<input type="number" id="roleFarmMMR" min="1" max="8500" placeholder="Ex: 3200" disabled>
+
 <label>Dias de serviço (1 a 2)</label>
 <input type="number" id="roleFarmDays" min="1" max="2" value="1" disabled>
 
@@ -2661,10 +2673,10 @@ input[type=text]:focus{
 
 <label class="check premiumCheck">
   <input type="checkbox" id="roleFarmOff" disabled>
-  <span>
-    Jogar Off Stream 
-    (<span style="color:var(--danger);text-decoration:line-through;">R$ 20,00</span> → 
-    <span style="color:var(--success);">R$ 15,00</span> por dia) 
+  <span id="roleFarmOffText">
+    Jogar Off Stream
+    (<span style="color:var(--danger);text-decoration:line-through;">R$ 20,00</span> →
+    <span style="color:var(--success);">R$ 15,00</span> por dia)
     na Twitch sekai_oficial
   </span>
 </label>
@@ -2677,15 +2689,15 @@ input[type=text]:focus{
 <li>🎮 7 partidas ranked por dia</li>
 <li>❌ Não garanto vitórias</li>
 <li>🎯 Heróis escolhidos conforme necessidade</li>
-<li>💰 R$ 120,00 por dia</li>
+<li>💰 1 a 6.500 MMR → R$ 120,00 por dia</li>
+<li>💰 6.501 a 8.500 MMR → R$ 280,00 por dia</li>
 <li>😎 28 fichas de função farmadas por dia</li>
 </ul>
 
 <p><strong>📌 Regras</strong></p>
 
 <ul>
-<li>✔ Até 6.500 MMR</li>
-<li>❌ Acima disso não é aceito</li>
+<li>✔ Máximo aceito: 8.500 MMR</li>
 <li>✔ 8.000+ de Behavior Score</li>
 </ul>
 
@@ -2737,10 +2749,20 @@ input[type=text]:focus{
   </div>
 </label>
 
+<label class="coachCard" id="recalCard3">
+  <input type="radio" name="recalMode" id="recalMode3" disabled>
+  <img src="medalhas/recalibracao3.png">
+  <div class="coachCardTitle">Modo de serviço</div>
+  <div class="coachCardDesc">
+    Recalibração para contas<br>
+    <strong>6001 a 8500 MMR</strong>
+  </div>
+</label>
+
 </div>
 
 <label>Ou digite o MMR manualmente</label>
-<input type="number" id="recalMMR" min="0" placeholder="Ex: 3500" disabled>
+<input type="number" id="recalMMR" min="0" max="8500" placeholder="Ex: 3500" disabled>
 
         <div class="check">
           <input type="checkbox" id="recalOff" disabled>
@@ -2764,6 +2786,14 @@ input[type=text]:focus{
     <li>Indicada para contas entre 4.000 e 6.000 MMR</li>
     <li>Resultado pode variar conforme a conta</li>
   </ul>
+
+  <p><strong>🔄 Recalibração Elite</strong></p>
+<ul>
+  <li>Mesma quantidade de partidas</li>
+  <li>Indicada para contas entre 6.001 e 8.500 MMR</li>
+  <li>Valor fixo de R$ 600,00</li>
+  <li>Resultado pode variar conforme a conta</li>
+</ul>
 
   <p><strong>⚠️ Não há garantia de MMR final.</strong></p>
 </details>
@@ -3591,13 +3621,13 @@ const RANKS = [
     ]
   },
   {
-    key: "imortal",
-    label: "Imortal",
-    baseImg: "medalhas/Imortal.png",
-    stars: [
-      { star: 1, mmr: 8500, max: 99999, img: "medalhas/Imortal.png", label: "Imortal" }
-    ]
-  }
+  key: "imortal",
+  label: "Imortal",
+  baseImg: "medalhas/Imortal.png",
+  stars: [
+    { star: 1, mmr: 5620, max: 99999, img: "medalhas/Imortal.png", label: "Imortal" }
+  ]
+}
 ];
 
 const ROMAN = ["I","II","III","IV","V"];
@@ -3640,14 +3670,19 @@ limitInput("tradAtual", 0, 8500, 8500);
 limitInput("tradDesejado", 0, 8500, 8500);
 
 // DOUBLE MMR
-limitInput("doubleMMR", 0, 6000, 6000);
+limitInput("doubleMMR", 1, 8500, 8500);
 limitInput("doubleDays", 1, 7, 7);
 
 // BOOST CASUAL
 limitInput("casualDays", 1, 30, 30);
 
+limitInput("casualMMR", 1, 8500, 8500);
+
+// ROLE FARM
+limitInput("roleFarmMMR", 1, 8500, 8500);
+
 // RECALIBRAÇÃO
-limitInput("recalMMR", 0, 6000, 6000);
+limitInput("recalMMR", 0, 8500, 8500);
 
 // ANÁLISE DE REPLAY
 limitInput("repQtd", 1, 6, 6);
@@ -4322,9 +4357,10 @@ function calcTrad(perDayOff, disableDiscounts = false){
 
 /* ========= Double MMR ========= */
 function doubleBaseByMMR(mmr){
-  if(mmr <= 4000) return 70;
-  if(mmr <= 5000) return 122.5;
-  if(mmr <= 6000) return 245;
+  if(mmr >= 1 && mmr <= 4000) return 70;
+  if(mmr >= 4001 && mmr <= 5000) return 122.5;
+  if(mmr >= 5001 && mmr <= 6000) return 245;
+  if(mmr >= 6001 && mmr <= 8500) return 500;
   return null;
 }
 
@@ -4334,7 +4370,7 @@ function calcDouble(disableDiscounts = false){
     return { selected:false, ok:true, total:0, totalNoPromo:0 };
   }
 
-  let mmrAtual = clampInt(Number($("doubleMMR").value), 0, 6000);
+  let mmrAtual = clampInt(Number($("doubleMMR").value), 1, 8500);
   let days     = clampInt(Number($("doubleDays").value), 1, 7);
   const off    = $("doubleOff").checked;
 
@@ -4352,7 +4388,7 @@ function calcDouble(disableDiscounts = false){
 
     if(pricePerDay === null){
       $("doubleRes").innerHTML = "<strong>Preço: INVÁLIDO</strong>";
-      $("doubleAlert").textContent = "🚫 Double MMR permitido apenas até 6.000 MMR.";
+      $("doubleAlert").textContent = "🚫 Double MMR permitido apenas entre 1 e 8.500 MMR.";
       return { selected:true, ok:false, total:0, totalNoPromo:0 };
     }
 
@@ -4384,11 +4420,15 @@ function calcDouble(disableDiscounts = false){
   const total = baseValue + offValue;
   const totalNoPromo = baseValue + offOriginal;
 
-  $("doubleRes").innerHTML =
-    `<strong>Dias contratados:</strong> ${days}<br>
-     <strong>Valor do serviço:</strong> ${money(baseValue)}<br>
-     <strong>Off-stream:</strong> ${off ? money(offValue) : money(0)}<br>
-     <strong>Total:</strong> <span class="newPrice">${money(total)}</span>`;
+  const firstDayPrice = doubleBaseByMMR(mmrAtual);
+
+$("doubleRes").innerHTML =
+  `<strong>MMR atual:</strong> ${mmrAtual}<br>
+   <strong>Preço inicial por dia:</strong> ${money(firstDayPrice)}<br>
+   <strong>Dias contratados:</strong> ${days}<br>
+   <strong>Valor do serviço:</strong> ${money(baseValue)}<br>
+   <strong>Off-stream:</strong> ${off ? money(offValue) : money(0)}<br>
+   <strong>Total:</strong> <span class="newPrice">${money(total)}</span>`;
 
   return {
     selected:true,
@@ -4424,10 +4464,22 @@ function calcCasual(disableDiscounts = false){
     return { selected:false, ok:true, total:0, totalNoPromo:0 };
   }
 
-  const days = clampInt(Number($("casualDays").value), 1, 30);
-  const off  = $("casualOff").checked;
+  const mmr = clampInt(Number($("casualMMR").value), 1, 8500);
+const days = clampInt(Number($("casualDays").value), 1, 30);
+const off  = $("casualOff").checked;
 
-  const baseValue = days * 85;
+if(mmr === null){
+  $("casualRes").innerHTML = "Digite o MMR atual.";
+  return { selected:true, ok:false, total:0, totalNoPromo:0 };
+}
+
+let pricePerDay = 85;
+
+if(mmr >= 6501 && mmr <= 8500){
+  pricePerDay = 200;
+}
+
+const baseValue = days * pricePerDay;
 
 // 🔹 OFF-STREAM
 let offOriginal = 0;
@@ -4438,7 +4490,14 @@ let offPromoText = "";
 if(off){
   offOriginal = days * 20;
 
-    if(!disableDiscounts && activePromo === null){
+  // 🔥 MMR premium: off-stream grátis
+  if(mmr >= 6501 && mmr <= 8500){
+    offValue = 0;
+    promoApplied = true;
+    offPromoText = "Promoção especial: off-stream grátis para Boost Casual acima de 6500 MMR";
+  }
+  // desconto normal do off-stream
+  else if(!disableDiscounts && activePromo === null){
     offValue = days * 15;
     promoApplied = true;
     offPromoText = "Promoção fixa do Boost Casual";
@@ -4454,10 +4513,18 @@ if(off){
 const totalNoPromo = baseValue + offOriginal;
 
 $("casualRes").innerHTML =
-  `<strong>Dias:</strong> ${days}<br>
+  `<strong>MMR atual:</strong> ${mmr}<br>
+   <strong>Preço por dia:</strong> ${money(pricePerDay)}<br>
+   <strong>Dias:</strong> ${days}<br>
    <strong>Valor do serviço:</strong> ${money(baseValue)}<br>
-   <strong>Off-stream:</strong> ${off ? money(offValue) : money(0)}<br>
-   <strong>Total:</strong> ${money(total)}`;
+   <strong>Off-stream:</strong> ${
+     off
+       ? (offOriginal > 0 && offValue === 0
+            ? `<span class="oldPrice">${money(offOriginal)}</span> <span class="promoTag">🔥 Grátis</span>`
+            : money(offValue))
+       : money(0)
+   }<br>
+   <strong>Total:</strong> <span class="newPrice">${money(total)}</span>`;
 
 return {
   selected:true,
@@ -4478,9 +4545,17 @@ return {
   text:`Boost Casual: ${days} dia(s) | Total: ${money(baseValue)}`,
   details:
 `💰 BOOST CASUAL
+• MMR atual: ${mmr}
+• Preço por dia: ${money(pricePerDay)}
 • Dias contratados: ${days}
 • Valor do serviço: ${money(baseValue)}
-• Off-stream: ${off ? money(offValue) : "Não"}
+• Off-stream: ${
+  off
+    ? (offOriginal > 0 && offValue === 0
+        ? money(offOriginal) + " → Grátis"
+        : money(offValue))
+    : "Não"
+}
 • Total: ${money(total)}`
 
 };
@@ -4490,29 +4565,34 @@ return {
 
 
 function calcRoleFarm(disableDiscounts = false){
-
   if(!$("useRoleFarm").checked){
     $("roleFarmRes").innerHTML = "Preencha os dados para ver o valor.";
     return { selected:false, ok:true, total:0, totalNoPromo:0 };
   }
 
- let days = Number($("roleFarmDays").value);
-
-if(isNaN(days) || days < 1) days = 1;
-if(days > 2) days = 2;
-
-$("roleFarmDays").value = days;
+  const mmr = clampInt(Number($("roleFarmMMR").value), 1, 8500);
+  let days = Number($("roleFarmDays").value);
   const off = $("roleFarmOff").checked;
 
-  if(days === null){
-    $("roleFarmRes").innerHTML = "Dados inválidos.";
+  if(mmr === null){
+    $("roleFarmRes").innerHTML = "Digite o MMR atual.";
     return { selected:true, ok:false, total:0, totalNoPromo:0 };
   }
+
+  if(isNaN(days) || days < 1) days = 1;
+  if(days > 2) days = 2;
+
+  $("roleFarmDays").value = days;
 
   const partidas = days * 7;
   const fichas = days * 28;
 
-  const baseValue = days * 120;
+  let pricePerDay = 120;
+  if(mmr >= 6501 && mmr <= 8500){
+    pricePerDay = 280;
+  }
+
+  const baseValue = days * pricePerDay;
 
   let offOriginal = 0;
   let offValue = 0;
@@ -4520,7 +4600,9 @@ $("roleFarmDays").value = days;
   if(off){
     offOriginal = days * 20;
 
-    if(!disableDiscounts){
+    if(mmr >= 6501 && mmr <= 8500){
+      offValue = 0;
+    }else if(!disableDiscounts){
       offValue = days * 15;
     }else{
       offValue = offOriginal;
@@ -4531,16 +4613,24 @@ $("roleFarmDays").value = days;
   const totalNoPromo = baseValue + offOriginal;
 
   $("roleFarmPreviewDetails").innerHTML =
-  `Quantidade de partidas ranked: ${partidas}<br>
-   Dias contratados: ${days}<br>
-   Fichas farmadas: ${fichas}`;
+    `Quantidade de partidas ranked: ${partidas}<br>
+     Dias contratados: ${days}<br>
+     Fichas farmadas: ${fichas}`;
 
   $("roleFarmRes").innerHTML =
-  `<strong>Dias:</strong> ${days}<br>
-   <strong>Fichas farmadas:</strong> ${fichas}<br>
-   <strong>Valor do serviço:</strong> ${money(baseValue)}<br>
-   <strong>Off-stream:</strong> ${off ? money(offValue) : money(0)}<br>
-   <strong>Total:</strong> <span class="newPrice">${money(total)}</span>`;
+    `<strong>MMR atual:</strong> ${mmr}<br>
+     <strong>Preço por dia:</strong> ${money(pricePerDay)}<br>
+     <strong>Dias:</strong> ${days}<br>
+     <strong>Fichas farmadas:</strong> ${fichas}<br>
+     <strong>Valor do serviço:</strong> ${money(baseValue)}<br>
+     <strong>Off-stream:</strong> ${
+       off
+         ? (offOriginal > 0 && offValue === 0
+              ? `<span class="oldPrice">${money(offOriginal)}</span> <span class="promoTag">🔥 Grátis</span>`
+              : money(offValue))
+         : money(0)
+     }<br>
+     <strong>Total:</strong> <span class="newPrice">${money(total)}</span>`;
 
   return {
     selected:true,
@@ -4555,13 +4645,21 @@ $("roleFarmDays").value = days;
 
     text:`Role Farm: ${days} dia(s) | Total: ${money(baseValue)}`,
 
-details:
+    details:
 `🎮 ROLE FARM
+• MMR atual: ${mmr}
+• Preço por dia: ${money(pricePerDay)}
 • Dias contratados: ${days}
 • Partidas: ${partidas}
 • Fichas farmadas: ${fichas}
 • Valor do serviço: ${money(baseValue)}
-• Off-stream: ${off ? money(offValue) : "Não"}
+• Off-stream: ${
+  off
+    ? (offOriginal > 0 && offValue === 0
+        ? money(offOriginal) + " → Grátis"
+        : money(offValue))
+    : "Não"
+}
 • Total: ${money(total)}`
   };
 }
@@ -4576,9 +4674,7 @@ function calcRecal(){
     return { selected:false, ok:true, total:0, totalNoPromo:0 };
   }
 
-  // nome removido — não será mais utilizado
-
-  const mmr  = clampInt(Number($("recalMMR").value), 0, 99999);
+  const mmr  = clampInt(Number($("recalMMR").value), 0, 8500);
   const off  = $("recalOff").checked;
 
   if(mmr === null){
@@ -4592,20 +4688,21 @@ function calcRecal(){
     baseValue = 200;
   }else if(mmr <= 6000){
     baseValue = 250;
+  }else if(mmr <= 8500){
+    baseValue = 600;
   }else{
     $("recalRes").innerHTML = "<strong>Preço: INVÁLIDO</strong>";
     $("recalAlert").textContent = "🚫 Esse MMR não é compatível com a Recalibração.";
     return { selected:true, ok:false, total:0, totalNoPromo:0 };
   }
 
-  // 🔹 OFF-STREAM (sem promoção)
   const offOriginal = off ? 40 : 0;
-  const offValue    = offOriginal;
-
+  const offValue = offOriginal;
   const total = baseValue + offValue;
 
   $("recalRes").innerHTML =
-    `<strong>Valor do serviço:</strong> ${money(baseValue)}<br>
+    `<strong>MMR atual:</strong> ${mmr}<br>
+     <strong>Valor do serviço:</strong> ${money(baseValue)}<br>
      <strong>Off-stream:</strong> ${off ? money(offValue) : money(0)}<br>
      <strong>Total:</strong> ${money(total)}`;
 
@@ -4614,7 +4711,6 @@ function calcRecal(){
     ok:true,
 
     baseValue,
-
     offOriginal,
     offValue,
     promoApplied:false,
@@ -4625,7 +4721,6 @@ function calcRecal(){
     totalNoPromo: baseValue + offOriginal,
 
     text:`Recalibração | Total: ${money(baseValue)}`,
-
 
     details:
 `🔄 RECALIBRAÇÃO
@@ -5057,8 +5152,14 @@ function updateDoublePreview(){
   const mmr = Number($("doubleMMR")?.value || 0);
   const rank = getRankByMMR(mmr);
 
-  if($("doublePreviewImg")) $("doublePreviewImg").src = rank.img;
-  if($("doublePreviewText")) $("doublePreviewText").textContent = rank.fullLabel;
+  if($("doublePreviewImg")){
+    $("doublePreviewImg").src = rank.img;
+    $("doublePreviewImg").alt = rank.fullLabel;
+  }
+
+  if($("doublePreviewText")){
+    $("doublePreviewText").textContent = rank.fullLabel;
+  }
 }
 
 function updateReplayPreview(){
@@ -5110,6 +5211,52 @@ function updateCasualPreview(){
   }
 }
 
+function updateCasualOffText(){
+  const mmr = Number($("casualMMR")?.value || 0);
+  const text = $("casualOffText");
+
+  if(!text) return;
+
+  if(mmr >= 6501 && mmr <= 8500){
+    text.innerHTML = `
+      Jogar Off Stream
+      (<span style="color:var(--danger);text-decoration:line-through;">R$ 20,00</span> →
+      <span style="color:var(--success);">GRÁTIS</span>)
+      na Twitch sekai_oficial
+    `;
+  }else{
+    text.innerHTML = `
+      Jogar Off Stream
+      (<span style="color:var(--danger);text-decoration:line-through;">R$ 20,00</span> →
+      <span style="color:var(--success);">R$ 15,00</span> por dia)
+      na Twitch sekai_oficial
+    `;
+  }
+}
+
+function updateRoleFarmOffText(){
+  const mmr = Number($("roleFarmMMR")?.value || 0);
+  const text = $("roleFarmOffText");
+
+  if(!text) return;
+
+  if(mmr >= 6501 && mmr <= 8500){
+    text.innerHTML = `
+      Jogar Off Stream
+      (<span style="color:var(--danger);text-decoration:line-through;">R$ 20,00</span> →
+      <span style="color:var(--success);">GRÁTIS</span>)
+      na Twitch sekai_oficial
+    `;
+  }else{
+    text.innerHTML = `
+      Jogar Off Stream
+      (<span style="color:var(--danger);text-decoration:line-through;">R$ 20,00</span> →
+      <span style="color:var(--success);">R$ 15,00</span> por dia)
+      na Twitch sekai_oficial
+    `;
+  }
+}
+
 function updateLowPreview(){
   const qty = Number($("lowQty")?.value || 2);
   const details = $("lowPreviewDetails");
@@ -5122,39 +5269,51 @@ function updateLowPreview(){
 function updateRecalCards(fromClick = false){
   const c1 = $("recalCard1");
   const c2 = $("recalCard2");
+  const c3 = $("recalCard3");
 
   const r1 = $("recalMode1");
   const r2 = $("recalMode2");
+  const r3 = $("recalMode3");
   const mmrInput = $("recalMMR");
 
-  if(!r1 || !r2 || !mmrInput) return;
+  if(!r1 || !r2 || !r3 || !mmrInput) return;
 
   let mmr = Number(mmrInput.value || 0);
 
   if(fromClick){
-  if(r1.checked){
-    mmrInput.value = 3000;
-    mmr = 3000;
-  }else if(r2.checked){
-    mmrInput.value = 5000;
-    mmr = 5000;
-  }
-
+    if(r1.checked){
+      mmrInput.value = 3000;
+      mmr = 3000;
+    }else if(r2.checked){
+      mmrInput.value = 5000;
+      mmr = 5000;
+    }else if(r3.checked){
+      mmrInput.value = 7000;
+      mmr = 7000;
+    }
   }else{
     if(mmr >= 1 && mmr <= 4000){
       r1.checked = true;
       r2.checked = false;
+      r3.checked = false;
     }else if(mmr >= 4001 && mmr <= 6000){
       r1.checked = false;
       r2.checked = true;
+      r3.checked = false;
+    }else if(mmr >= 6001 && mmr <= 8500){
+      r1.checked = false;
+      r2.checked = false;
+      r3.checked = true;
     }else{
       r1.checked = false;
       r2.checked = false;
+      r3.checked = false;
     }
   }
 
   if(c1) c1.classList.toggle("active", r1.checked);
   if(c2) c2.classList.toggle("active", r2.checked);
+  if(c3) c3.classList.toggle("active", r3.checked);
 }
 
 function updateCoachCards(){
@@ -5167,7 +5326,6 @@ function updateCoachCards(){
   if(card2) card2.classList.toggle("active", !!p2);
 }
 
-
 /* ========= update all ========= */
 function updateAll(){
 
@@ -5179,13 +5337,15 @@ function updateAll(){
 
   // 🔥 isso garante que promoções antigas morram
   syncBodies();
-  updateDoublePreview();
-  updateReplayPreview();
-  updateCasualPreview();
-  updateLowPreview();
-  updateTurboPreview();
-  updateCoachCards();
-  updateRecalCards(false);
+updateDoublePreview();
+updateReplayPreview();
+updateCasualPreview();
+updateCasualOffText();
+updateRoleFarmOffText();
+updateLowPreview();
+updateTurboPreview();
+updateCoachCards();
+updateRecalCards(false);
 
    // 🔮 CONTROLE DA SUGESTÃO POR VALOR
   const sug = $("tradSuggest");
@@ -5223,12 +5383,12 @@ if(tradRankSelectors){
 
     enableGroup("useTrad",   ["tradAtual","tradDesejado","tradOff","tradSuperPromo"]);
   enableGroup("useDouble", ["doubleMMR","doubleDays","doubleOff"]);
-  enableGroup("useCasual", ["casualDays","casualOff"]);
+  enableGroup("useCasual", ["casualMMR","casualDays","casualOff"]);
   enableGroup("useRecal",  ["recalMMR","recalOff"]);
   enableGroup("useReplay", ["repQtd","repDias","repOff"]);
   enableGroup("useCoach",  ["coachP1","coachP2"]);
   enableGroup("useLow",    ["lowQty","lowOff"]);
-  enableGroup("useRoleFarm", ["roleFarmDays","roleFarmOff"]);
+  enableGroup("useRoleFarm", ["roleFarmMMR","roleFarmDays","roleFarmOff"]);
   enableGroup("useTurbo", ["turboDays","turboOff","turboWins","turboSimDays"]);
 
   // 🔒 REGRA REPLAY: dias não podem ultrapassar análises
@@ -5581,11 +5741,12 @@ if(floatBox && ftItemsEl && ftPrice && ftDisc){
 } // <- FALTAVA ESSA CHAVE FECHANDO updateAll()
 
 [
-  "recalMode1","recalMode2","useTrad","useDouble","useCasual","useRoleFarm","useRecal","useReplay","useCoach","useLow","useTurbo",
+
+  "recalMode1","recalMode2","recalMode3","useTrad","useDouble","useCasual","useRoleFarm","useRecal","useReplay","useCoach","useLow","useTurbo",
   "tradAtual","tradDesejado","tradOff","tradSuperPromo",
   "doubleMMR","doubleDays","doubleOff",
-  "casualDays","casualOff",
-  "roleFarmDays","roleFarmOff",
+"casualMMR","casualDays","casualOff",
+"roleFarmMMR","roleFarmDays","roleFarmOff",
   "recalMMR","recalOff",
   "repQtd","repDias","repOff",
   "coachP1","coachP2","coachOff",
@@ -5610,6 +5771,8 @@ initTradRankPickers();
 updateDoublePreview();
 updateReplayPreview();
 updateCasualPreview();
+updateCasualOffText();
+updateRoleFarmOffText();
 updateTurboPreview();
 updateCoachCards();
 initCategoryFilters();
@@ -5621,6 +5784,8 @@ $("recalCard1")?.addEventListener("click", () => {
 
   $("recalMode1").checked = true;
   $("recalMode2").checked = false;
+  $("recalMode3").checked = false;
+
   updateRecalCards(true);
   updateAll();
 });
@@ -5630,6 +5795,19 @@ $("recalCard2")?.addEventListener("click", () => {
 
   $("recalMode2").checked = true;
   $("recalMode1").checked = false;
+  $("recalMode3").checked = false;
+
+  updateRecalCards(true);
+  updateAll();
+});
+
+$("recalCard3")?.addEventListener("click", () => {
+  if (!$("useRecal").checked) return;
+
+  $("recalMode3").checked = true;
+  $("recalMode1").checked = false;
+  $("recalMode2").checked = false;
+
   updateRecalCards(true);
   updateAll();
 });
