@@ -1994,13 +1994,20 @@ input[type=text]:focus{
 }
 
 .heroCardTall:hover{
-  transform:translateY(-4px) scale(1.04);
-  border-color:rgba(139,92,246,.55);
-  box-shadow:
-    0 12px 24px rgba(0,0,0,.26),
-    0 0 16px rgba(139,92,246,.20);
-}
+  transform:translateY(-6px) scale(1.08);
+  border-color:#8b5cf6;
 
+  box-shadow:
+    0 16px 30px rgba(0,0,0,.30),
+    0 0 25px rgba(139,92,246,.45),
+    inset 0 0 12px rgba(139,92,246,.25);
+
+  background:linear-gradient(
+    180deg,
+    rgba(139,92,246,.20),
+    rgba(255,255,255,.05)
+  );
+}
 /* imagem do herói */
 .heroCardTall img{
   width:100%;
@@ -2011,6 +2018,11 @@ input[type=text]:focus{
   display:block;
   margin-bottom:8px;
   box-shadow:0 8px 14px rgba(0,0,0,.20);
+  transition: transform .25s ease;
+}
+
+.heroCardTall:hover img{
+  transform:scale(1.12);
 }
 
 /* nome do herói */
@@ -2204,7 +2216,7 @@ input[type=text]:focus{
       <div class="brandTexts">
         <h1>Sekai Dota Boost</h1>
         <div class="sub">
-          Confiança e Clareza para almentar seu MMR.
+          Confiança e Clareza para aumentar seu MMR.
         </div>
       </div>
     </div>
@@ -2237,7 +2249,7 @@ input[type=text]:focus{
   </button>
 
   <button type="button" class="menuItemBtn" id="openTermsMenu">
-    📄 Termos de compromisso
+    📄 Informações
   </button>
 
   <button type="button" class="menuItemBtn openLegalModal" data-modal="appModal">
@@ -2246,15 +2258,16 @@ input[type=text]:focus{
 </div>
 
           <div class="menuLevel" id="menuSocialLevel">
-            <a href="https://www.instagram.com/sekaidota/" target="_blank" class="menuItemBtn">📷 Instagram</a>
-            <a href="https://www.twitch.tv/sekai_oficial" target="_blank" class="menuItemBtn">🎥 Twitch</a>
-            <a href="https://wa.me/5521991844917" target="_blank" class="menuItemBtn">💬 WhatsApp</a>
-            <button type="button" class="menuItemBtn menuBackBtn" data-back="main">⬅ Voltar</button>
-          </div>
+  <button type="button" class="menuItemBtn openModalBtn" data-modal="instagramPopup">📷 Instagram</button>
+  <button type="button" class="menuItemBtn openModalBtn" data-modal="twitchPopup">🎥 Twitch</button>
+  <button type="button" class="menuItemBtn openModalBtn" data-modal="whatsappPopup">💬 WhatsApp</button>
+  <button type="button" class="menuItemBtn menuBackBtn" data-back="main">⬅ Voltar</button>
+</div>
+
 
           <div class="menuLevel" id="menuTermsLevel">
             <button type="button" class="menuItemBtn openLegalModal" data-modal="condicoesModal">
-              📑 Termos de condição
+              📑 Termos e condições
             </button>
             <button type="button" class="menuItemBtn openLegalModal" data-modal="privacidadeModal">
               🔒 Termos de privacidade
@@ -2417,10 +2430,10 @@ input[type=text]:focus{
           </div>
         </div>
 
-        <div class="check">
-          <input type="checkbox" id="tradOff" disabled>
-          <span>Serviço off-stream? (transmissão na Twitch sekai_oficial)</span>
-        </div>
+        <label class="check premiumCheck">
+  <input type="checkbox" id="tradOff" disabled>
+  <span id="tradOffText">Serviço com live off-stream?</span>
+</label>
         <small class="muted">Obs.: o cálculo de off-stream é interno e não exibe dias.</small>
         <div class="check" id="tradSuperPromoWrap" style="display:none">
   <input type="checkbox" id="tradSuperPromo" disabled>
@@ -2520,10 +2533,10 @@ input[type=text]:focus{
         <label>Dias contratados (1 a 7)</label>
         <input type="number" id="doubleDays" min="1" max="7" value="1" disabled>
 
-        <div class="check">
-          <input type="checkbox" id="doubleOff" disabled>
-          <span>Double MMR Off stream (+ R$20,00) na Twitch sekai_oficial</span>
-        </div>
+        <label class="check premiumCheck">
+  <input type="checkbox" id="doubleOff" disabled>
+  <span id="doubleOffText">Serviço com live off-stream?</span>
+</label>
 
         <!-- SAIBA MAIS -->
         <details>
@@ -2600,12 +2613,7 @@ input[type=text]:focus{
 
         <label class="check premiumCheck">
   <input type="checkbox" id="casualOff" disabled>
-  <span id="casualOffText">
-    Jogar Off Stream
-    (<span style="color:var(--danger);text-decoration:line-through;">R$ 20,00</span> →
-    <span style="color:var(--success);">R$ 15,00</span> por dia)
-    na Twitch sekai_oficial
-  </span>
+  <span id="casualOffText">Serviço com live off-stream?</span>
 </label>
 
         <!-- SAIBA MAIS -->
@@ -2673,12 +2681,7 @@ input[type=text]:focus{
 
 <label class="check premiumCheck">
   <input type="checkbox" id="roleFarmOff" disabled>
-  <span id="roleFarmOffText">
-    Jogar Off Stream
-    (<span style="color:var(--danger);text-decoration:line-through;">R$ 20,00</span> →
-    <span style="color:var(--success);">R$ 15,00</span> por dia)
-    na Twitch sekai_oficial
-  </span>
+  <span id="roleFarmOffText">Serviço com live off-stream?</span>
 </label>
 
 
@@ -2764,10 +2767,10 @@ input[type=text]:focus{
 <label>Ou digite o MMR manualmente</label>
 <input type="number" id="recalMMR" min="0" max="8500" placeholder="Ex: 3500" disabled>
 
-        <div class="check">
-          <input type="checkbox" id="recalOff" disabled>
-          <span>Off stream (+ R$40 fixo) na Twitch sekai_oficial</span>
-        </div>
+        <label class="check premiumCheck">
+  <input type="checkbox" id="recalOff" disabled>
+  <span id="recalOffText">Serviço com live off-stream?</span>
+</label>
 
         <!-- SAIBA MAIS -->
         <details>
@@ -2840,10 +2843,10 @@ input[type=text]:focus{
     </div>
 
 
-    <div class="check">
-      <input type="checkbox" id="lowOff" disabled>
-      <span>Executar serviço OFF-STREAM (+ R$20,00)</span>
-    </div>
+    <label class="check premiumCheck">
+  <input type="checkbox" id="lowOff" disabled>
+  <span id="lowOffText">Serviço com live off-stream?</span>
+</label>
 
     <details>
       <summary>Saiba mais sobre a Low Priority</summary>
@@ -2892,10 +2895,10 @@ input[type=text]:focus{
   </div>
 </div>
 
-<div class="check">
+<label class="check premiumCheck">
   <input type="checkbox" id="repOff" disabled>
-  <span>Análise Off Stream</span>
-</div>
+  <span id="repOffText">Serviço com live off-stream?</span>
+</label>
 
         <!-- SAIBA MAIS -->
         <details>
@@ -3033,10 +3036,10 @@ input[type=text]:focus{
           </div>
         </div>
 
-        <div class="check">
-          <input type="checkbox" id="turboOff" disabled>
-          <span>Off-stream (sem live) + R$ 20,00 por dia</span>
-        </div>
+        <label class="check premiumCheck">
+  <input type="checkbox" id="turboOff" disabled>
+  <span id="turboOffText">Serviço com live off-stream?</span>
+</label>
 
         <details>
           <summary>Saiba mais sobre o Turbo Evento</summary>
@@ -3105,7 +3108,7 @@ input[type=text]:focus{
 
 <small class="muted">
   Cupons liberados somente em datas comemorativas.
-  Não acumulativo com descontos base do site.
+  Não acumulativo com os descontos.
 </small>
 
 </div>
@@ -3168,11 +3171,11 @@ Aqui meu foco é oferecer um serviço sério e confiável, sempre com transparê
 </div>
 
         <div class="sekaiInfoGrid">
-          <div class="infoLine"><strong>Experiência com Dota2:</strong> 8 anos</div>
+          <div class="infoLine"><strong>Experiência com Dota 2:</strong> 8 anos</div>
           <div class="infoLine"><strong>Experiência como booster:</strong> 6 anos</div>
 <div class="infoLine"><strong>Contas concluídas:</strong> 700+ contas</div>
 <div class="infoLine"><strong>Atuação:</strong> Ex-jogador profissional</div>
-<div class="infoLine"><strong>Funções de heróis:</strong> todas</div>
+<div class="infoLine"><strong>Funções de heróis:</strong> Todas</div>
 <div class="infoLine"><strong>Maior MMR alcançado:</strong> 11.300 MMR</div>
         </div>
 
@@ -3189,117 +3192,223 @@ Aqui meu foco é oferecer um serviço sério e confiável, sempre com transparê
 <div class="rolesWrap">
 
   <div class="rolesRow top">
+
     <!-- Hard Carry -->
     <div class="heroRoleBlock">
       <div class="heroRoleTitle">
-        <img src="medalhas/icone1.png" alt="Ícone">
+        <img src="medalhas/icone1.png">
         <span>Hard Carry</span>
       </div>
+
       <div class="heroRoleGrid">
+
         <div class="heroCardTall">
-          <img src="medalhas/heroi1.png" alt="Herói 1">
+          <img 
+          src="medalhas/heroi1.png"
+          data-static="medalhas/heroi1.png"
+          data-gif="medalhas/gifheroi1.gif"
+          class="heroSwapImg"
+          alt="Luna">
           <div class="heroItemName">LUNA</div>
         </div>
+
         <div class="heroCardTall">
-          <img src="medalhas/heroi2.png" alt="Herói 2">
+          <img 
+          src="medalhas/heroi2.png"
+          data-static="medalhas/heroi2.png"
+          data-gif="medalhas/gifheroi2.gif"
+          class="heroSwapImg"
+          alt="Kez">
           <div class="heroItemName">KEZ</div>
         </div>
+
         <div class="heroCardTall">
-          <img src="medalhas/heroi3.png" alt="Herói 3">
+          <img 
+          src="medalhas/heroi3.png"
+          data-static="medalhas/heroi3.png"
+          data-gif="medalhas/gifheroi3.gif"
+          class="heroSwapImg"
+          alt="Shadow Fiend">
           <div class="heroItemName">SHADOW FIEND</div>
         </div>
+
       </div>
     </div>
 
     <!-- Mid -->
     <div class="heroRoleBlock">
       <div class="heroRoleTitle">
-        <img src="medalhas/icone1.png" alt="Ícone">
+        <img src="medalhas/icone1.png">
         <span>Mid</span>
       </div>
+
       <div class="heroRoleGrid">
+
         <div class="heroCardTall">
-          <img src="medalhas/heroi4.png" alt="Herói 4">
+          <img 
+          src="medalhas/heroi4.png"
+          data-static="medalhas/heroi4.png"
+          data-gif="medalhas/gifheroi4.gif"
+          class="heroSwapImg"
+          alt="Storm Spirit">
           <div class="heroItemName">STORM SPIRIT</div>
         </div>
+
         <div class="heroCardTall">
-          <img src="medalhas/heroi5.png" alt="Herói 5">
+          <img 
+          src="medalhas/heroi5.png"
+          data-static="medalhas/heroi5.png"
+          data-gif="medalhas/gifheroi5.gif"
+          class="heroSwapImg"
+          alt="Void Spirit">
           <div class="heroItemName">VOID SPIRIT</div>
         </div>
+
         <div class="heroCardTall">
-          <img src="medalhas/heroi6.png" alt="Herói 6">
+          <img 
+          src="medalhas/heroi6.png"
+          data-static="medalhas/heroi6.png"
+          data-gif="medalhas/gifheroi6.gif"
+          class="heroSwapImg"
+          alt="Ember Spirit">
           <div class="heroItemName">EMBER SPIRIT</div>
         </div>
+
       </div>
     </div>
 
     <!-- Offlane -->
     <div class="heroRoleBlock">
       <div class="heroRoleTitle">
-        <img src="medalhas/icone1.png" alt="Ícone">
+        <img src="medalhas/icone1.png">
         <span>Offlane</span>
       </div>
+
       <div class="heroRoleGrid">
+
         <div class="heroCardTall">
-          <img src="medalhas/heroi7.png" alt="Herói 7">
+          <img 
+          src="medalhas/heroi7.png"
+          data-static="medalhas/heroi7.png"
+          data-gif="medalhas/gifheroi7.gif"
+          class="heroSwapImg"
+          alt="Nature's Prophet">
           <div class="heroItemName">NATURE'S PROPHET</div>
         </div>
+
         <div class="heroCardTall">
-          <img src="medalhas/heroi8.png" alt="Herói 8">
+          <img 
+          src="medalhas/heroi8.png"
+          data-static="medalhas/heroi8.png"
+          data-gif="medalhas/gifheroi8.gif"
+          class="heroSwapImg"
+          alt="Magnus">
           <div class="heroItemName">MAGNUS</div>
         </div>
+
         <div class="heroCardTall">
-          <img src="medalhas/heroi9.png" alt="Herói 9">
+          <img 
+          src="medalhas/heroi9.png"
+          data-static="medalhas/heroi9.png"
+          data-gif="medalhas/gifheroi9.gif"
+          class="heroSwapImg"
+          alt="Razor">
           <div class="heroItemName">RAZOR</div>
         </div>
+
       </div>
     </div>
+
   </div>
 
+
   <div class="rolesRow bottom">
+
     <!-- Suporte 4 -->
     <div class="heroRoleBlock">
       <div class="heroRoleTitle">
-        <img src="medalhas/icone2.png" alt="Ícone">
+        <img src="medalhas/icone2.png">
         <span>Suporte 4</span>
       </div>
+
       <div class="heroRoleGrid">
+
         <div class="heroCardTall">
-          <img src="medalhas/heroi10.png" alt="Herói 10">
+          <img 
+          src="medalhas/heroi10.png"
+          data-static="medalhas/heroi10.png"
+          data-gif="medalhas/gifheroi10.gif"
+          class="heroSwapImg"
+          alt="Phoenix">
           <div class="heroItemName">PHOENIX</div>
         </div>
+
         <div class="heroCardTall">
-          <img src="medalhas/heroi11.png" alt="Herói 11">
+          <img 
+          src="medalhas/heroi11.png"
+          data-static="medalhas/heroi11.png"
+          data-gif="medalhas/gifheroi11.gif"
+          class="heroSwapImg"
+          alt="Mirana">
           <div class="heroItemName">MIRANA</div>
         </div>
+
         <div class="heroCardTall">
-          <img src="medalhas/heroi12.png" alt="Herói 12">
+          <img 
+          src="medalhas/heroi12.png"
+          data-static="medalhas/heroi12.png"
+          data-gif="medalhas/gifheroi12.gif"
+          class="heroSwapImg"
+          alt="Bounty Hunter">
           <div class="heroItemName">BOUNTY HUNTER</div>
         </div>
+
       </div>
     </div>
+
 
     <!-- Suporte 5 -->
     <div class="heroRoleBlock">
       <div class="heroRoleTitle">
-        <img src="medalhas/icone2.png" alt="Ícone">
+        <img src="medalhas/icone2.png">
         <span>Suporte 5</span>
       </div>
+
       <div class="heroRoleGrid">
+
         <div class="heroCardTall">
-          <img src="medalhas/heroi13.png" alt="Herói 13">
+          <img 
+          src="medalhas/heroi13.png"
+          data-static="medalhas/heroi13.png"
+          data-gif="medalhas/gifheroi13.gif"
+          class="heroSwapImg"
+          alt="Pudge">
           <div class="heroItemName">PUDGE</div>
         </div>
+
         <div class="heroCardTall">
-          <img src="medalhas/heroi14.png" alt="Herói 14">
+          <img 
+          src="medalhas/heroi14.png"
+          data-static="medalhas/heroi14.png"
+          data-gif="medalhas/gifheroi14.gif"
+          class="heroSwapImg"
+          alt="Dark Willow">
           <div class="heroItemName">DARK WILLOW</div>
         </div>
+
         <div class="heroCardTall">
-          <img src="medalhas/heroi15.png" alt="Herói 15">
+          <img 
+          src="medalhas/heroi15.png"
+          data-static="medalhas/heroi15.png"
+          data-gif="medalhas/gifheroi15.gif"
+          class="heroSwapImg"
+          alt="Windranger">
           <div class="heroItemName">WINDRANGER</div>
         </div>
+
       </div>
     </div>
+
   </div>
 
 </div>
@@ -3503,7 +3612,7 @@ let discountPct = 0;
   /* ========= CONTROLE GLOBAL DE PROMOÇÕES ========= */
 
 
-/* ========= aqui e a promoçao 10% 15% e 25% SUPER PROMO BOOST TRADICIONAL para desativar subistitua true por false ========= */
+/* ========= aqui e a promoçao 10% 15% e 25% SUPER PROMO BOOST TRADICIONAL para desativar substitua true por false ========= */
 const SUPER_PROMO_ENABLED = false; 
 
 
@@ -3823,9 +3932,22 @@ function initNewTopMenu(){
     });
   });
 
-  document.querySelectorAll(".closeModalBtn").forEach(btn => {
-    btn.addEventListener("click", closeAllModals);
+  document.querySelectorAll(".openModalBtn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const modalId = btn.dataset.modal;
+      if(modalId){
+        openModal(modalId);
+      }
+    });
   });
+
+  document.addEventListener("click", (e) => {
+    const closeBtn = e.target.closest(".closeModalBtn");
+    if(closeBtn){
+      e.stopPropagation();
+      closeAllModals();
+    }
+  }, true);
 
   document.querySelectorAll(".modalOverlay").forEach(modal => {
     modal.addEventListener("click", () => {
@@ -3845,7 +3967,6 @@ function initNewTopMenu(){
   const copyPixBtn = $("copyPixBtn");
   const pixKey = $("pixKey");
   const pixCopyMsg = $("pixCopyMsg");
-  
 
   if(copyPixBtn && pixKey){
     copyPixBtn.addEventListener("click", async () => {
@@ -3864,25 +3985,23 @@ function initNewTopMenu(){
     });
   }
 
+  const toggleQrBtn = $("toggleQrBtn");
+  const pixQrSection = $("pixQrSection");
 
-const toggleQrBtn = $("toggleQrBtn");
-const pixQrSection = $("pixQrSection");
+  if(toggleQrBtn && pixQrSection){
+    toggleQrBtn.addEventListener("click", () => {
+      const aberto = pixQrSection.style.display === "block";
 
-if(toggleQrBtn && pixQrSection){
-  toggleQrBtn.addEventListener("click", () => {
-    const aberto = pixQrSection.style.display === "block";
+      pixQrSection.style.display = aberto ? "none" : "block";
+      toggleQrBtn.textContent = aberto ? "Gerar QR" : "Ocultar QR";
 
-    pixQrSection.style.display = aberto ? "none" : "block";
-    toggleQrBtn.textContent = aberto ? "Gerar QR" : "Ocultar QR";
-
-    if(pixCopyMsg){
-      pixCopyMsg.textContent = aberto
-        ? ""
-        : "✅ QR Code exibido para pagamento.";
-    }
-  });
-}
-
+      if(pixCopyMsg){
+        pixCopyMsg.textContent = aberto
+          ? ""
+          : "✅ QR Code exibido para pagamento.";
+      }
+    });
+  }
 }
 
 function setActiveCategory(category){
@@ -4349,7 +4468,7 @@ function calcTrad(perDayOff, disableDiscounts = false){
 • Desconto padrão do site: ${pct > 0 ? Math.round(pct * 100) + "% OFF" : "Nenhum"}
 • OFF SUPER PROMO: ${superPromoApplied ? Math.round(superPromoPct * 100) + "% OFF" : "Não"}
 • Valor do serviço: ${money(baseValue)}
-• Off-stream: ${off ? money(offValue) : "Não"}
+• Off stream: ${off ? money(offValue) : "Não"}
 • Total: ${money(total)}`
   };
 }
@@ -4396,7 +4515,7 @@ function calcDouble(disableDiscounts = false){
     mmrTemp += 150; // ganho médio por dia
   }
 
-  // 🔹 OFF-STREAM
+  // 🔹 OFF STREAM
   let offOriginal = 0;
   let offValue = 0;
 
@@ -4427,7 +4546,7 @@ $("doubleRes").innerHTML =
    <strong>Preço inicial por dia:</strong> ${money(firstDayPrice)}<br>
    <strong>Dias contratados:</strong> ${days}<br>
    <strong>Valor do serviço:</strong> ${money(baseValue)}<br>
-   <strong>Off-stream:</strong> ${off ? money(offValue) : money(0)}<br>
+   <strong>Off stream:</strong> ${off ? money(offValue) : money(0)}<br>
    <strong>Total:</strong> <span class="newPrice">${money(total)}</span>`;
 
   return {
@@ -4448,7 +4567,7 @@ $("doubleRes").innerHTML =
 • MMR inicial: ${mmrAtual}
 • Dias contratados: ${days}
 • Valor do serviço: ${money(baseValue)}
-• Off-stream: ${off ? money(offValue) : "Não"}
+• Off stream: ${off ? money(offValue) : "Não"}
 • Total: ${money(total)}`
   };
 }
@@ -4481,7 +4600,7 @@ if(mmr >= 6501 && mmr <= 8500){
 
 const baseValue = days * pricePerDay;
 
-// 🔹 OFF-STREAM
+// 🔹 OFF STREAM
 let offOriginal = 0;
 let offValue = 0;
 let promoApplied = false;
@@ -4496,7 +4615,7 @@ if(off){
     promoApplied = true;
     offPromoText = "Promoção especial: off-stream grátis para Boost Casual acima de 6500 MMR";
   }
-  // desconto normal do off-stream
+  // desconto normal do off stream
   else if(!disableDiscounts && activePromo === null){
     offValue = days * 15;
     promoApplied = true;
@@ -4517,7 +4636,7 @@ $("casualRes").innerHTML =
    <strong>Preço por dia:</strong> ${money(pricePerDay)}<br>
    <strong>Dias:</strong> ${days}<br>
    <strong>Valor do serviço:</strong> ${money(baseValue)}<br>
-   <strong>Off-stream:</strong> ${
+   <strong>Off stream:</strong> ${
      off
        ? (offOriginal > 0 && offValue === 0
             ? `<span class="oldPrice">${money(offOriginal)}</span> <span class="promoTag">🔥 Grátis</span>`
@@ -4549,7 +4668,7 @@ return {
 • Preço por dia: ${money(pricePerDay)}
 • Dias contratados: ${days}
 • Valor do serviço: ${money(baseValue)}
-• Off-stream: ${
+• Off stream: ${
   off
     ? (offOriginal > 0 && offValue === 0
         ? money(offOriginal) + " → Grátis"
@@ -4623,7 +4742,7 @@ function calcRoleFarm(disableDiscounts = false){
      <strong>Dias:</strong> ${days}<br>
      <strong>Fichas farmadas:</strong> ${fichas}<br>
      <strong>Valor do serviço:</strong> ${money(baseValue)}<br>
-     <strong>Off-stream:</strong> ${
+     <strong>Off stream:</strong> ${
        off
          ? (offOriginal > 0 && offValue === 0
               ? `<span class="oldPrice">${money(offOriginal)}</span> <span class="promoTag">🔥 Grátis</span>`
@@ -4653,7 +4772,7 @@ function calcRoleFarm(disableDiscounts = false){
 • Partidas: ${partidas}
 • Fichas farmadas: ${fichas}
 • Valor do serviço: ${money(baseValue)}
-• Off-stream: ${
+• Off stream: ${
   off
     ? (offOriginal > 0 && offValue === 0
         ? money(offOriginal) + " → Grátis"
@@ -4703,7 +4822,7 @@ function calcRecal(){
   $("recalRes").innerHTML =
     `<strong>MMR atual:</strong> ${mmr}<br>
      <strong>Valor do serviço:</strong> ${money(baseValue)}<br>
-     <strong>Off-stream:</strong> ${off ? money(offValue) : money(0)}<br>
+     <strong>Off stream:</strong> ${off ? money(offValue) : money(0)}<br>
      <strong>Total:</strong> ${money(total)}`;
 
   return {
@@ -4726,7 +4845,7 @@ function calcRecal(){
 `🔄 RECALIBRAÇÃO
 • MMR atual: ${mmr}
 • Valor do serviço: ${money(baseValue)}
-• Off-stream: ${off ? money(offValue) : "Não"}
+• Off stream: ${off ? money(offValue) : "Não"}
 • Total: ${money(total)}`
   };
 }
@@ -4783,7 +4902,7 @@ if(!disableDiscounts && porDia >= 2 && porDia <= 3){
 }
 
 
-  /* 🔹 OFF-STREAM */
+  /* 🔹 OFF STREAM */
   let offOriginal = 0;
   let offValue = 0;
   let offPromoText = "";
@@ -4822,7 +4941,7 @@ if(descontoReplay > 0){
 }
 
 replayHTML += `
-  <strong>Off-stream:</strong> ${off ? money(offValue) : money(0)}<br>
+  <strong>Off stream:</strong> ${off ? money(offValue) : money(0)}<br>
   <strong>Total:</strong> <span class="newPrice">${money(total)}</span>
 `;
 
@@ -4857,7 +4976,7 @@ ${descontoReplay > 0
   ? `• Desconto aplicado: 🔥 ${Math.round((descontoReplay / baseNoPromo) * 100)}% OFF`
   : `• Desconto aplicado: Nenhum`}
 • Valor com desconto: ${money(baseValue)}
-• Off-stream: ${off ? money(offValue) : "R$ 0,00"}
+• Off stream: ${off ? money(offValue) : "R$ 0,00"}
 • Total: ${money(total)}`
 
 };
@@ -5025,7 +5144,7 @@ function calcLowPriority(){
   }
 
   html += `
-    <strong>Off-stream:</strong> ${off ? money(offValue) : money(0)}<br>
+    <strong>Off stream:</strong> ${off ? money(offValue) : money(0)}<br>
     <strong>Total:</strong> <span class="newPrice">${money(total)}</span>
   `;
 
@@ -5049,7 +5168,7 @@ function calcLowPriority(){
 • Valor base: ${money(baseOriginal)}
 • Desconto aplicado: ${discountPct > 0 ? discountPct + "% OFF" : "Nenhum"}
 • Valor do serviço: ${money(baseValue)}
-• Off-stream: ${off ? money(offValue) : "Não"}
+• Off stream: ${off ? money(offValue) : "Não"}
 • Total: ${money(total)}`,
     blocksDiscounts:true
   };
@@ -5112,7 +5231,7 @@ function calcTurboXP(){
   $("turboRes").innerHTML = `
     <strong>📆 Dias contratados:</strong> ${days}<br>
     <strong>🎮 Total de jogos:</strong> ${days * 8}<br>
-    <strong>Off-stream:</strong> ${off ? money(offValue) : money(0)}<br>
+    <strong>Off stream:</strong> ${off ? money(offValue) : money(0)}<br>
     <div class="hr"></div>
     <strong>Total:</strong> <span class="newPrice">${money(total)}</span>
   `;
@@ -5143,7 +5262,7 @@ function calcTurboXP(){
 • Dias: ${days}
 • Jogos: ${days * 8}
 • Valor do serviço: ${money(base)}
-• Off-stream: ${off ? money(offValue) : "Não"}
+• Off stream: ${off ? money(offValue) : "Não"}
 • Total: ${money(total)}`,
     blocksDiscounts:true
   };
@@ -5219,17 +5338,13 @@ function updateCasualOffText(){
 
   if(mmr >= 6501 && mmr <= 8500){
     text.innerHTML = `
-      Jogar Off Stream
-      (<span style="color:var(--danger);text-decoration:line-through;">R$ 20,00</span> →
-      <span style="color:var(--success);">GRÁTIS</span>)
-      na Twitch sekai_oficial
+      Serviço com live off-stream
+      <span style="color:var(--success);font-weight:700;">GRÁTIS</span>?
     `;
   }else{
     text.innerHTML = `
-      Jogar Off Stream
-      (<span style="color:var(--danger);text-decoration:line-through;">R$ 20,00</span> →
-      <span style="color:var(--success);">R$ 15,00</span> por dia)
-      na Twitch sekai_oficial
+      Serviço com live off-stream com
+      <span style="color:var(--success);font-weight:700;">25% OFF</span>?
     `;
   }
 }
@@ -5242,17 +5357,13 @@ function updateRoleFarmOffText(){
 
   if(mmr >= 6501 && mmr <= 8500){
     text.innerHTML = `
-      Jogar Off Stream
-      (<span style="color:var(--danger);text-decoration:line-through;">R$ 20,00</span> →
-      <span style="color:var(--success);">GRÁTIS</span>)
-      na Twitch sekai_oficial
+      Serviço com live off-stream
+      <span style="color:var(--success);font-weight:700;">GRÁTIS</span>?
     `;
   }else{
     text.innerHTML = `
-      Jogar Off Stream
-      (<span style="color:var(--danger);text-decoration:line-through;">R$ 20,00</span> →
-      <span style="color:var(--success);">R$ 15,00</span> por dia)
-      na Twitch sekai_oficial
+      Serviço com live off-stream com
+      <span style="color:var(--success);font-weight:700;">25% OFF</span>?
     `;
   }
 }
@@ -5533,7 +5644,7 @@ let offTotal = 0;
         items.push(`• Boost Tradicional — OFF SUPER PROMO: -${money(obj.superPromoDiscount)}`);
       }
 
-      // 🔹 captura OFF-STREAM
+      // 🔹 captura OFF STREAM
       if(obj.offValue && obj.offValue > 0){
         offLines.push(`• ${obj.offLabel}: ${money(obj.offValue)}`);
         offTotal += obj.offValue;
@@ -5679,9 +5790,9 @@ const msg = encodeURIComponent(
   detalhes.join("\n\n") +
 
   (offLines.length
-    ? "\n\n📡 *TAXAS OFF-STREAM*\n" +
+    ? "\n\n📡 *TAXAS OFF STREAM*\n" +
       offLines.join("\n") +
-      "\n• Total Off-stream: " + money(offTotal)
+      "\n• Total Off stream: " + money(offTotal)
     : ""
   ) +
 
@@ -5882,6 +5993,24 @@ function syncSelectedCards(){
 }
 
 
+const heroImages = document.querySelectorAll(".heroSwapImg");
+
+heroImages.forEach(img => {
+
+  const staticSrc = img.getAttribute("data-static");
+  const gifSrc = img.getAttribute("data-gif");
+
+  img.addEventListener("mouseenter", () => {
+    img.src = gifSrc;
+  });
+
+  img.addEventListener("mouseleave", () => {
+    img.src = staticSrc;
+  });
+
+});
+
+
 
 
 </script>
@@ -5896,5 +6025,348 @@ function syncSelectedCards(){
 </div>
 
 </div>
+
+<!-- popup redes socias -->
+
+<!-- POPUP INSTAGRAM -->
+<div class="modalOverlay" id="instagramPopup">
+  <div class="modalCard" onclick="event.stopPropagation()">
+    <div class="modalHeader">
+      <div class="modalTitle">Instagram Sekai Dota Boost</div>
+      <button type="button" class="modalClose closeModalBtn">✕</button>
+    </div>
+
+    <div class="legalTextBox">
+
+      <div style="
+        background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.02));
+        border:1px solid rgba(236,72,153,.18);
+        border-radius:20px;
+        padding:16px;
+        margin-bottom:16px;
+      ">
+        <div style="font-size:20px;font-weight:900;color:#fff;margin-bottom:6px;">
+          📷 instagram.com/sekaidota
+        </div>
+
+        <div style="font-size:14px;line-height:1.7;color:#d6d3e5;">
+          O Instagram da Sekai Dota Boost é um dos canais oficiais onde você pode acompanhar novidades, conteúdos e também entrar em contato para contratar serviços.
+        </div>
+      </div>
+
+
+      <div class="sectionTitleModal" style="margin-top:0;">O que você encontra no Instagram</div>
+
+      <div style="
+        background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.02));
+        border:1px solid rgba(236,72,153,.16);
+        border-radius:18px;
+        padding:16px;
+        margin-top:12px;
+      ">
+
+        <div style="display:grid;gap:10px;margin-top:4px;">
+
+          <div style="
+            padding:14px;
+            border-radius:14px;
+            background:rgba(236,72,153,.08);
+            border:1px solid rgba(236,72,153,.18);
+            color:#fbcfe8;
+            font-size:14px;
+            line-height:1.7;
+          ">
+            🎯 <strong>Promoções e eventos</strong><br>
+            Anúncios de descontos especiais, promoções temporárias e eventos que estão acontecendo no momento.
+          </div>
+
+          <div style="
+            padding:14px;
+            border-radius:14px;
+            background:rgba(139,92,246,.08);
+            border:1px solid rgba(139,92,246,.18);
+            color:#e9ddff;
+            font-size:14px;
+            line-height:1.7;
+          ">
+            🎥 <strong>Clipes da Twitch</strong><br>
+            Momentos das transmissões, jogadas importantes, partidas interessantes e destaques das lives.
+          </div>
+
+          <div style="
+            padding:14px;
+            border-radius:14px;
+            background:rgba(34,197,94,.08);
+            border:1px solid rgba(34,197,94,.18);
+            color:#dcfce7;
+            font-size:14px;
+            line-height:1.7;
+          ">
+            🎮 <strong>Gameplay e momentos de lazer</strong><br>
+            Conteúdos mais leves, partidas casuais e momentos do dia a dia dentro do Dota 2.
+          </div>
+
+          <div style="
+            padding:14px;
+            border-radius:14px;
+            background:rgba(59,130,246,.08);
+            border:1px solid rgba(59,130,246,.18);
+            color:#dbeafe;
+            font-size:14px;
+            line-height:1.7;
+          ">
+            💬 <strong>Contato para contratação</strong><br>
+            Também é possível iniciar uma conversa e solicitar serviços diretamente pelo Instagram.
+          </div>
+
+        </div>
+      </div>
+
+
+      <div class="sectionTitleModal">Canal oficial</div>
+
+      <div style="
+        background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.02));
+        border:1px solid rgba(236,72,153,.16);
+        border-radius:18px;
+        padding:16px;
+        margin-top:12px;
+        color:#d6d3e5;
+        font-size:14px;
+        line-height:1.8;
+      ">
+        O Instagram funciona como um espaço para acompanhar novidades da Sekai Dota Boost, conteúdos da comunidade e também para facilitar o contato com clientes que preferem conversar por lá.
+      </div>
+
+
+      <div style="margin-top:18px;">
+        <a href="https://www.instagram.com/sekaidota/" target="_blank" class="menuItemBtn">
+          📷 Ir para o Instagram
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- POPUP TWITCH -->
+<div class="modalOverlay" id="twitchPopup">
+  <div class="modalCard" onclick="event.stopPropagation()">
+    <div class="modalHeader">
+      <div class="modalTitle">Twitch Sekai Oficial</div>
+      <button type="button" class="modalClose closeModalBtn">✕</button>
+    </div>
+
+    <div class="legalTextBox">
+
+      <div style="
+        background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.02));
+        border:1px solid rgba(139,92,246,.16);
+        border-radius:20px;
+        padding:16px;
+        margin-bottom:16px;
+      ">
+        <div style="font-size:20px;font-weight:900;color:#fff;margin-bottom:6px;">
+          🎥 twitch.tv/sekai_oficial
+        </div>
+
+        <div style="font-size:14px;line-height:1.7;color:#d6d3e5;">
+          Na minha Twitch você pode acompanhar lives, gameplay, análises e parte do meu trabalho dentro do Dota 2.
+        </div>
+      </div>
+
+      <div class="sectionTitleModal" style="margin-top:0;">Como funciona a live nos serviços</div>
+
+      <div style="
+        background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.02));
+        border:1px solid rgba(139,92,246,.14);
+        border-radius:18px;
+        padding:16px;
+        margin-top:12px;
+      ">
+        <div style="font-size:14px;line-height:1.8;color:#d6d3e5;">
+          Alguns serviços podem ser realizados <strong style="color:#fff;">em live</strong> ou <strong style="color:#fff;">fora de live</strong>, dependendo da modalidade escolhida no momento da contratação.
+          <br><br>
+          O pagamento da taxa <strong style="color:#fff;">off-stream</strong> existe para <strong style="color:#fff;">garantir que o serviço não será feito em live</strong>.
+          <br><br>
+          Ou seja:
+        </div>
+
+        <div style="margin-top:14px;display:grid;gap:10px;">
+          <div style="
+            padding:14px;
+            border-radius:14px;
+            background:rgba(34,197,94,.08);
+            border:1px solid rgba(34,197,94,.18);
+            color:#dcfce7;
+            line-height:1.7;
+            font-size:14px;
+          ">
+            ✅ <strong>Com off-stream:</strong> o serviço será feito fora da live.
+          </div>
+
+          <div style="
+            padding:14px;
+            border-radius:14px;
+            background:rgba(139,92,246,.08);
+            border:1px solid rgba(139,92,246,.18);
+            color:#e9ddff;
+            line-height:1.7;
+            font-size:14px;
+          ">
+            📡 <strong>Sem off-stream:</strong> o serviço pode ser feito em live ou não, conforme a disponibilidade.
+          </div>
+        </div>
+      </div>
+
+      <div class="sectionTitleModal">Importante</div>
+
+      <div style="
+        background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.02));
+        border:1px solid rgba(139,92,246,.14);
+        border-radius:18px;
+        padding:16px;
+        margin-top:12px;
+        color:#d6d3e5;
+        font-size:14px;
+        line-height:1.8;
+      ">
+        A taxa off-stream <strong style="color:#fff;">não significa que todo serviço sem essa taxa será obrigatoriamente feito em live</strong>.
+        <br><br>
+        Ela serve apenas como uma modalidade de garantia para quem deseja que o serviço aconteça especificamente <strong style="color:#fff;">fora da transmissão</strong>.
+      </div>
+
+      <div style="margin-top:18px;">
+        <a href="https://www.twitch.tv/sekai_oficial" target="_blank" class="menuItemBtn">
+          🎥 Ir para a Twitch
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- POPUP WHATSAPP -->
+<div class="modalOverlay" id="whatsappPopup">
+  <div class="modalCard" onclick="event.stopPropagation()">
+    <div class="modalHeader">
+      <div class="modalTitle">WhatsApp Sekai Dota Boost</div>
+      <button type="button" class="modalClose closeModalBtn">✕</button>
+    </div>
+
+    <div class="legalTextBox">
+
+      <div style="
+        background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.02));
+        border:1px solid rgba(34,197,94,.18);
+        border-radius:20px;
+        padding:16px;
+        margin-bottom:16px;
+      ">
+        <div style="font-size:20px;font-weight:900;color:#fff;margin-bottom:6px;">
+          💬 Contato direto com Sekai
+        </div>
+
+        <div style="font-size:14px;line-height:1.7;color:#d6d3e5;">
+  O WhatsApp é o canal oficial e principal de contratação da Sekai Dota Boost. Por lá você fala diretamente comigo, Sekai, tira suas dúvidas e recebe atendimento mais rápido e direto.
+</div>
+      </div>
+
+
+      <div class="sectionTitleModal" style="margin-top:0;">O que você pode fazer pelo WhatsApp</div>
+
+      <div style="
+        background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.02));
+        border:1px solid rgba(34,197,94,.16);
+        border-radius:18px;
+        padding:16px;
+        margin-top:12px;
+      ">
+
+        <div style="display:grid;gap:10px;margin-top:4px;">
+
+          <div style="
+            padding:14px;
+            border-radius:14px;
+            background:rgba(34,197,94,.08);
+            border:1px solid rgba(34,197,94,.18);
+            color:#dcfce7;
+            font-size:14px;
+            line-height:1.7;
+          ">
+            ✅ <strong>Contratar serviços</strong><br>
+            O WhatsApp é o canal principal para fechar serviços, confirmar disponibilidade e receber atendimento personalizado.
+          </div>
+
+          <div style="
+            padding:14px;
+            border-radius:14px;
+            background:rgba(59,130,246,.08);
+            border:1px solid rgba(59,130,246,.18);
+            color:#dbeafe;
+            font-size:14px;
+            line-height:1.7;
+          ">
+            💬 <strong>Falar direto comigo</strong><br>
+            Você pode conversar diretamente comigo, Sekai, para tirar dúvidas sobre qualquer serviço ou funcionamento da plataforma.
+          </div>
+
+          <div style="
+            padding:14px;
+            border-radius:14px;
+            background:rgba(139,92,246,.08);
+            border:1px solid rgba(139,92,246,.18);
+            color:#e9ddff;
+            font-size:14px;
+            line-height:1.7;
+          ">
+            📌 <strong>Receber orientações</strong><br>
+            Pelo WhatsApp também são combinados detalhes importantes como datas, horários, forma de execução e confirmação do serviço.
+          </div>
+
+          <div style="
+            padding:14px;
+            border-radius:14px;
+            background:rgba(250,204,21,.08);
+            border:1px solid rgba(250,204,21,.18);
+            color:#fef3c7;
+            font-size:14px;
+            line-height:1.7;
+          ">
+            ⚡ <strong>Contato rápido e direto</strong><br>
+            É a melhor forma de manter contato direto e conseguir respostas com mais praticidade sempre que precisar.
+          </div>
+
+        </div>
+      </div>
+
+
+      <div class="sectionTitleModal">Atendimento oficial</div>
+
+      <div style="
+        background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.02));
+        border:1px solid rgba(34,197,94,.16);
+        border-radius:18px;
+        padding:16px;
+        margin-top:12px;
+        color:#d6d3e5;
+        font-size:14px;
+        line-height:1.8;
+      ">
+        Se você quer contratar, confirmar um serviço, enviar comprovante, combinar detalhes ou simplesmente falar diretamente comigo, o WhatsApp é o canal mais importante da Sekai Dota Boost.
+      </div>
+
+
+      <div style="margin-top:18px;">
+        <a href="https://wa.me/5521991844917" target="_blank" class="menuItemBtn">
+          💬 Abrir WhatsApp
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
 </body>
 </html>
